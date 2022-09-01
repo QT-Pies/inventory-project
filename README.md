@@ -6,6 +6,8 @@ A project for COSC340; our aim is to create a program to help business owners ma
 - Jon Graham
 - Joseph Wehby
 - Noah Shoap
+- Vincent Broda
+- Jennifer Hulen
 
 ## Language / Tools Used
 - We'll be using C++.
