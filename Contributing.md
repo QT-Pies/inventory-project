@@ -15,4 +15,12 @@ Ideally, this will be a fairly short guide with just a few things we should all 
 1. Comments should not be redundant, but you should comment things that are unclear.
 
 ## Git Contributing
-TODO.
+Rather than writing your changes on the main branch, please create a branch for the issue / feature you are working on.
+
+We're likely going to use the GitHub issues page for tracking our work items; you can create your branch from here.
+
+When you think you're finished with your work, open up a pull request to merge your branch with the main branch.  Post in the Discord that you need reviewers for a PR.  We're also going to look into setting up a CI build that needs to run before your PR can be merged.
+
+Before you complete a PR, it should be approved by two reviewers and have passed the CI build.
+
+Ask in the Discord chat if you need any help with this process.
