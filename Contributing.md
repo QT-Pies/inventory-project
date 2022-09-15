@@ -5,7 +5,7 @@ Ideally, this will be a fairly short guide with just a few things we should all 
 
 1. Spaces over tabs -- set your editor to do 2 spaces when you tab.
 2. Classes should be PascalCased.
-3. Functions should be PascalCased.
+3. Functions should be camelCased.
 4. Variables should be snake_cased.
 5. Constants should be UPPER_SNAKE_CASED.
 6. Function parameters should be constant when possible.
