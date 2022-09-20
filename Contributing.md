@@ -15,6 +15,7 @@ Ideally, this will be a fairly short guide with just a few things we should all 
 10. Curly braces should go on a newline.
 11. Comments should not be redundant, but you should comment things that are unclear.
 12. Favor use of smart pointers such as shared_ptr and unique_ptr rather than traditional C-style pointers.
+13. C++ header files should end in the extension .hpp, and C++ source files should end in .cpp.
 
 ## Git Contributing
 Rather than writing your changes on the main branch, please create a branch for the issue / feature you are working on.
