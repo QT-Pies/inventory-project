@@ -14,6 +14,7 @@ Ideally, this will be a fairly short guide with just a few things we should all 
 9. Favor the 'auto' keyword for long type names, such as iterators.
 10. Curly braces should go on a newline.
 11. Comments should not be redundant, but you should comment things that are unclear.
+12. Favor use of smart pointers such as shared_ptr and unique_ptr rather than traditional C-style pointers.
 
 ## Git Contributing
 Rather than writing your changes on the main branch, please create a branch for the issue / feature you are working on.
