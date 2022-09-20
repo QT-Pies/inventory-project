@@ -3,7 +3,7 @@
 ## Style Guide
 Ideally, this will be a fairly short guide with just a few things we should all agree on for consistency purposes.
 
-1. Spaces over tabs -- set your editor to do 2 spaces when you tab.
+1. Spaces over tabs -- set your editor to do 4 spaces when you tab.
 2. Classes should be PascalCased.
 3. Functions should be camelCased.
 4. Variables should be snake_cased.
