@@ -2,6 +2,7 @@
 #define ITEM_HPP
 
 #include <string>
+#include <iostream>
 
 class Item
 {
