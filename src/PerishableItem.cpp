@@ -1,10 +1,16 @@
 #include "PerishableItem.hpp"
 
+/*
+ * Constructor for PerishableItem; calls base Item constructor, initializes expiration_date member.
+*/
 PerishableItem::PerishableItem(const std::string& nm, unsigned int qty, unsigned int idd, double price, double cost, double tx, const std::string& exp)
 : Item(nm, qty, idd, price, cost, tx), expiration_date(exp)
 {
 }
 
+/*
+ * Prints out the item information to standard output.
+*/
 void PerishableItem::print()
 {
     std::cout << "ID: " << id << " Item: " << name << std::endl;
@@ -16,7 +22,10 @@ void PerishableItem::print()
     std::cout << "Profit per unit sold: " << profit << std::endl;
 }
 
+/*
+ * Destructor; empty implementation, but needed to shut compiler up.
+*/
 PerishableItem::~PerishableItem()
 {
-    //
+    
 }
