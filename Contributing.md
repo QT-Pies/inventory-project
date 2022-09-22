@@ -26,4 +26,14 @@ When you think you're finished with your work, open up a pull request to merge y
 
 Before you complete a PR, it should be approved by two reviewers and have passed the CI build.
 
+### Git Step-by-Step - CLI instructions.
+1. Create a new branch from the issue page for the issue you are working on.
+2. Change directory to your local repo.
+3. git fetch origin -- this will tell your local repo about the changes that have been made, i.e, the new branch.
+4. git checkout branch-name -- this will change the branch you are currently working on.
+5. git branch -- this will show you the branch you are actively working on, highlighted for you.  Use this to confirm you're on the correct branch.
+6. git commit -- commit your changes to your branch.  Commit often.  Include issue # in commit message.
+7. git push -- this will push your changes to the remote branch.  Do this often to avoid potential loss of commits.
+8. When you think you're finished, open up a PR.
+
 Ask in the Discord chat if you need any help with this process.
