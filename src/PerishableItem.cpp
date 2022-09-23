@@ -14,7 +14,7 @@ PerishableItem::PerishableItem(const std::string& nm, const std::string& cat, un
 void PerishableItem::print()
 {
     std::cout << "ID: " << id << " Item: " << name << std::endl;
-    std::cout << "Expiration Date: " << expiration_date.toString() << std::endl;
+    std::cout << "Expiration Date: " << expiration_date.string_date << std::endl;
     std::cout << "In-Stock: " << quantity << std::endl;
     std::cout << "Stocking/Purchase Cost: " << buy_cost << std::endl;
     std::cout << "Sale Price: " << sale_price << std::endl;
