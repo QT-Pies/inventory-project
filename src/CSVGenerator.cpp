@@ -85,6 +85,9 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
     return entry;
 }
 
+/*
+ * Generate a non-perishable Item. 
+ */
 std::shared_ptr<CSVEntry> CSVGenerator::generateNonPerishableItem()
 {
     auto entry = generateItem();
@@ -92,6 +95,9 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateNonPerishableItem()
     return entry;
 }
 
+/*
+ * Generate a perishable item.
+ */
 std::shared_ptr<CSVEntry> CSVGenerator::generatePerishableItem()
 {
     std::random_device rand;

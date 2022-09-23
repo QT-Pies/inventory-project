@@ -1,10 +1,15 @@
 #include "CSVEntry.hpp"
 
+/*
+ * Empty constructor; the compiler wanted this for some reason.
+ */
 CSVEntry::CSVEntry()
 {
-
 }
 
+/*
+ * Print out the entry to given ostream.
+ */
 void CSVEntry::printEntry(std::ostream& out)
 {
     out << name << ',';
