@@ -3,13 +3,11 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <vector>
-#include <functional>
-#include <iterator>
 #include <random>
 #include <memory>
-#include <sstream>
 #include "CSVEntry.hpp"
 
 class CSVGenerator
