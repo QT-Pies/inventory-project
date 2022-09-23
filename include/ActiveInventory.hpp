@@ -1,5 +1,5 @@
-#include "PerishableItem.hpp"
-#include "PerishableItem.hpp"
+#ifndef ACTIVE_INVENTORY_HPP
+#define ACTIVE_INVENTORY_HPP
 
 Class ActiveInventory {
     public:
@@ -15,11 +15,11 @@ Class ActiveInventory {
 	~ActiveInventory();
 
 	/* 
-         * This function will add an item to the inventory maps and return 
+     * This function will add an item to the inventory maps and return
 	 * how many items were actually added. 
 	 * If there is an error it will return -1.
-         */
-        int addItem(std::string);
+     */
+    int addItem(std::string, std::string);
 
 	/*
 	 * This function will remove an item from the inventroy maps based 
@@ -40,8 +40,10 @@ Class ActiveInventory {
 	 * These maps will store the active inventory by category and by name
 	 * for searching purposes.
 	 */
-        map <string <map <string, std::shared_ptr<Item> > > inv_by_category;
-        map <string, shared_ptr<Item> > inv_by_name;
+        map <string, <map <string, std::shared_ptr<Item> > > inv_by_category;
+        map <string, std::shared_ptr<Item> > inv_by_name;
 
 };
+
+#endif /* ACTIVE_INVENTORY_HPP */
 

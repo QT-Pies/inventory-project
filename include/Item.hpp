@@ -10,6 +10,8 @@ public:
     Item(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double);
     virtual ~Item() = default;
     virtual void print() = 0;
+private:
+    friend class ActiveInventory;
 protected:
     std::string name;
     std::string sub_category;
