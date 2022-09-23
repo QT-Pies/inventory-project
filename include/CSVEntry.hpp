@@ -1,15 +1,17 @@
-#ifndef ITEM_HPP
-#define ITEM_HPP
+#ifndef CSVENTRY_HPP
+#define CSVENTRY_HPP
 
 #include <string>
 #include <iostream>
 
-class Item
+class CSVGenerator;
+
+class CSVEntry
 {
+friend class CSVGenerator;
 public:
-    Item(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double);
-    virtual ~Item() = default;
-    virtual void print() = 0;
+    CSVEntry();
+    void printEntry(std::ostream&);
 protected:
     std::string name;
     std::string category;
@@ -20,6 +22,7 @@ protected:
     double tax;
     double total_price;
     double profit;
+    std::string expiration_date;
 };
 
 #endif
