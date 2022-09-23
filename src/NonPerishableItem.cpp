@@ -3,8 +3,8 @@
 /* 
  * Constructor for NonPerishableItem; call's base class constructor.
 */
-NonPerishableItem::NonPerishableItem(const std::string& nm, unsigned int qty, unsigned int idd, double price, double cost, double tx)
-: Item(nm, qty, idd, price, cost, tx)
+NonPerishableItem::NonPerishableItem(const std::string& nm, const std::string& cat, unsigned int qty, unsigned int idd, double price, double cost, double tx)
+: Item(nm, cat, qty, idd, price, cost, tx)
 {
 
 }
