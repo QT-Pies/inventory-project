@@ -2,7 +2,7 @@
 
 CSVEntry::CSVEntry()
 {
-    
+
 }
 
 void CSVEntry::printEntry(std::ostream& out)
@@ -10,6 +10,7 @@ void CSVEntry::printEntry(std::ostream& out)
     out << name << ',';
     out << id << ',';
     out << category << ',';
+    out << sub_category << ',';
     out << quantity << ',';
     out << sale_price << ',';
     out << tax << ',';

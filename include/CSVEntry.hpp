@@ -15,6 +15,7 @@ public:
 protected:
     std::string name;
     std::string category;
+    std::string sub_category;
     unsigned int quantity;
     unsigned int id;
     double sale_price;

@@ -20,7 +20,7 @@ protected:
     std::shared_ptr<CSVEntry> generateNonPerishableItem();
     std::shared_ptr<CSVEntry> generatePerishableItem();
 
-    const std::vector<std::string> columns = {"Name", "ID", "Category", "Quantity", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+    const std::vector<std::string> columns = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
     const std::string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     unsigned int id_count;
     std::ofstream file;

@@ -65,6 +65,7 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
 
     /* Set category to undefined, it's not perishable or non-perishable. */
     entry->category = "-1";
+    entry->sub_category = "-1";
     entry->expiration_date = "-1";
 
     entry->quantity = distrib_int(gen);
