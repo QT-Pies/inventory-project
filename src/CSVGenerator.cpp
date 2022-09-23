@@ -67,6 +67,8 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
     entry->category = "-1";
     entry->expiration_date = "-1";
 
+    entry->quantity = distrib_int(gen);
+
     entry->id = id_count;
     id_count++;
 
