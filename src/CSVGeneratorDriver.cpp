@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "CSVGenerator.hpp"
+#include "../include/CSVGenerator.hpp"
 
 int main(int argc, char** argv)
 {

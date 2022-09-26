@@ -1,7 +1,12 @@
 #ifndef ACTIVE_INVENTORY_HPP
 #define ACTIVE_INVENTORY_HPP
 
-Class ActiveInventory {
+#include <string>
+#include <map>
+#include <memory>
+#include "Item.hpp"
+
+class ActiveInventory {
     public:
         
 	ActiveInventory();
@@ -19,7 +24,7 @@ Class ActiveInventory {
 	 * how many items were actually added. 
 	 * If there is an error it will return -1.
      */
-    int addItem(std::string, std::string);
+    int addItem(const std::string, const std::string);
 
 	/*
 	 * This function will remove an item from the inventroy maps based 
@@ -40,8 +45,8 @@ Class ActiveInventory {
 	 * These maps will store the active inventory by category and by name
 	 * for searching purposes.
 	 */
-        map <string, <map <string, std::shared_ptr<Item> > > inv_by_category;
-        map <string, std::shared_ptr<Item> > inv_by_name;
+        std::map<std::string, std::map<std::string, std::shared_ptr<Item> > > inv_by_category;
+        std::map<std::string, std::shared_ptr<Item> > inv_by_name;
 
 };
 

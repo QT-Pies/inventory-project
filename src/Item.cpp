@@ -1,4 +1,4 @@
-#include "Item.hpp"
+#include "../include/Item.hpp"
 
 /*
  * Constructor for base Item class; initializes data to given values.
