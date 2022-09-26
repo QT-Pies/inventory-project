@@ -17,7 +17,10 @@ void InventoryManager::userInput()
 {
 	std::string argument, name, category, value; 
 	
-	if (command_line == false) return;
+	if (command_line == false) {
+        std::cout << "Command line is currently set to false" << std::endl;
+        return;
+    }
 
 	std::cout << "Add, Remove, or Update item: ";
 	std::cin >> argument;	
@@ -26,29 +29,29 @@ void InventoryManager::userInput()
 	switch(argument)
 	{
 		case "Add":
-			std::cout << "Perishable/Nonperishable Name :";
-			cin << category << name;
+            std::cout << "Perishable/Nonperishable Name: ";
+			std::cin >> category >> name;
 
 			if (active_inventory->addItem(name, category) != -1) {
-				std::cout << "Added " << name << " of type " << category << std::endl;
+				std::cout << "\nAdded " << name << " of type " << category << std::endl;
 			}
 			break;
 
 		case "Remove":
-			std::cout << "Name :";
-			std::cin << name;
+			std::cout << "\nName: ";
+			std::cin >> name;
 
 			if (active_inventory->removeItem(name) != -1) {
-				std::cout << "Removed " << name << std::<<endl;
+				std::cout << "\nRemoved " << name << std::endl;
 			}
 			break;
 
 		case "Update":
-			std::cout << "Name Field Value: ";
-			cin << name << category << value;
+			std::cout << "\nName Field Value: ";
+			std::cin >> name >> category >> value;
 			
 			if (active_inventory->updateItem(name, category, value) != -1) {
-				std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+				std::cout << "\nUpdated " << category << " of " << name << " to " << value << std::endl;
 			}
 			break;
 
