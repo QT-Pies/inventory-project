@@ -6,11 +6,10 @@
 
 ActiveInventory::ActiveInventory() 
 {
-    inv_by_category = std::make_unique<map <string, map<string, 
-	shared_ptr<Item> > > (map<string, map< string, std::shared_ptr<Item> > >);
+    std::make_unique<std::map <std::string, std::map<std::string,
+	std::shared_ptr<Item> > > >(inv_by_category);
 
-    inv_by_name = std::make_unique<map <string, std::shared_ptr<Item> > 
-	    (map<string, std::shared_ptr<Item> >);
+    std::make_unique<std::map <std::string, std::shared_ptr<Item> > >(inv_by_name);
 };
 
 ActiveInventory::ActiveInventory(std::string file_name) 
@@ -25,17 +24,17 @@ ActiveInventory::~ActiveInventory()
     //All objects of this class are smart pointers that will free themselves.
 };
 
-int ActiveInventory::addItem(std::string name, std::string category) 
+int ActiveInventory::addItem(const std::string name, const std::string category)
 {
     if (inv_by_name.find(name) != inv_by_name.end()) //Check if item is already in the inventory.
     {
-        fprintf(stderr, "%s is already in the inventory.\n", name);
+        fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
         return 0;
     } else {
         /* Check if the category is a valid category. */
         if (category == "Perishable") {
-            auto new_item = make_shared<PerishableItem>(name, 0, 0, 0, 0, 0, "0");
-            inv_by_name->insert(name, new_item);
+            auto new_item = std::make_shared<PerishableItem>(name, 0, 0, 0, 0, 0, Date(0));
+            inv_by_name[name] = new_item;
             inv_by_category[category].second.insert(name, new_item);
             return 1;
         } else if (category == "NonPerishable") {

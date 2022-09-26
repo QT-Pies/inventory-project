@@ -8,8 +8,8 @@ class PerishableItem : private Item
 {
 public:
     PerishableItem(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double, const std::string&);
-    ~PerishableItem();
-    void print();
+    ~PerishableItem() override;
+    void print() override;
 protected:
     Date expiration_date;
 };

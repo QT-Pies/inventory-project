@@ -1,4 +1,4 @@
-#include "CSVEntry.hpp"
+#include "../include/CSVEntry.hpp"
 
 /*
  * Empty constructor; the compiler wanted this for some reason.
