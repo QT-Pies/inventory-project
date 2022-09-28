@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "../include/InventoryManager.hpp"
+//#include "InventoryManager.hpp"
 
 InventoryManager::InventoryManager(bool cli)
 {
@@ -13,13 +13,13 @@ InventoryManager::~InventoryManager()
 }
 
 /* gets command line input from user and calls methods from active inventory class */
-void InventoryManager::userInput()
+int InventoryManager::userInput()
 {
 	std::string argument, name, category, value; 
 	
 	if (command_line == false) {
         std::cout << "Command line is currently set to false" << std::endl;
-        return;
+        return -1;
     }
 
 	std::cout << "Add, Remove, or Update item: ";
@@ -34,7 +34,9 @@ void InventoryManager::userInput()
 
 			if (active_inventory->addItem(name, category) != -1) {
 				std::cout << "\nAdded " << name << " of type " << category << std::endl;
-			}
+			} else {
+                return -1;
+            }
 			break;
 
 		case "Remove":
@@ -43,7 +45,9 @@ void InventoryManager::userInput()
 
 			if (active_inventory->removeItem(name) != -1) {
 				std::cout << "\nRemoved " << name << std::endl;
-			}
+			} else {
+                return -1;
+            }
 			break;
 
 		case "Update":
@@ -52,11 +56,15 @@ void InventoryManager::userInput()
 			
 			if (active_inventory->updateItem(name, category, value) != -1) {
 				std::cout << "\nUpdated " << category << " of " << name << " to " << value << std::endl;
-			}
+			} else {
+                return -1;
+            }
 			break;
 
 		default:
 			std::cout << "Usage: <Add | Remove | Update>" << std::endl;
 			break;
 	}
+
+    return 0;
 }
