@@ -11,6 +11,8 @@ ActiveInventory::ActiveInventory()
 	std::shared_ptr<Item> > > >(inv_by_category);
 
     std::make_unique<std::map <std::string, std::shared_ptr<Item> > >(inv_by_name);
+
+    std::make_unique<std::map <unsigned int, std::shared_ptr<Item> > >(inv_by_id);
 };
 
 ActiveInventory::ActiveInventory(std::string file_name) 
@@ -25,30 +27,34 @@ ActiveInventory::~ActiveInventory()
     //All objects of this class are smart pointers that will free themselves.
 };
 
-int ActiveInventory::addItem(const std::string name, const std::string category)
+int ActiveInventory::addItem(const std::string name, const std::string category, unsigned int item_id)
 {
     if (inv_by_name.find(name) != inv_by_name.end()) //Check if item is already in the inventory.
     {
         fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
         return 0;
     } else {
-        /* Check if the category is a valid category. */
+
+        /* Check if the category is a valid category and add it if is is valid. */
         if (category == "Perishable") {
             auto new_item = std::make_shared<PerishableItem>(name, "None", 0, 0, 0, 0, 0, "0");
             new_item->category = "Perishable";
             inv_by_name[name] = new_item;
             inv_by_category[category][name] = new_item;
+	    inv_by_id[item_id] = new_item;
             return 1;
         } else if (category == "NonPerishable") {
             auto new_item = std::make_shared<NonPerishableItem>(name, "None", 0, 0, 0, 0, 0);
             new_item->category = "NonPerishable";
             inv_by_name[name] = new_item;
             inv_by_category[category][name] = new_item;
+	    inv_by_id[item_id] = new_item;
             return 1;
         } else {
             fprintf(stderr, "Invalid category given: %s\n", category.c_str());
             return -1;
         }
+
     }
     return -1;
 }
@@ -149,4 +155,30 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         }
     }
     return -1; //This shouldn't be reached.
+}
+
+std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {
+    std::shared_ptr<Item> ret;
+
+    /* If the item is in the map we return a shared_ptr to it, otherwise we return NULL. */
+    if (inv_by_name.find(item_name) != inv_by_name.end()) 
+    {
+	ret = inv_by_name[item_name];
+        return ret;
+    } else {
+	return NULL;
+    }
+}
+
+std::shared_ptr<Item> ActiveInventory::searchById (unsigned int item_id) {
+    std::shared_ptr<Item> ret;
+
+    /* If the id is in the map we return a shared_ptr to the item, otherwise we return NULL. */
+    if (inv_by_id.find(item_id) != inv_by_id.end())
+    {
+	ret = inv_by_id[item_id];
+	return ret;
+    } else {
+	return NULL;
+    }
 }
