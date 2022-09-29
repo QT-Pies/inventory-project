@@ -1,30 +1,41 @@
-#c++ standard 11
-#warning as an error
-#optimization level 3 for -o
-#
-
 CC = g++
+INCLUDES = -I./include
+CFLAGS = -g -Wall -Werror -std=c++11 $(INCLUDES) -O3
 
-CFLAGS = -g -Wall -Werror
+EXECUTABLES = bin/main
 
-##main: main.o PerishableItem.o Item.o NonPerishableItem.o
-##	$(CC) $(CFLAGS) -o main main.o PerishableItem.o Item.o NonPerishableItem.o
+SOURCE = src/main.cpp src/CSVEntry.cpp src/CSVGenerator.cpp src/CSVGeneratorDriver.cpp src/Date.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp
 
-##main.o: main.cpp include/PerishableItem.hpp include/Item.hpp include/NonPerishableItem.hpp
-##	$(CC) $(CFLAGS) -c main.cpp 
+OBJECT = obj/main.o obj/CSVEntry.o obj/CSVGenerator.o obj/CSVGeneratorDriver.o obj/Date.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o
 
-PerishableItem.o: src/PerishableItem.cpp include/PerishableItem.hpp
-	$(CC) -c PerishableItem.cpp
+all: $(EXECUTABLES) $(OBJECT)
 
-NonPerishableItem.o: src/NonPerishableItem.cpp include/NonPerishableItem.hpp
-	$(CC) -c NonPerishableItem.cpp
+obj/main.o: src/main.cpp 
+	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
 
-Item.o: src/Item.cpp include/Item.hpp
-	$(CC) -c Item.cpp
+bin/main: obj/main.o
+	$(CC) $(CFLAGS) -o bin/main obj/main.o
 
-clean:
-	-rm *.o 
+obj/CSVEntry.o: src/CSVEntry.cpp
+	$(CC) $(CFLAGS) -c src/CSVEntry.cpp -o obj/CSVEntry.o
 
+obj/CSVGenerator.o: src/CSVGenerator.cpp
+	$(CC) $(CFLAGS) -c src/CSVGenerator.cpp -o obj/CSVGenerator.o
 
+obj/CSVGeneratorDriver.o: src/CSVGeneratorDriver.cpp
+	$(CC) $(CFLAGS) -c src/CSVGeneratorDriver.cpp -o obj/CSVGeneratorDriver.o
 
-	
+obj/Date.o: src/Date.cpp
+	$(CC) $(CFLAGS) -c src/Date.cpp -o obj/Date.o
+
+obj/Item.o: src/Item.cpp
+	$(CC) $(CFLAGS) -c src/Item.cpp -o obj/Item.o
+
+obj/NonPerishableItem.o: src/NonPerishableItem.cpp
+	$(CC) $(CFLAGS) -c src/NonPerishableItem.cpp -o obj/NonPerishableItem.o
+
+obj/PerishableItem.o: src/PerishableItem.cpp
+	$(CC) $(CFLAGS) -c src/PerishableItem.cpp -o obj/PerishableItem.o
+
+clean: 
+	rm $(EXECUTABLES) obj/*.o 
