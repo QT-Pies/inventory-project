@@ -69,17 +69,23 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
     entry->expiration_date = "-1";
 
     entry->quantity = distrib_int(gen);
+    if (isBadKey("quantity")) entry->quantity *= -1;
 
     entry->id = id_count;
-    id_count++;
+    if (!isBadKey("id")) id_count++;
 
     entry->sale_price = distrib_double(gen);
-    
+    if (isBadKey("sale_price")) entry->sale_price *= -1;
+
     std::uniform_real_distribution<double> distrib_cost(0.05, entry->sale_price / 2);
     entry->buy_cost = distrib_cost(gen);
+    if (isBadKey("buy_cost")) entry->buy_cost *= -1;
 
     entry->tax = 0.1;
-    entry->total_price = entry->tax + entry->sale_price;
+    if (isBadKey("tax")) entry->tax = -0.1;
+
+    /* Calculated from other values, doesn't make sense to make "bad" from command line */
+    entry->total_price = (entry->tax * entry->sale_price) + entry->sale_price;
     entry->profit = entry->sale_price - entry->buy_cost;
 
     return entry;
@@ -114,4 +120,21 @@ std::shared_ptr<CSVEntry> CSVGenerator::generatePerishableItem()
     entry->expiration_date = ss.str();
 
     return entry;
+}
+
+/*
+ * Tell the generator to set bad vals for this key.
+ */
+void CSVGenerator::setBadKey(const std::string& key)
+{
+    bad_keys.insert(key);
+}
+
+/*
+ * Returns whether or not the given key is in the bad key set.
+ */
+bool CSVGenerator::isBadKey(const std::string& key)
+{
+    auto it = bad_keys.find(key);
+    return !(it == bad_keys.end());
 }
