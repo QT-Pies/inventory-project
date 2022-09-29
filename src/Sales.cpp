@@ -12,20 +12,7 @@ Sale::Sale(Item* i, const unsigned int sn, const std::string& d, const unsinged 
     date(d);
 }
 
-Sale::save()
-{
-    std::ofstream fout;
-
-    fout.open("Sales.csv");
-
-    // if(fout.fail()) return false;
-
-    // possibly could switch up implimintation
-    fout << i->name << "," << sale_number << "," << date.string_date.c_str() << "," << amount_sold << "," << buyer << "," << seller << endl;
-
-
-}
-
+Sale::Sale
 
 
 
@@ -37,8 +24,22 @@ SaleList::SaleList()
 
 bool SaleList::load()
 {
-    std::ifstream fin;
-    fin.open("Sales.csv");
+  return false;
+}
 
-    if(fout.fail()) return false;
+bool SaleList::save()
+{
+    std::ofstream fout;
+    int i;
+    sale sit;
+
+    fout.open("Sales.csv");
+
+     if(fout.fail()) return false;
+
+    // possibly could switch up implimintation
+    for(i = 0; i < sales.size(); i++){
+        it = sales[i];
+        fout << sit->item-> << "," << it->sale_number << "," << date.string_date.c_str() << "," << amount_sold << "," << buyer << "," << seller << endl;
+    }
 }

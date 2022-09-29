@@ -20,6 +20,7 @@ class Sale
 friend class SaleList;
 public:
     Sale(Item*, const unsigned int, const std::string&, const unsinged int, const std::string&, const std::string&);
+    Sale(std::string &);
     virtual ~Sale() = default;
     virtual void print() = 0;
     // maybe change to a bool or something, in case it fails
@@ -43,7 +44,7 @@ public:
     bool load();
     bool save();
 private:
-    vector<Sale> sales;
+    std::vector<Sale> sales;
 };
 
 #endif
