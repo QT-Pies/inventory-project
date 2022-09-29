@@ -1,8 +1,11 @@
+#generator driver needs to be an exe
+
+
 CC = g++
 INCLUDES = -I./include
 CFLAGS = -g -Wall -Werror -std=c++11 $(INCLUDES) -O3
 
-EXECUTABLES = bin/main
+EXECUTABLES = bin/main bin/InventoryGeneratorDriver
 
 SOURCE = src/main.cpp src/CSVEntry.cpp src/CSVGenerator.cpp src/CSVGeneratorDriver.cpp src/Date.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp
 
@@ -24,6 +27,9 @@ obj/CSVGenerator.o: src/CSVGenerator.cpp
 
 obj/CSVGeneratorDriver.o: src/CSVGeneratorDriver.cpp
 	$(CC) $(CFLAGS) -c src/CSVGeneratorDriver.cpp -o obj/CSVGeneratorDriver.o
+
+bin/InventoryGeneratorDriver: obj/CSVGenerator.o obj/CSVGeneratorDriver.o obj/CSVEntry.o
+	$(CC) $(CFLAGS) -o bin/InventoryGeneratorDriver obj/CSVGenerator.o obj/CSVGeneratorDriver.o obj/CSVEntry.o
 
 obj/Date.o: src/Date.cpp
 	$(CC) $(CFLAGS) -c src/Date.cpp -o obj/Date.o
