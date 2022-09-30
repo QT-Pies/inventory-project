@@ -29,6 +29,17 @@ int main(int argc, char** argv)
 
         std::cout << "\t--bad" << std::endl;
         std::cout << "\t\tPrecedes a list of keys that you want to generate bad values for" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "\t--random" << std::endl;
+        std::cout << "\t\tWhen used with --bad, each specified bad key has 1 / bad_keys.size() chance of being a bad value" << std::endl;
+        std::cout << "\t\tWhen used without --bad, each alternative row will generate bad values" << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "\t--random_factor" << std::endl;
+        std::cout << "\t\tUsed with --random; larger numbers DECREASE the chance, while a value of 0 guarantees it happening." << std::endl;
+        std::cout << "\t\tIf flag is not given, defaults to 2" << std::endl;
+
 
         return 0;
     }
@@ -46,6 +57,7 @@ int main(int argc, char** argv)
     {
         argument = argv[i];
         if (argument == "--bad") bad_found = true;
+        else if (argument == "--random") gen.toggleRandom();
         else if (bad_found) gen.setBadKey(argument);
     }
 

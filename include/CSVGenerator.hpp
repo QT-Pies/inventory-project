@@ -17,6 +17,8 @@ public:
     CSVGenerator();
     void generateFile(const std::string&, unsigned int, unsigned int, unsigned int);
     void setBadKey(const std::string&);
+    void setRandomFactor(const int&);
+    void toggleRandom();
 protected:
     std::shared_ptr<CSVEntry> generateItem();
     std::shared_ptr<CSVEntry> generateNonPerishableItem();
@@ -28,6 +30,9 @@ protected:
 
     std::set<std::string> bad_keys;
     unsigned int id_count;
+    int factor;
+    bool random;
+    bool bad;
     std::ofstream file;
 };
 
