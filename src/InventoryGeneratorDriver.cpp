@@ -2,7 +2,7 @@
 #include <string>
 #include "InventoryGenerator.hpp"
 
-static void print_usage(std::ostream& out)
+static void printUsage(std::ostream& out)
 {
     out << "usage: ./gen-inventory output_file.csv #undefined #non-perishable #perishable --flags" << std::endl;
 }
@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     if (argc == 2 && (help_arg == "--help" || help_arg == "-h"))
     {
         std::cout << "inventory-generator" << std::endl;
-        print_usage(std::cout);
+        printUsage(std::cout);
         std::cout << std::endl;
 
         std::cout << "\t--help / -h" << std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 
     if (argc < 5)
     {
-        print_usage(std::cerr);
+        printUsage(std::cerr);
         exit(1);
     }
 
