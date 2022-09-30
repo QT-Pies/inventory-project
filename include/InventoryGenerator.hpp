@@ -1,5 +1,5 @@
-#ifndef CSVGENERATOR_HPP
-#define CSVGENERATOR_HPP
+#ifndef INVENTORYGENERATOR_HPP
+#define INVENTORYGENERATOR_HPP
 
 #include <string>
 #include <iostream>
@@ -11,10 +11,10 @@
 #include <memory>
 #include "CSVEntry.hpp"
 
-class CSVGenerator
+class InventoryGenerator
 {
 public:
-    CSVGenerator();
+    InventoryGenerator();
     void generateFile(const std::string&, unsigned int, unsigned int, unsigned int);
     void setBadKey(const std::string&);
     void setRandomFactor(const int&);

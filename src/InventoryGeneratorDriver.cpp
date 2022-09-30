@@ -1,19 +1,20 @@
 #include <iostream>
 #include <string>
-#include "CSVGenerator.hpp"
+#include "InventoryGenerator.hpp"
 
 static void print_usage(std::ostream& out)
 {
-    out << "usage: ./gen-csv output_file.csv #undefined #non-perishable #perishable --flags" << std::endl;
+    out << "usage: ./gen-inventory output_file.csv #undefined #non-perishable #perishable --flags" << std::endl;
 }
 
 int main(int argc, char** argv)
 {
-    CSVGenerator gen;
+    InventoryGenerator gen;
     std::string help_arg;
     std::string argument;
     bool bad_found;
     int i;
+    int input;
 
     help_arg = argv[1];
 
@@ -58,6 +59,30 @@ int main(int argc, char** argv)
         argument = argv[i];
         if (argument == "--bad") bad_found = true;
         else if (argument == "--random") gen.toggleRandom();
+        else if (argument == "--random_factor")
+        {
+            /* Exit if no parameter */
+            if ( (i + 1) >= argc)
+            {
+                std::cerr << "Missing number after --random_factor" << std::endl;
+                return -1;
+            }
+
+            argument = argv[i + 1];
+
+            try
+            {
+                input = std::stoi(argument);
+                gen.setRandomFactor(input);
+            }
+            catch (std::invalid_argument const& ex)
+            {
+                std::cerr << "Invalid argument.  A number should follow --random_factor." << std::endl;
+                return -1;
+            }
+
+            ++i;
+        }
         else if (bad_found) gen.setBadKey(argument);
     }
 

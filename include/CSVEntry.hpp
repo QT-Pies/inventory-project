@@ -4,11 +4,11 @@
 #include <string>
 #include <iostream>
 
-class CSVGenerator;
+class InventoryGenerator;
 
 class CSVEntry
 {
-friend class CSVGenerator;
+friend class InventoryGenerator;
 public:
     CSVEntry();
     void printEntry(std::ostream&);

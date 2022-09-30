@@ -1,6 +1,6 @@
-#include "CSVGenerator.hpp"
+#include "InventoryGenerator.hpp"
 
-CSVGenerator::CSVGenerator()
+InventoryGenerator::InventoryGenerator()
 {
     id_count = 0;
     factor = 2;
@@ -11,7 +11,7 @@ CSVGenerator::CSVGenerator()
 /*
  * Generates a file named by the file_name param. with entries number of items.
  */
-void CSVGenerator::generateFile(const std::string& file_name, unsigned int unknown, unsigned int non_perishable, unsigned int perishable)
+void InventoryGenerator::generateFile(const std::string& file_name, unsigned int unknown, unsigned int non_perishable, unsigned int perishable)
 {
     unsigned int i;
 
@@ -25,6 +25,11 @@ void CSVGenerator::generateFile(const std::string& file_name, unsigned int unkno
         if (j != columns.size() - 1) file << ',';
     }
     file << std::endl;
+
+    /* The following loops:
+     * Toggle bad if we've declared random with no bad keys.
+     * Generate the entry and print it out.
+     */
 
     for (i = 0; i < unknown; ++i)
     {
@@ -50,7 +55,7 @@ void CSVGenerator::generateFile(const std::string& file_name, unsigned int unkno
     file.close();
 }
 
-std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
+std::shared_ptr<CSVEntry> InventoryGenerator::generateItem()
 {
     std::random_device rand;
     std::mt19937 gen(rand());
@@ -74,6 +79,8 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
     entry->category = "-1";
     entry->sub_category = "-1";
     entry->expiration_date = "-1";
+
+    /* Generate values; potentially make them bad */
 
     entry->quantity = distrib_int(gen);
     if (random && isBadKey("quantity") && distrib_keys(gen) == 0) entry->quantity *= -1;
@@ -106,7 +113,7 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateItem()
 /*
  * Generate a non-perishable Item. 
  */
-std::shared_ptr<CSVEntry> CSVGenerator::generateNonPerishableItem()
+std::shared_ptr<CSVEntry> InventoryGenerator::generateNonPerishableItem()
 {
     auto entry = generateItem();
     entry->category = "NonPerishable";
@@ -116,7 +123,7 @@ std::shared_ptr<CSVEntry> CSVGenerator::generateNonPerishableItem()
 /*
  * Generate a perishable item.
  */
-std::shared_ptr<CSVEntry> CSVGenerator::generatePerishableItem()
+std::shared_ptr<CSVEntry> InventoryGenerator::generatePerishableItem()
 {
     std::random_device rand;
     std::mt19937 gen(rand());
@@ -126,6 +133,7 @@ std::shared_ptr<CSVEntry> CSVGenerator::generatePerishableItem()
     std::uniform_int_distribution<int> distrib_keys(0, bad_keys.size() * factor);
     std::stringstream ss;
 
+    /* Generate bad expiration date if told to; otherwise, generate a valid one */
     if (random && isBadKey("expiration_date") && distrib_keys(gen) == 0) ss << -1;
     else if (!random && isBadKey("expiration_date")) ss << -1;
     else ss << distrib_month(gen) << '/' << distrib_day(gen) << '/' << distrib_year(gen);
@@ -140,7 +148,7 @@ std::shared_ptr<CSVEntry> CSVGenerator::generatePerishableItem()
 /*
  * Tell the generator to set bad vals for this key.
  */
-void CSVGenerator::setBadKey(const std::string& key)
+void InventoryGenerator::setBadKey(const std::string& key)
 {
     bad_keys.insert(key);
     bad = true;
@@ -149,7 +157,7 @@ void CSVGenerator::setBadKey(const std::string& key)
 /*
  * Returns whether or not the given key is in the bad key set.
  */
-bool CSVGenerator::isBadKey(const std::string& key)
+bool InventoryGenerator::isBadKey(const std::string& key)
 {
     if (random && bad_keys.empty()) return bad;
     auto it = bad_keys.find(key);
@@ -159,7 +167,7 @@ bool CSVGenerator::isBadKey(const std::string& key)
 /*
  * Toggles random on/off.
  */
-void CSVGenerator::toggleRandom()
+void InventoryGenerator::toggleRandom()
 {
     random = !random;
 }
@@ -167,7 +175,7 @@ void CSVGenerator::toggleRandom()
 /*
  * Sets the random factor.
  */
-void CSVGenerator::setRandomFactor(const int& i)
+void InventoryGenerator::setRandomFactor(const int& i)
 {
     factor = i;
 }
