@@ -109,7 +109,7 @@ bool SaleList::load()
 
     while(!(fin.eof())){
         std::getline(fin, line);
-        sscanf(line.c_str(),"%u,%u,%s,%u,%f,%f,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
+        sscanf(line.c_str(),"%u,%u,%s,%u,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
         add_sale(id, sn, d, as, sp, t, b, s);
         offset++;
     }
