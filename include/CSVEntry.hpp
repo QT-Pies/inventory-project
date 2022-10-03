@@ -4,11 +4,11 @@
 #include <string>
 #include <iostream>
 
-class CSVGenerator;
+class InventoryGenerator;
 
 class CSVEntry
 {
-friend class CSVGenerator;
+friend class InventoryGenerator;
 public:
     CSVEntry();
     void printEntry(std::ostream&);
@@ -16,8 +16,8 @@ protected:
     std::string name;
     std::string category;
     std::string sub_category;
-    unsigned int quantity;
-    unsigned int id;
+    int quantity;
+    int id;
     double sale_price;
     double buy_cost;
     double tax;
