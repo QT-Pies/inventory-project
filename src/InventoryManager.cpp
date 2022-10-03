@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-//#include "InventoryManager.hpp"
+#include "InventoryManager.hpp"
 
 InventoryManager::InventoryManager(bool cli)
 {
@@ -15,20 +15,21 @@ InventoryManager::~InventoryManager()
 /* gets command line input from user and calls methods from active inventory class */
 int InventoryManager::userInput()
 {
-	std::string argument, name, category, value; 
+	char argument;
+	std::string name, category, value; 
 	
 	if (command_line == false) {
         std::cout << "Command line is currently set to false" << std::endl;
         return -1;
     }
 
-	std::cout << "Add, Remove, or Update item: ";
+	std::cout << "(A)dd, (R)emove, or (U)pdate item: ";
 	std::cin >> argument;	
 
 	/* switch on argument specified from user and then prompt them accordingly for further input */
 	switch(argument)
 	{
-		case "Add":
+		case 'A':
             std::cout << "Perishable/Nonperishable Name: ";
 			std::cin >> category >> name;
 
@@ -39,7 +40,7 @@ int InventoryManager::userInput()
             }
 			break;
 
-		case "Remove":
+		case 'R':
 			std::cout << "\nName: ";
 			std::cin >> name;
 
@@ -50,7 +51,7 @@ int InventoryManager::userInput()
             }
 			break;
 
-		case "Update":
+		case 'U':
 			std::cout << "\nName Field Value: ";
 			std::cin >> name >> category >> value;
 			
@@ -62,7 +63,7 @@ int InventoryManager::userInput()
 			break;
 
 		default:
-			std::cout << "Usage: <Add | Remove | Update>" << std::endl;
+			std::cout << "Usage: <(A)dd | (R)emove | (U)pdate>" << std::endl;
 			break;
 	}
 
