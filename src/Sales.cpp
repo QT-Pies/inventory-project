@@ -20,14 +20,15 @@ Sale::Sale(const unsigned int id, const unsigned int sn, const std::string& d, c
 SaleList::SaleList(const std::string& f)
 {
     file_name = f;
+    offset = 0;
 }
 
 /*
- * Creates a new sale to put in the sales vector
+ * Creates a new sale to put in the sales vector.
  */
 bool SaleList::add_sale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
 {
-    if(id == 0 || sn == 0 || as == 0 || sp == 0) return false;
+    if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "" || s == "") return false;
     Sale new_sale(id, sn, d, as, sp, t, b, s);
     sales.push_back(new_sale);
     return true;
@@ -45,12 +46,12 @@ bool SaleList::new_file()
 
     fout << "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller";
     fout.close();
-    offset = 0;
     return true;
 }
 
 /* 
  * Reads in information from given file and holds it in the sales vector
+ * If add_sale returns false, then an error occured and false is returned.
  */
 bool SaleList::load()
 {
@@ -72,12 +73,10 @@ bool SaleList::load()
     std::getline(fin, line);
     if(line != "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller") return false;
 
-    offset = 0;
-
     while(!(fin.eof())){
         std::getline(fin, line);
         sscanf(line.c_str(),"%u,%u,%s,%u,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
-        add_sale(id, sn, d, as, sp, t, b, s);
+        if(!add_sale(id, sn, d, as, sp, t, b, s)) return false;
         offset++;
     }
     fin.close();
@@ -85,7 +84,8 @@ bool SaleList::load()
 }
 
 /*
- * Saves the sales information from the vector to the given file, uses append so only newly added information will be saved
+ * Saves the sales information from the vector to the given file, uses append and the offset value 
+ * so only newly added information will be saved.
  */
 bool SaleList::save()
 {

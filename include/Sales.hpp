@@ -9,6 +9,10 @@ class Sale
 {
 friend class SaleList;
 public:
+    /*
+     * Sale constructor that sets all the data for the given sale
+     * Note it is checked at some point that most the numbers are not 0 and strings are not empty.
+     */
     Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
 protected:
     unsigned int identification;
@@ -25,10 +29,33 @@ protected:
 class SaleList
 {
 public:
+
+    /*
+     * Constructor, will take in the name of the file that the sales List will be working from.
+     */
     SaleList(const std::string&);
+
+    /*
+     * Adds a sale to the vector by using the Sale class constructor, returns false if an error occurs
+     * These errors include certain numbers being 0 or strings being empty.
+     */
     bool add_sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    
+    /*
+     * Creates a new File with the given file name, will add the begining cvs header for what data is being stored.
+     */
     bool new_file();
+
+    /*
+     * Loads file information from the given file and enters it into the vector, calls add_sale.
+     */
     bool load();
+
+    /*
+     * Appends to the given File and adds any new sales.
+     * This assumes that once a sale is finalized it cannot be deleted
+     * and uses an offset that will be set previously to keep track of new sales.
+     */
     bool save();
 protected:
     std::vector<Sale> sales;
