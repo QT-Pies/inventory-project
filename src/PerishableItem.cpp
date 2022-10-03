@@ -1,4 +1,4 @@
-#include "../include/PerishableItem.hpp"
+#include "PerishableItem.hpp"
 
 /*
  * Constructor for PerishableItem; calls base Item constructor, initializes expiration_date member.

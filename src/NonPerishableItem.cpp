@@ -1,4 +1,4 @@
-#include "../include/NonPerishableItem.hpp"
+#include "NonPerishableItem.hpp"
 
 /* 
  * Constructor for NonPerishableItem; call's base class constructor.

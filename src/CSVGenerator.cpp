@@ -1,4 +1,4 @@
-#include "../include/CSVGenerator.hpp"
+#include "CSVGenerator.hpp"
 
 CSVGenerator::CSVGenerator()
 {
