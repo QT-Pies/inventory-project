@@ -16,7 +16,8 @@ InventoryManager::~InventoryManager()
 int InventoryManager::userInput()
 {
 	char argument;
-	std::string name, category, value; 
+	std::string name, category,value;
+	unsigned int id; 
 	
 	if (command_line == false) {
         std::cout << "Command line is currently set to false" << std::endl;
@@ -30,10 +31,10 @@ int InventoryManager::userInput()
 	switch(argument)
 	{
 		case 'A':
-            std::cout << "Perishable/Nonperishable Name: ";
-			std::cin >> category >> name;
+            std::cout << "Name Perishable/Nonperishable ID: ";
+			std::cin >> name >> category >> id;
 
-			if (active_inventory->addItem(name, category) != -1) {
+			if (active_inventory->addItem(name, category, id) != -1) {
 				std::cout << "\nAdded " << name << " of type " << category << std::endl;
 			} else {
                 return -1;
