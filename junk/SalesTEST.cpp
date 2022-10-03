@@ -10,12 +10,8 @@ class Sale
 {
 friend class SaleList;
 public:
-    void add( unsigned intid,  unsigned int sn,  string& d,  unsigned int as, unsigned int p,  string& b,  string& sell);
-    //virtual ~Sale() = default;
-    //virtual void print() = 0;
-    //void save();
+    void add(unsigned intid,  unsigned int sn,  string& d,  unsigned int as, unsigned int p,  string& b,  string& sell);
 protected:
-    //Item * item;
     unsigned int sale_number;
     unsigned int identification;
     //Date date;
@@ -78,8 +74,9 @@ int main()
     cout << "INPUT: ITEM_ID SALE_NUMBER DATE AMOUNT_SOLD PRICE BUYER SELLER" << endl;
 
     for(i = 0; i < additions; i++){
+        // change to fscanf
         cin >> ID >> SN >> date >> AS >> price >> buyer >> seller;
-        
+
         s.add(ID, SN, date, AS, price, buyer, seller);
         sl.sales.push_back(s);
     }

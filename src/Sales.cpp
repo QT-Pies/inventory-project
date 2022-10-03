@@ -12,7 +12,6 @@ Sale::Sale(Item* i, const unsigned int sn, const std::string& d, const unsinged 
     date(d);
 }
 
-Sale::Sale
 
 
 
@@ -24,7 +23,7 @@ SaleList::SaleList()
 
 bool SaleList::load()
 {
-  return false;
+    return false;
 }
 
 bool SaleList::save()
@@ -35,11 +34,10 @@ bool SaleList::save()
 
     fout.open("Sales.csv");
 
-     if(fout.fail()) return false;
+    if(fout.fail()) return false;
 
     // possibly could switch up implimintation
     for(i = 0; i < sales.size(); i++){
-        it = sales[i];
         fout << sit->item-> << "," << it->sale_number << "," << date.string_date.c_str() << "," << amount_sold << "," << buyer << "," << seller << endl;
     }
 }
