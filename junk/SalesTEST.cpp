@@ -1,92 +1,182 @@
-#include <string>
-#include <iostream>
-#include <vector>
 #include <fstream>
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <vector>
 
-
-using namespace std;
 
 class Sale
 {
 friend class SaleList;
 public:
-    void add(unsigned intid,  unsigned int sn,  string& d,  unsigned int as, unsigned int p,  string& b,  string& sell);
+    Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
 protected:
-    unsigned int sale_number;
     unsigned int identification;
-    //Date date;
-    string date;
+    unsigned int sale_number;
+    std::string date;
     unsigned int amount_sold;
-    unsigned int price;
+    double sale_price;
+    double tax;
     std::string buyer;
     std::string seller;
+    double total_price;
 };
-
-void Sale::add( unsigned int id,  unsigned int sn,  string& d,  unsigned int as,  unsigned int p,  string& b,  string& sell){
-    identification = id;
-    sale_number = sn;
-    date = d;
-    amount_sold = as;
-    price = p;
-    buyer = b;
-    seller = sell;
-}
 
 class SaleList
 {
 public:
-    vector<Sale> sales;
-    void save();
+    SaleList(const std::string&);
+    bool add_sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    bool new_file();
+    bool load();
+    bool save();
+protected:
+    std::vector<Sale> sales;
+    std::string file_name;
+    int offset;
 };
 
-void SaleList::save()
+/*
+ * Constructor for base Sales class, initializes data to given values.
+ */
+Sale::Sale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
+: identification(id), sale_number(sn), date(d), amount_sold(as), sale_price(sp), tax(t), buyer(b), seller(s)
 {
-    ofstream fout;
-    fout.open("junk.txt");
-    fout << "ID, Sale Number, Date, Amount Sold, Price, Buyer, Seller"
-    for(int i = 0; i < sales.size(); i++){
-        fout << sales[i].identification << ", " << sales[i].sale_number << ", " << sales[i].date << ", " <<  sales[i].amount_sold << ", " <<  sales[i].price << ", " <<  sales[i].buyer << ", " <<  sales[i].seller << endl;
+    total_price = sale_price + (tax * sale_price);
+}
+
+
+
+/*
+ * Initilizes what file will be used to load/save the sales data to.
+ */
+SaleList::SaleList(const std::string& f)
+{
+    file_name = f;
+}
+
+/*
+ * Creates a new sale to put in the sales vector
+ */
+bool SaleList::add_sale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
+{
+    if(id == 0 || sn == 0 || as == 0 || sp == 0) return false;
+    Sale new_sale(id, sn, d, as, sp, t, b, s);
+    sales.push_back(new_sale);
+    return true;
+}
+
+/*
+ * Creates a new file with the propper starting format.
+ */
+bool SaleList::new_file()
+{
+    std::ofstream fout;
+
+    fout.open(file_name.c_str());
+    if(!fout) return false;
+
+    fout << "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller";
+    fout.close();
+    offset = 0;
+    return true;
+}
+
+/* 
+ * Reads in information from given file and holds it in the sales vector
+ */
+bool SaleList::load()
+{
+    std::ifstream fin;
+    std::string line;
+
+    unsigned int id;
+    unsigned int sn;
+    char d[20];
+    unsigned int as;
+    double sp;
+    double t;
+    char b[50];
+    char s[50];
+
+    fin.open(file_name.c_str());
+    if(!fin) return false;
+
+    std::getline(fin, line);
+    if(line != "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller") return false;
+
+    offset = 0;
+
+    while(!(fin.eof())){
+        std::getline(fin, line);
+        sscanf(line.c_str(),"%u,%u,%s,%u,%f,%f,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
+        add_sale(id, sn, d, as, sp, t, b, s);
+        offset++;
+    }
+    fin.close();
+    return true;
+}
+
+/*
+ * Saves the sales information from the vector to the given file, uses append so only newly added information will be saved
+ */
+bool SaleList::save()
+{
+    std::ofstream fout;
+    unsigned int i;
+
+    fout.open(file_name.c_str(), std::ios::app);
+    if(fout.fail()) return false;
+
+    for(i = offset; i < sales.size(); i++){
+        fout << std::endl << sales[i].identification << "," << sales[i].sale_number << "," << sales[i].date << "," << sales[i].amount_sold << "," << sales[i].sale_price << "," << sales[i].tax << "," << sales[i].buyer << "," << sales[i].seller;
     }
     fout.close();
+    return true;
 }
 
 int main()
 {
     string line;
 
-    SaleList sl;
-    Sale s;
+    SaleList sl("Junk.txt");
 
     unsigned int ID;
     unsigned int SN;
     string date;
     unsigned int AS;
-    unsigned int price;
+    double price;
+    double tax;
     string buyer;
     string seller;
 
     int additions;
+    char read;
     int i;
 
-    ofstream fout;
+    cout << "READ FROM FILE INPUT Y or N: ";
+    cin >> read;
+
+    if(read == 'Y'){
+        sl.load();
+    }
+    else if(read == 'N'){
+        sl.new_file();
+    }
+    else return 1;
+
     cout << " INPUT AMOUNT OF SALES BEING ADDED: ";
     cin >> additions;
-    cout << "INPUT: ITEM_ID SALE_NUMBER DATE AMOUNT_SOLD PRICE BUYER SELLER" << endl;
-
+    cout << "INPUT: ITEM_ID SALE_NUMBER DATE AMOUNT_SOLD PRICE TAX BUYER SELLER" << endl;
     for(i = 0; i < additions; i++){
-        // change to fscanf
-        cin >> ID >> SN >> date >> AS >> price >> buyer >> seller;
-
-        s.add(ID, SN, date, AS, price, buyer, seller);
-        sl.sales.push_back(s);
+        cin >> ID >> SN >> date >> AS >> price >> tax >> buyer >> seller;
+        sl.add_sale(ID, SN, date, AS, price, tax, buyer, seller);
     }
     
 
-    fout.open("junk.txt");
 
     sl.save();
-    
-    fout.close();
+
 
     return 0;
 }
