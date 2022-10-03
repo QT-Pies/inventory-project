@@ -13,28 +13,29 @@ friend class SaleList;
 public:
     Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
 protected:
-    unsigned int id;
+    unsigned int identification;
     unsigned int sale_number;
     std::string date;
     unsigned int amount_sold;
     double sale_price;
     double tax;
-    double total_price;
     std::string buyer;
     std::string seller;
+    double total_price;
 };
 
 class SaleList
 {
 public:
-SaleList(const std::string&)
-    bool add_sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&)
+    SaleList(const std::string&)
+    bool add_sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
     bool new_file();
     bool load();
     bool save();
 protected:
     std::vector<Sale> sales;
-    std::string file;
+    std::string file_name;
+    unsigned int offset;
 };
 
 #endif
