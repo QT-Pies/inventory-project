@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "../include/InventoryManager.hpp"
+#include "InventoryManager.hpp"
 
 InventoryManager::InventoryManager(bool cli)
 {
@@ -20,47 +20,51 @@ int InventoryManager::userInput()
 	unsigned int id; 
 	
 	if (command_line == false) {
-        std::cout << "Command line is currently set to false" << std::endl;
+        fprintf(stderr, "Command line is currently set to false");
         return -1;
     }
-
-	std::cout << "(A)dd, (R)emove, or (U)pdate item: ";
+	
+	std::cout << "\n(A)dd, (R)emove, or (U)pdate item: ";
 	std::cin >> argument;	
 
 	/* switch on argument specified from user and then prompt them accordingly for further input */
 	switch(argument)
 	{
+	
 		case 'A':
-            std::cout << "Name Perishable/Nonperishable ID: ";
+			std::cin.clear();
+			std::cin.ignore(10000, '\n');
+			
+			std::cout << "Name Perishable/NonPerishable ID: ";
 			std::cin >> name >> category >> id;
 
 			if (active_inventory->addItem(name, category, id) != -1) {
-				std::cout << "\nAdded " << name << " of type " << category << std::endl;
-			} else {
-                return -1;
-            }
+				std::cout << "Added " << name << " of type " << category << std::endl;
+			}
 			break;
 
 		case 'R':
-			std::cout << "\nName: ";
+			std::cin.clear();
+			std::cin.ignore(10000, '\n');
+
+			std::cout << "Name: ";
 			std::cin >> name;
 
 			if (active_inventory->removeItem(name) != -1) {
-				std::cout << "\nRemoved " << name << std::endl;
-			} else {
-                return -1;
-            }
+				std::cout << "Removed " << name << std::endl;
+			} 
 			break;
 
 		case 'U':
-			std::cout << "\nName Field Value: ";
+			std::cin.clear();
+			std::cin.ignore(10000, '\n');
+			
+			std::cout << "Name Field Value: ";
 			std::cin >> name >> category >> value;
 			
 			if (active_inventory->updateItem(name, category, value) != -1) {
-				std::cout << "\nUpdated " << category << " of " << name << " to " << value << std::endl;
-			} else {
-                return -1;
-            }
+				std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+			}
 			break;
 
 		default:
@@ -68,5 +72,8 @@ int InventoryManager::userInput()
 			break;
 	}
 
-    return 0;
+	std::cin.clear();
+	std::cin.ignore(10000, '\n');
+    
+	return 0;
 }

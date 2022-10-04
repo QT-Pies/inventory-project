@@ -3,16 +3,21 @@
 
 int main(int argc, char**argv){
 
-	bool command_line;
+	std::string arg;
+	bool command_line = false;
 
 	if (argc == 2) {
-		command_line = argv[1];
+		arg = argv[1];
+		if (arg == "1") command_line = true;
 	} else {
-		std::cout << "Usage: bin/main command_line" << std::endl;
+		fprintf(stderr, "Usage: bin/main command_line\n");
 		return -1;
 	}
 
 	InventoryManager im(command_line);
 	
+	while (true) {
+		im.userInput();
+	}
 	return 0;
 }
