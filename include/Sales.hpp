@@ -39,15 +39,15 @@ public:
      * Adds a sale to the vector by using the Sale class constructor, returns false if an error occurs
      * These errors include certain numbers being 0 or strings being empty.
      */
-    bool add_sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    bool addSale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
     
     /*
      * Creates a new File with the given file name, will add the begining cvs header for what data is being stored.
      */
-    bool new_file();
+    bool newFile();
 
     /*
-     * Loads file information from the given file and enters it into the vector, calls add_sale.
+     * Loads file information from the given file and enters it into the vector, calls addSale.
      */
     bool load();
 

@@ -26,7 +26,7 @@ SaleList::SaleList(const std::string& f)
 /*
  * Creates a new sale to put in the sales vector.
  */
-bool SaleList::add_sale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
+bool SaleList::addSale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
 {
     if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "" || s == "") return false;
     Sale new_sale(id, sn, d, as, sp, t, b, s);
@@ -37,7 +37,7 @@ bool SaleList::add_sale(const unsigned int id, const unsigned int sn, const std:
 /*
  * Creates a new file with the propper starting format.
  */
-bool SaleList::new_file()
+bool SaleList::newFile()
 {
     std::ofstream fout;
 
@@ -51,7 +51,7 @@ bool SaleList::new_file()
 
 /* 
  * Reads in information from given file and holds it in the sales vector
- * If add_sale returns false, then an error occured and false is returned.
+ * If addSale returns false, then an error occured and false is returned.
  */
 bool SaleList::load()
 {
@@ -76,7 +76,7 @@ bool SaleList::load()
     while(!(fin.eof())){
         std::getline(fin, line);
         sscanf(line.c_str(),"%u,%u,%s,%u,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
-        if(!add_sale(id, sn, d, as, sp, t, b, s)) return false;
+        if(!addSale(id, sn, d, as, sp, t, b, s)) return false;
         offset++;
     }
     fin.close();
