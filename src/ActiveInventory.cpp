@@ -1,5 +1,4 @@
-#include "../include/ActiveInventory.hpp"
-#include "main.cpp"
+#include "ActiveInventory.hpp"
 #include "Date.cpp"
 #include "Item.cpp"
 #include "NonPerishableItem.cpp"
