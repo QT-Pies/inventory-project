@@ -45,7 +45,7 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    if (argc < 5)
+    if (argc < 4)
     {
         printUsage(std::cerr);
         exit(1);
