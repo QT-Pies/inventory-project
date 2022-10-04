@@ -186,7 +186,7 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             return -1;
         }
     }
-    return -1; //This shouldn't be reached.
+    return 1; //This shouldn't be reached.
 }
 
 std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {

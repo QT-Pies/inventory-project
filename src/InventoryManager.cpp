@@ -20,11 +20,11 @@ int InventoryManager::userInput()
 	unsigned int id; 
 	
 	if (command_line == false) {
-        fprintf(stderr, "Command line is currently set to false");
+        fprintf(stderr, "Command line is currently set to false\n");
         return -1;
     }
 	
-	std::cout << "\n(A)dd, (R)emove, or (U)pdate item: ";
+	std::cout << "\n(A)dd, (R)emove, (U)pdate, or (Q)uit: ";
 	std::cin >> argument;	
 
 	/* switch on argument specified from user and then prompt them accordingly for further input */
@@ -66,7 +66,9 @@ int InventoryManager::userInput()
 				std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
 			}
 			break;
-
+		case 'Q':
+			printf("Quitting\n");
+			return -1;
 		default:
 			std::cout << "Usage: <(A)dd | (R)emove | (U)pdate>" << std::endl;
 			break;

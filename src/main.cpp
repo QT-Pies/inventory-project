@@ -17,7 +17,7 @@ int main(int argc, char**argv){
 	InventoryManager im(command_line);
 	
 	while (true) {
-		im.userInput();
+		if(im.userInput() == -1) return -1;
 	}
 	return 0;
 }
