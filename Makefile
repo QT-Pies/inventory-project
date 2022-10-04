@@ -14,10 +14,10 @@ OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGenerat
 all: $(EXECUTABLES) $(OBJECT)
 
 obj/main.o: src/main.cpp 
-	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
+	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o obj/InventoryManager.o
 
-bin/main: obj/main.o obj/InventoryManager.o
-	$(CC) $(CFLAGS) -o bin/main obj/main.o
+bin/main: obj/main.o
+	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o
 
 obj/CSVEntry.o: src/CSVEntry.cpp
 	$(CC) $(CFLAGS) -c src/CSVEntry.cpp -o obj/CSVEntry.o
@@ -47,7 +47,7 @@ obj/ActiveInventory.o: src/ActiveInventory.cpp
 	$(CC) $(CFLAGS) -c src/ActiveInventory.cpp -o obj/ActiveInventory.o
 
 obj/InventoryManager.o: src/InventoryManager.cpp
-	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
+	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o obj/ActiveInventory.o
 
 clean: 
 	rm $(EXECUTABLES) obj/*.o 

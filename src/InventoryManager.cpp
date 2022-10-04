@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "InventoryManager.hpp"
+#include "../include/InventoryManager.hpp"
 
 InventoryManager::InventoryManager(bool cli)
 {
@@ -16,7 +16,7 @@ InventoryManager::~InventoryManager()
 int InventoryManager::userInput()
 {
 	char argument;
-	std::string name, category,value;
+	std::string name, category, value;
 	unsigned int id; 
 	
 	if (command_line == false) {
@@ -70,4 +70,3 @@ int InventoryManager::userInput()
 
     return 0;
 }
-

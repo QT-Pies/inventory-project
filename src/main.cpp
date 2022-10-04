@@ -1,5 +1,5 @@
 #include <iostream>
-#include "InventoryManager.hpp"
+#include "../include/InventoryManager.hpp"
 
 int main(int argc, char**argv){
 
@@ -13,7 +13,6 @@ int main(int argc, char**argv){
 	}
 
 	InventoryManager im(command_line);
-	
 	
 	return 0;
 }
