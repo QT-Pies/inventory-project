@@ -42,7 +42,7 @@ bool SaleList::newFile()
     std::ofstream fout;
 
     fout.open(file_name.c_str());
-    if(!fout) return false;
+    if(!fout.is_open()) return false;
 
     fout << "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller";
     fout.close();
@@ -68,7 +68,7 @@ bool SaleList::load()
     char s[50];
 
     fin.open(file_name.c_str());
-    if(!fin) return false;
+    if(!fin.is_open()) return false;
 
     std::getline(fin, line);
     if(line != "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller") return false;
@@ -93,7 +93,7 @@ bool SaleList::save()
     unsigned int i;
 
     fout.open(file_name.c_str(), std::ios::app);
-    if(fout.fail()) return false;
+    if(!fout..is_open()) return false;
 
     for(i = offset; i < sales.size(); i++){
         fout << std::endl << sales[i].identification << "," << sales[i].sale_number << "," << sales[i].date << "," << sales[i].amount_sold << "," << sales[i].sale_price << "," << sales[i].tax << "," << sales[i].buyer << "," << sales[i].seller;
