@@ -30,7 +30,6 @@ int InventoryManager::userInput()
 	/* switch on argument specified from user and then prompt them accordingly for further input */
 	switch(argument)
 	{
-	
 		case 'A':
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');

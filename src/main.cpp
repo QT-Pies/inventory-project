@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/InventoryManager.hpp"
+#include "InventoryManager.hpp"
 
 int main(int argc, char**argv){
 
