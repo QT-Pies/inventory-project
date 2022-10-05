@@ -1,8 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
-#include <string>
-#include <vector>
 #include "Sales.hpp"
 
 /*
@@ -12,6 +10,13 @@ Sale::Sale(const unsigned int id, const unsigned int sn, const std::string& d, c
 : identification(id), sale_number(sn), date(d), amount_sold(as), sale_price(sp), tax(t), buyer(b), seller(s)
 {
     total_price = sale_price + (tax * sale_price);
+}
+
+Sale::~Sale()
+{
+    /*
+     * Shared pointers are used, so pointers will free themselves.
+     */
 }
 
 /*
@@ -25,11 +30,18 @@ SaleList::SaleList(const std::string& f)
 
 /*
  * Creates a new sale to put in the sales vector.
+ * May change to throwing an exeption in the futer.
+ * Also may change error checking here based on Sales date restrictions.
  */
 bool SaleList::addSale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
 {
-    if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "" || s == "") return false;
-    Sale new_sale(id, sn, d, as, sp, t, b, s);
+    if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "") 
+    {
+        std::cerr << "Failed to read Sales Input. Note that the ID, Sales Number, and Sales Price cannot be 0 and a Date and Buyer must be given.\nContinuing to read."
+        return false;
+    }
+
+    auto new_sale = std::make_shared<Sale>(id, sn, d, as, sp, t, b, s);
     sales.push_back(new_sale);
     return true;
 }
@@ -73,10 +85,15 @@ bool SaleList::load()
     std::getline(fin, line);
     if(line != "ID,Sale Number,Date,Amount Sold,Sale Price,Tax,Buyer,Seller") return false;
 
-    while(!(fin.eof())){
+    while(!(fin.eof()))
+    {
         std::getline(fin, line);
         sscanf(line.c_str(),"%u,%u,%s,%u,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
-        if(!addSale(id, sn, d, as, sp, t, b, s)) return false;
+        if(!addSale(id, sn, d, as, sp, t, b, s))
+        {
+            std::cerr << "FILE CURRUPTION DETECTED in File: " << file_name << std::endl;
+            return false;
+        }
         offset++;
     }
     fin.close();
@@ -95,8 +112,9 @@ bool SaleList::save()
     fout.open(file_name.c_str(), std::ios::app);
     if(!fout..is_open()) return false;
 
-    for(i = offset; i < sales.size(); i++){
-        fout << std::endl << sales[i].identification << "," << sales[i].sale_number << "," << sales[i].date << "," << sales[i].amount_sold << "," << sales[i].sale_price << "," << sales[i].tax << "," << sales[i].buyer << "," << sales[i].seller;
+    for(i = offset; i < sales.size(); i++)
+    {
+        fout << std::endl << sales[i]->identification << "," << sales[i]->sale_number << "," << sales[i]->date << "," << sales[i]->amount_sold << "," << sales[i]->sale_price << "," << sales[i]->tax << "," << sales[i]->buyer << "," << sales[i]->seller;
     }
     fout.close();
     return true;

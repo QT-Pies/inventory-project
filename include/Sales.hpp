@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "Item.hpp"
 
 class Sale
@@ -11,9 +12,11 @@ friend class SaleList;
 public:
     /*
      * Sale constructor that sets all the data for the given sale
+     * Sale deconstructor is empty since smart pointers are used
      * Note it is checked at some point that most the numbers are not 0 and strings are not empty.
      */
     Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    ~Sale();
 protected:
     unsigned int identification;
     unsigned int sale_number;
@@ -58,7 +61,7 @@ public:
      */
     bool save();
 protected:
-    std::vector<Sale> sales;
+    std::vector<std::shared_ptr<Sale> > sales;
     std::string file_name;
     int offset;
 };
