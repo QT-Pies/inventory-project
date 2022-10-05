@@ -2,7 +2,7 @@
 #include <string>
 #include "InventoryManager.hpp"
 
-InventoryManager::InventoryManager(bool cli)
+InventoryManager::InventoryManager(const bool cli)
 {
 	command_line = cli;
 }
