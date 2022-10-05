@@ -16,6 +16,8 @@ public:
     unsigned int year;
     unsigned int month;
     unsigned int day;
+private:
+    friend class ActiveInventory;
 };
 
 #endif
