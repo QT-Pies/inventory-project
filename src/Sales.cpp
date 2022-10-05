@@ -27,14 +27,14 @@ SaleList::SaleList(const std::string& f)
 
 /*
  * Creates a new sale to put in the sales vector.
- * May change to throwing an exeption in the futer.
+ * May change to throwing an exeption in the future.
  * Also may change error checking here based on Sales date restrictions.
  */
 bool SaleList::addSale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
 {
     if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "") 
     {
-        std::cerr << "Failed to read Sales Input. Note that the ID, Sales Number, and Sales Price cannot be 0 and a Date and Buyer must be given.\nContinuing to read."
+        std::cerr << "Failed to read Sales Input. Note that the ID, Sales Number, and Sales Price cannot be 0 and a Date and Buyer must be given.\nContinuing to read.";
         return false;
     }
 
@@ -107,7 +107,7 @@ bool SaleList::save()
     unsigned int i;
 
     fout.open(file_name.c_str(), std::ios::app);
-    if(!fout..is_open()) return false;
+    if(!fout.is_open()) return false;
 
     for(i = offset; i < sales.size(); i++)
     {

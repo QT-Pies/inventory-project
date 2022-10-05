@@ -48,7 +48,7 @@ public:
     bool addSale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
     
     /*
-     * Creates a new File with the given file name, will add the begining cvs header for what data is being stored.
+     * Creates a new File with the given file name, will add the begining csv header for what data is being stored.
      */
     bool newFile();
 
