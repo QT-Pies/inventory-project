@@ -6,7 +6,7 @@
 class InventoryManager
 {
 public:
-	InventoryManager(bool);
+	InventoryManager(const bool);
 	~InventoryManager();
 	int userInput();
 private:
