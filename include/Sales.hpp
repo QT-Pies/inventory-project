@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <fstream>
+#include <iostream>
+#include <stdio.h>
 #include "Item.hpp"
 
 class Sale
