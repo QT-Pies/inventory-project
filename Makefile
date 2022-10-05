@@ -49,7 +49,7 @@ obj/ActiveInventory.o: src/ActiveInventory.cpp
 obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o
 	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
 
-obj/Sales.o: src/Sales.cpp obj/Sales.o
+obj/Sales.o: src/Sales.cpp
 	$(CC) $(CFLAGS) -c src/Sales.cpp -o obj/Sales.o
 
 clean: 
