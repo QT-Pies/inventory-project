@@ -3,7 +3,7 @@
 /*
  * Constructor for base Sales class, initializes data to given values.
  */
-Sale::Sale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
+Sale::Sale(const unsigned long id, const unsigned long sn, const std::string& d, const unsigned long as, const double sp, const double t, const std::string& b, const std::string& s)
 : identification(id), sale_number(sn), date(d), amount_sold(as), sale_price(sp), tax(t), buyer(b), seller(s)
 {
     total_price = sale_price + (tax * sale_price);
@@ -30,7 +30,7 @@ SaleList::SaleList(const std::string& f)
  * May change to throwing an exeption in the future.
  * Also may change error checking here based on Sales date restrictions.
  */
-bool SaleList::addSale(const unsigned int id, const unsigned int sn, const std::string& d, const unsigned int as, const double sp, const double t, const std::string& b, const std::string& s)
+bool SaleList::addSale(const unsigned long id, const unsigned long sn, const std::string& d, const unsigned long as, const double sp, const double t, const std::string& b, const std::string& s)
 {
     if(id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "") 
     {
@@ -67,10 +67,10 @@ bool SaleList::load()
     std::ifstream fin;
     std::string line;
 
-    unsigned int id;
-    unsigned int sn;
+    unsigned long id;
+    unsigned long sn;
     char d[20];
-    unsigned int as;
+    unsigned long as;
     double sp;
     double t;
     char b[50];
@@ -85,7 +85,7 @@ bool SaleList::load()
     while(!(fin.eof()))
     {
         std::getline(fin, line);
-        sscanf(line.c_str(),"%u,%u,%s,%u,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
+        sscanf(line.c_str(),"%lu,%lu,%s,%lu,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
         if(!addSale(id, sn, d, as, sp, t, b, s))
         {
             std::cerr << "FILE CURRUPTION DETECTED in File: " << file_name << std::endl;

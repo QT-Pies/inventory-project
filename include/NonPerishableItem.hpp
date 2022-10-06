@@ -6,7 +6,7 @@
 class NonPerishableItem : public Item
 {
 public:
-    NonPerishableItem(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double);
+    NonPerishableItem(const std::string&, const std::string&, unsigned long, unsigned long, double, double, double);
     ~NonPerishableItem() override;
     void print() override;
 private:

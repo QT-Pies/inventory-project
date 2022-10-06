@@ -18,13 +18,13 @@ public:
      * Sale deconstructor is empty since smart pointers are used
      * Note it is checked at some point that most the numbers are not 0 and strings are not empty.
      */
-    Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    Sale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double, const std::string&, const std::string&);
     ~Sale();
 protected:
-    unsigned int identification;
-    unsigned int sale_number;
+    unsigned long identification;
+    unsigned long sale_number;
     std::string date;
-    unsigned int amount_sold;
+    unsigned long amount_sold;
     double sale_price;
     double tax;
     std::string buyer;
@@ -45,7 +45,7 @@ public:
      * Adds a sale to the vector by using the Sale class constructor, returns false if an error occurs
      * These errors include certain numbers being 0 or strings being empty.
      */
-    bool addSale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    bool addSale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double, const std::string&, const std::string&);
     
     /*
      * Creates a new File with the given file name, will add the begining csv header for what data is being stored.
