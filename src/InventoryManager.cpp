@@ -17,7 +17,7 @@ int InventoryManager::userInput()
 {
 	char argument;
 	std::string name, category, value;
-	unsigned int id; 
+	unsigned long id; 
 	
 	if (command_line == false) {
         fprintf(stderr, "Command line is currently set to false\n");
