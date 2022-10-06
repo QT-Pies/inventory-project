@@ -34,7 +34,7 @@ int ActiveInventory::addItem(const std::string name, const std::string category,
         fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
         return -1;
     } else  if (inv_by_id.find(item_id) != inv_by_id.end()) {
-	fprintf(stderr, "%u is already an id for another Item\n", item_id);
+	fprintf(stderr, "%lu is already an id for another Item\n", item_id);
 	return -1;
     } else {
 
