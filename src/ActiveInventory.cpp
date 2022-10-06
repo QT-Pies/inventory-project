@@ -11,7 +11,7 @@ ActiveInventory::ActiveInventory()
 
     std::make_unique<std::map <std::string, std::shared_ptr<Item> > >(inv_by_name);
 
-    std::make_unique<std::map <unsigned int, std::shared_ptr<Item> > >(inv_by_id);
+    std::make_unique<std::map <unsigned long, std::shared_ptr<Item> > >(inv_by_id);
 };
 
 ActiveInventory::ActiveInventory(std::string file_name) 
@@ -26,14 +26,14 @@ ActiveInventory::~ActiveInventory()
     //All objects of this class are smart pointers that will free themselves.
 };
 
-int ActiveInventory::addItem(const std::string name, const std::string category, unsigned int item_id)
+int ActiveInventory::addItem(const std::string name, const std::string category, unsigned long item_id)
 {
     if (inv_by_name.find(name) != inv_by_name.end()) //Check if item is already in the inventory.
     {
         fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
         return -1;
     } else  if (inv_by_id.find(item_id) != inv_by_id.end()) {
-	fprintf(stderr, "%u is already an id for another Item\n", item_id);
+	fprintf(stderr, "%lu is already an id for another Item\n", item_id);
 	return -1;
     } else {
 
@@ -118,14 +118,14 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         } else if (field == "sub_category") {
             to_update->sub_category = value;
         } else if (field == "quantity") {
-            to_update->quantity = stoi(value);
+            to_update->quantity = stoul(value);
         } else if (field == "id") {
 	        if (searchById(stoi(value)) != NULL)
 	        {
-		        printf("Id %u is already used by another Item.\n", stoi(value));
+		        printf("Id %lu is already used by another Item.\n", stoul(value));
 	        } else {
 	            inv_by_id.erase(inv_by_id.find(to_update->id));
-                to_update->id = stoi(value);
+                to_update->id = stoul(value);
 		        inv_by_id[to_update->id] = to_update;
             }
         } else if (field == "sale_price") {
@@ -161,14 +161,14 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         } else if (field == "sub_category") {
             to_update->sub_category = value;
         } else if (field == "quantity") {
-            to_update->quantity = stoi(value);
+            to_update->quantity = stoul(value);
         } else if (field == "id") {
-	        if (searchById(stoi(value)) != NULL)
+	        if (searchById(stoul(value)) != NULL)
 	        {
-		    printf("Id %u is already used by another Item.\n", stoi(value));
+		    printf("Id %lu is already used by another Item.\n", stoul(value));
 	        } else {
                 inv_by_id.erase(inv_by_id.find(to_update->id));
-                to_update->id = stoi(value);
+                to_update->id = stoul(value);
                 inv_by_id[to_update->id] = to_update;
             }
         } else if (field == "sale_price") {
@@ -202,7 +202,7 @@ std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {
     }
 }
 
-std::shared_ptr<Item> ActiveInventory::searchById (unsigned int item_id) {
+std::shared_ptr<Item> ActiveInventory::searchById (unsigned long item_id) {
     std::shared_ptr<Item> ret;
 
     /* If the id is in the map we return a shared_ptr to the item, otherwise we return NULL. */

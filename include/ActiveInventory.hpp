@@ -24,7 +24,7 @@ class ActiveInventory {
 	 * how many items were actually added.
 	 * If there is an error it will return -1.
          */
-        int addItem(const std::string, const std::string, const unsigned int);
+        int addItem(const std::string, const std::string, const unsigned long);
 
 	/*
 	 * This function will remove an item from the inventroy maps based 
@@ -49,7 +49,7 @@ class ActiveInventory {
 	 * This function will look up an item based on it's id. Returns
 	 * NULL if the item doesn't exist.
 	 */
-	std::shared_ptr<Item> searchById(unsigned int);
+	std::shared_ptr<Item> searchById(unsigned long);
 
     private:
 
@@ -59,7 +59,7 @@ class ActiveInventory {
 	 */
         std::map<std::string, std::map<std::string, std::shared_ptr<Item> > > inv_by_category;
         std::map<std::string, std::shared_ptr<Item> > inv_by_name;
-	    std::map<unsigned int, std::shared_ptr<Item> > inv_by_id;
+	    std::map<unsigned long, std::shared_ptr<Item> > inv_by_id;
 
 };
 
