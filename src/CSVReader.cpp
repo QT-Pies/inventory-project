@@ -2,14 +2,19 @@
 #include <iostream>
 #include <fstream>
 
-//#include "CSVReader.hpp"
+#include "CSVReader.hpp"
 
 int main(void)
 {
 
 	std::string name, id, category, sub_cat, quant, sale_price;
 	std::string tax, total_price, buy_cost, profit, expiry; 
+	
+	PerishableItem p_item;
+	NonPerishableItem non_p_item;
 
+
+	//obviously this can be changed to read a file from input or cmd line
 	std::ifstream csv_file("CSVInput/big_file.csv");
 
 	if(!csv_file.is_open()) std::cout << "ERROR: File Open" << '\n';
@@ -41,6 +46,14 @@ int main(void)
 		std::cout << buy_cost << '\n';
 		std::cout << profit << '\n';
 		std::cout << expiry << '\n';
+
+		if(category == "Perishable"){
+			//use p_item = p ctor
+		}
+		else {
+			//use non_p_item = non_p ctor
+		}
+		//alright dinner time then bedtime
 
 	}
 
