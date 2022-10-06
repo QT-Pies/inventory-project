@@ -11,24 +11,25 @@ ActiveInventory::ActiveInventory()
 
     std::make_unique<std::map <std::string, std::shared_ptr<Item> > >(inv_by_name);
 
-    std::make_unique<std::map <unsigned int, std::shared_ptr<Item> > >(inv_by_id);
+    std::make_unique<std::map <unsigned long, std::shared_ptr<Item> > >(inv_by_id);
 };
 
 ActiveInventory::ActiveInventory(std::string file_name) 
 {
-    //TODO: Here we will call the inputFile function when it is made.
+    // TODO: Here we will call the inputFile function when it is made.
     (void)file_name;
     ActiveInventory();
 };
 
 ActiveInventory::~ActiveInventory() 
 {
-    //All objects of this class are smart pointers that will free themselves.
+    // All objects of this class are smart pointers that will free themselves.
 };
 
-int ActiveInventory::addItem(const std::string name, const std::string category, unsigned int item_id)
+int ActiveInventory::addItem(const std::string name, const std::string category, unsigned long item_id)
 {
-    if (inv_by_name.find(name) != inv_by_name.end()) //Check if item is already in the inventory.
+    /* Check if item is already in the inventory */
+    if (inv_by_name.find(name) != inv_by_name.end())
     {
         fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
         return -1;
@@ -73,7 +74,8 @@ int ActiveInventory::removeItem(std::string name)
         inv_by_category[cat].erase(inv_by_category.find(cat)->second.find(name));
         if (inv_by_category.find(cat)->second.size() <= 0)
         {
-            inv_by_category.erase(cat); //If the map keyed off the category is empty we remove it from the map.
+            // If the map keyed off the category is empty we remove it from the map.
+            inv_by_category.erase(cat); 
         }
         return 1;
     } else
@@ -82,7 +84,8 @@ int ActiveInventory::removeItem(std::string name)
         return -1;
     }
 
-    return -1; //If this is reached an error has occurred.
+    // If this is reached an error has occurred.
+    return -1;
 }
 
 int ActiveInventory::updateItem(std::string item_name, std::string field, std::string value)
@@ -97,18 +100,22 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
 
     cat = inv_by_name.find(item_name)->second->category;
 
-    //Here we find the item and field to update.
+    /* Here we find the item and field to update. */
     if (cat == "Perishable")
     {
-        //auto tmp = dynamic_cast<Item&>(inv_by_name.find(item_name)->second);
         std::shared_ptr<PerishableItem> to_update =
                 std::dynamic_pointer_cast<PerishableItem>(inv_by_name[item_name]);
-        if (field == "name")//If the name is to be changed we will have to re-enter it into the maps.
+
+        // If the name is to be changed we will have to re-enter it into the maps.        
+        if (field == "name")
         {
 	        if (searchByName(value) != NULL)
 	        {
-                fprintf(stderr, "Cannot change name to %s as it already exists.\n", value.c_str());
-	        } else { //Remove old name from maps and add the new one.
+                fprintf(stderr, "Cannot change name to %s as it already exists.\n", value.c_str());  
+	        } 
+            // Remove old name from maps and add the new one.
+            else 
+            { 
 		    inv_by_name.erase(inv_by_name.find(to_update->name));
 		    inv_by_category[to_update->category].erase(inv_by_category[to_update->category].find(to_update->name));
 		    to_update->name = value;
@@ -147,11 +154,15 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
     } else {
         std::shared_ptr<NonPerishableItem> to_update =
                 std::dynamic_pointer_cast<NonPerishableItem>(inv_by_name[item_name]);
-        if (field == "name")//If the name is to be changed we will have to re-enter it into the maps.
+
+        // If the name is to be changed we will have to re-enter it into the maps.
+        if (field == "name")
         {
 	        if (searchByName(value) != NULL) {
                 fprintf(stderr, "Cannot change name to %s as it already exists.\n", value.c_str());
-            } else { //Remove the old name and add the new name.
+            } 
+            // Remove the old name and add the new name.
+            else { 
                 inv_by_name.erase(inv_by_name.find(to_update->name));
                 inv_by_category[to_update->category].erase(inv_by_category[to_update->category].find(to_update->name));
                 to_update->name = value;
@@ -186,7 +197,9 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             return -1;
         }
     }
-    return 1; //This shouldn't be reached.
+
+    /* This shouldn't be reached */
+    return 1;
 }
 
 std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {
@@ -202,7 +215,7 @@ std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {
     }
 }
 
-std::shared_ptr<Item> ActiveInventory::searchById (unsigned int item_id) {
+std::shared_ptr<Item> ActiveInventory::searchById (unsigned long item_id) {
     std::shared_ptr<Item> ret;
 
     /* If the id is in the map we return a shared_ptr to the item, otherwise we return NULL. */

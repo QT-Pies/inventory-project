@@ -6,8 +6,16 @@
 class InventoryManager
 {
 public:
+	/* 
+	* Constructor; specifies whether CLI mode is enabled 
+	* @param bool CLI mode
+	*/
 	InventoryManager(const bool);
+
+	/* Destructor; does nothing */
 	~InventoryManager();
+
+	/* Reads standard-input from user */
 	int userInput();
 private:
 	bool command_line;

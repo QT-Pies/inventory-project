@@ -12,7 +12,6 @@ InventoryManager::~InventoryManager()
 	/* using smart pointer for active inventory so no deletion neccessary */
 }
 
-/* gets command line input from user and calls methods from active inventory class */
 int InventoryManager::userInput()
 {
 	char argument;

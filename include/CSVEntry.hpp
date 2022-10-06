@@ -4,13 +4,20 @@
 #include <string>
 #include <iostream>
 
+/* Forward declaration of InventoryGenerator */
 class InventoryGenerator;
 
 class CSVEntry
 {
 friend class InventoryGenerator;
 public:
+    /* Constructor; empty constructor */
     CSVEntry();
+
+    /* 
+     * Prints the entry out to standard output in CSV format 
+     * @param std::ostream& ostream to output to (std::cout | std::ofstream)
+     */
     void printEntry(std::ostream&);
 protected:
     std::string name;

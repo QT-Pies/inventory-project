@@ -87,7 +87,6 @@ int main(int argc, char** argv)
     }
 
     gen.generateFile(argv[1], std::stoi(argv[2]), std::stoi(argv[3]), std::stoi(argv[4]));
-//    gen.generateFile("test.csv", 3, 3, 4);
 
     return 0;
 }

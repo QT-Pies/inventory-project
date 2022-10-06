@@ -17,14 +17,24 @@ public:
      * Sale constructor that sets all the data for the given sale
      * Sale deconstructor is empty since smart pointers are used
      * Note it is checked at some point that most the numbers are not 0 and strings are not empty.
+     * @param unsigned-long ID
+     * @param unsigned-long Sale number
+     * @param string Date of sale
+     * @param unsigned-long Amount sold in transaction
+     * @param double Sale subtotal
+     * @param double Sales tax
+     * @param string Buyer
+     * @param string Seller
      */
-    Sale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    Sale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double, const std::string&, const std::string&);
+
+    /* Destructor; does nothing */
     ~Sale();
 protected:
-    unsigned int identification;
-    unsigned int sale_number;
+    unsigned long identification;
+    unsigned long sale_number;
     std::string date;
-    unsigned int amount_sold;
+    unsigned long amount_sold;
     double sale_price;
     double tax;
     std::string buyer;
@@ -37,24 +47,34 @@ class SaleList
 public:
 
     /*
-     * Constructor, will take in the name of the file that the sales List will be working from.
+     * Constructor; creates list of sales from given file.
+     * @param string Name of file
      */
     SaleList(const std::string&);
 
     /*
      * Adds a sale to the vector by using the Sale class constructor, returns false if an error occurs
      * These errors include certain numbers being 0 or strings being empty.
+     * @param unsigned-long ID
+     * @param unsigned-long Sale number
+     * @param string Date of sale
+     * @param unsigned-long Amount sold in transaction
+     * @param double Sale subtotal
+     * @param double Sales tax
+     * @param string Buyer
+     * @param string Seller
      */
-    bool addSale(const unsigned int, const unsigned int, const std::string&, const unsigned int, const double, const double, const std::string&, const std::string&);
+    bool addSale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double, const std::string&, const std::string&);
     
     /*
      * Creates a new File with the given file name, will add the begining csv header for what data is being stored.
      */
     bool newFile();
 
-    /*
-     * Loads file information from the given file and enters it into the vector, calls addSale.
-     */
+    /* 
+    * Reads in information from given file and holds it in the sales vector
+    * If addSale returns false, then an error occured and false is returned.
+    */
     bool load();
 
     /*

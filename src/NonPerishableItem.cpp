@@ -1,17 +1,11 @@
 #include "NonPerishableItem.hpp"
 
-/* 
- * Constructor for NonPerishableItem; call's base class constructor.
-*/
-NonPerishableItem::NonPerishableItem(const std::string& nm, const std::string& cat, unsigned int qty, unsigned int idd, double price, double cost, double tx)
+NonPerishableItem::NonPerishableItem(const std::string& nm, const std::string& cat, unsigned long qty, unsigned long idd, double price, double cost, double tx)
 : Item(nm, cat, qty, idd, price, cost, tx)
 {
 
 }
 
-/*
- * Prints out the item information to standard output.
-*/
 void NonPerishableItem::print()
 {
     std::cout << "ID: " << id << " Item: " << name << std::endl;
@@ -22,9 +16,6 @@ void NonPerishableItem::print()
     std::cout << "Profit per unit sold: " << profit << std::endl;
 }
 
-/*
- * Destructor; currently empty, but needs to be here to shut the compiler up.
-*/
 NonPerishableItem::~NonPerishableItem()
 {
 
