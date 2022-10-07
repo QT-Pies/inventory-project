@@ -80,15 +80,12 @@ int InventoryManager::userInput()
 	return 0;
 }
 
+/*uses ActiveInventory functions to create items from a csv file*/
 void InventoryManager::readCSVFile(const std::string &file)
 {
-	std::cout << "in read\n";
 	std::string name, str_id, cat, sub_cat, qty, sale_price;
-	std::string tax, total_price, buy_cost, profit, exp; 
-	std::string tmp_line;
-
+	std::string tax, total_price, buy_cost, profit, exp, tmp_line; 
 	unsigned long id;
-	///double sale_price, tax, total_price, buy_cost, profit;
 	
 	std::ifstream csv_file(file);
 
@@ -102,11 +99,7 @@ void InventoryManager::readCSVFile(const std::string &file)
 		/*reading in the csv info, converting types*/
 		getline(csv_file, name, ',');
 
-		/* The condition of the loop is checked once per loop, so if one of these breaks,
-		 * all of them are still going to run.
-		 * That should be fine, but I added a little check here for you that should exit the loop if
-		 * we didn't read in a new name.
-		*/
+		/*exit the loop if we domaken't read in a new name.*/
 		if (!csv_file.good()) break;
 
 		getline(csv_file, str_id, ',');
@@ -136,7 +129,9 @@ void InventoryManager::readCSVFile(const std::string &file)
 		active_inventory->updateItem(name, "tax", tax);
 		active_inventory->updateItem(name, "total_price", total_price);
 		active_inventory->updateItem(name, "profit", profit);
-		active_inventory->updateItem(name, "expiration_date", exp);
+		if (cat == "Perishable") {
+			active_inventory->updateItem(name, "expiration_date", exp);
+		}
 
 		/* Test to see if we successfully read in item. */
 		auto item_ptr = active_inventory->searchByName(name);
