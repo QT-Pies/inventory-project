@@ -85,7 +85,8 @@ void InventoryManager::readCSVFile(const std::string &file)
 	std::cout << "in read\n";
 	std::string name, str_id, cat, sub_cat, qty, sale_price;
 	std::string tax, total_price, buy_cost, profit, exp; 
-	
+	std::string tmp_line;
+
 	unsigned long id;
 	///double sale_price, tax, total_price, buy_cost, profit;
 	
@@ -93,40 +94,41 @@ void InventoryManager::readCSVFile(const std::string &file)
 
 	if(!csv_file.is_open()) std::cout << "ERROR: File Open" << '\n';
 	
+	/* This skips the first line for you. */
+	std::getline(csv_file, tmp_line);
+
 	while(csv_file.good()){
 
 		/*reading in the csv info, converting types*/
 		getline(csv_file, name, ',');
-		
-		/*the first line of CSV is not needed*/
-		if(name == "Name") continue;
-		
+
+		/* The condition of the loop is checked once per loop, so if one of these breaks,
+		 * all of them are still going to run.
+		 * That should be fine, but I added a little check here for you that should exit the loop if
+		 * we didn't read in a new name.
+		*/
+		if (!csv_file.good()) break;
+
 		getline(csv_file, str_id, ',');
 		id = std::stoul(str_id);
-		std::cout << "stoul in read\n";
 		getline(csv_file, cat, ',');
 		getline(csv_file, sub_cat, ',');
 		getline(csv_file, qty, ',');
-		//qty = stoul(str_qty);
 		getline(csv_file, sale_price, ',');
-		//sale_price = stod(str_sale_price);
 		getline(csv_file, tax, ',');
-		//tax = stod(str_tax);
 		getline(csv_file, total_price, ',');
-		//total_price = stod(str_total_price);
 		getline(csv_file, buy_cost, ',');
-		//buy_cost = stod(str_buy_cost);
 		getline(csv_file, profit, ',');
-		//profit = stod(str_profit);
 		getline(csv_file, exp, '\n');
-		
-		
 
+		/* Add the item to the inventory. */
 		if (active_inventory->addItem(name, cat, id) != -1) {
 			std::cout << "Added " << name << " of type " << cat << std::endl;
+		} else {
+			fprintf(stderr, "Failed to read in item %s with ID %lu.\n", name.c_str(), id);
 		}
-		active_inventory->addItem(name, cat, id);
 
+		/* Update all the item categories */
 		active_inventory->updateItem(name, "sub_category", sub_cat);
 		active_inventory->updateItem(name, "quantity", qty);
 		active_inventory->updateItem(name, "sale_price", sale_price);
@@ -134,10 +136,12 @@ void InventoryManager::readCSVFile(const std::string &file)
 		active_inventory->updateItem(name, "tax", tax);
 		active_inventory->updateItem(name, "total_price", total_price);
 		active_inventory->updateItem(name, "profit", profit);
-		active_inventory->updateItem(name, "exp", exp);
+		active_inventory->updateItem(name, "expiration_date", exp);
 
+		/* Test to see if we successfully read in item. */
 		auto item_ptr = active_inventory->searchByName(name);
 		if (item_ptr != NULL) {
+			/* Remove this print once you verify that your function is working as you expect. */
     		item_ptr->print();
 		} 
 		else {
