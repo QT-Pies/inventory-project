@@ -157,6 +157,7 @@ int InventoryManager::fileOutput()
 
 	for (mit = active_inventory->inv_by_name.begin(); mit != active_inventory->inv_by_name.end(); mit++) {
 		mit->second->printCSV(file);
+		file << std::endl;
 	}
 
 	file.close();

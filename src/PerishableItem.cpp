@@ -25,7 +25,6 @@ void PerishableItem::print()
 /* print out item in csv format */
 void PerishableItem::printCSV(std::ofstream& file)
 {
-	std::cout << "Enter" << std::endl;
 	file << name << ",";
 	file << id << ",";
 	file << category << ",";
@@ -36,7 +35,7 @@ void PerishableItem::printCSV(std::ofstream& file)
 	file << total_price << ",";
 	file << buy_cost << ",";
 	file << profit << ",";
-	//file << expiration_date.string_date << std::endl;
+	file << expiration_date.string_date;
 	
 }
 
