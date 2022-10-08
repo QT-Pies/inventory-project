@@ -25,7 +25,6 @@ void PerishableItem::print()
 /* print out item in csv format */
 void PerishableItem::printCSV(std::ofstream& file)
 {
-
 	file << name << ",";
 	file << id << ",";
 	file << category << ",";
