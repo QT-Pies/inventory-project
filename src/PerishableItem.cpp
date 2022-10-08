@@ -22,6 +22,24 @@ void PerishableItem::print()
     std::cout << "Profit per unit sold: " << profit << std::endl;
 }
 
+/* print out item in csv format */
+void PerishableItem::printCSV(std::ofstream& file)
+{
+	std::cout << "Enter" << std::endl;
+	file << name << ",";
+	file << id << ",";
+	file << category << ",";
+	file << sub_category << ",";
+	file << quantity << ",";
+	file << sale_price << ",";
+	file << tax << ",";
+	file << total_price << ",";
+	file << buy_cost << ",";
+	file << profit << ",";
+	//file << expiration_date.string_date << std::endl;
+	
+}
+
 /*
  * Destructor; empty implementation, but needed to shut compiler up.
 */

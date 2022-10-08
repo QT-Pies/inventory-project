@@ -10,6 +10,7 @@ public:
     PerishableItem(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double, const std::string&);
     ~PerishableItem() override;
     void print() override;
+    void printCSV(std::ofstream&) override;
 private:
     friend class ActiveInventory;
 protected:

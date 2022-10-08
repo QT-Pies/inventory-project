@@ -1,10 +1,9 @@
-#include <iostream>
-#include <string>
 #include "InventoryManager.hpp"
 
-InventoryManager::InventoryManager(const bool cli)
+InventoryManager::InventoryManager(const bool cli, const std::string file)
 {
 	command_line = cli;
+	file_name = file;
 }
 
 InventoryManager::~InventoryManager()
@@ -76,5 +75,30 @@ int InventoryManager::userInput()
 	std::cin.clear();
 	std::cin.ignore(10000, '\n');
     
+	return 0;
+}
+
+/* traverse active_memory and output content to file */
+int InventoryManager::fileOutput()
+{
+	std::ofstream file;
+	std::map<std::string, std::shared_ptr<Item> >::iterator mit;
+
+	file.open(file_name);
+
+	if (!file.is_open()) {
+		fprintf(stderr, "File %s is unable to open", file_name.c_str());
+		return -1;
+	}
+
+	file << "Name,ID,Category,Sub-Category,Quantity,Sale Price,Tax,Total Price,Buy Cost,Profit,Expiration Date" << std::endl;
+
+	for (mit = active_inventory->inv_by_name.begin(); mit != active_inventory->inv_by_name.end(); mit++) {
+		mit->second->printCSV(file);
+	}
+
+	file.close();
+
+	std::cout << "Inventory written to " << file_name << std::endl;
 	return 0;
 }

@@ -3,13 +3,14 @@
 
 #include <string>
 #include <iostream>
-
+#include <fstream>
 class Item
 {
 public:
     Item(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double);
     virtual ~Item() = default;
     virtual void print() = 0;
+    virtual void printCSV(std::ofstream&) = 0;
 private:
     friend class ActiveInventory;
 protected:

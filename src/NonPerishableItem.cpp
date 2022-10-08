@@ -22,6 +22,22 @@ void NonPerishableItem::print()
     std::cout << "Profit per unit sold: " << profit << std::endl;
 }
 
+/* print out item in csv format */
+void NonPerishableItem::printCSV(std::ofstream& file) 
+{
+	file << name << ",";
+	file << id << ",";
+	file << category << ",";
+	file << sub_category << ",";
+	file << quantity << ",";
+	file << sale_price << ",";
+	file << tax << ",";
+	file << total_price << ",";
+	file << buy_cost << ",";
+	file << profit << ",";
+	file << "-1" << std::endl;
+}
+
 /*
  * Destructor; currently empty, but needs to be here to shut the compiler up.
 */
