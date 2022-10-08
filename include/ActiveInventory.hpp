@@ -53,6 +53,7 @@ class ActiveInventory {
 
     private:
 
+		friend class InventoryManager;
 	/*
 	 * These maps will store the active inventory by category, by name,
 	 * and by id for searching purposes.

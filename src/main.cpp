@@ -10,6 +10,7 @@ int main(int argc, char**argv){
 		arg = argv[1];
 		csv_file = argv[2];
 		if (arg == "1") command_line = true;
+		file = argv[2];
 	} else {
 		fprintf(stderr, "Usage: bin/main command_line csv_file\n");
 		return -1;
@@ -19,7 +20,9 @@ int main(int argc, char**argv){
 	im.readCSVFile(csv_file);
 
 	while (true) {
-		if(im.userInput() == -1) return -1;
+		if(im.userInput() == -1) break;
 	}
+
+	im.fileOutput();
 	return 0;
 }
