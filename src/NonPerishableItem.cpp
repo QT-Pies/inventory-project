@@ -35,7 +35,7 @@ void NonPerishableItem::printCSV(std::ofstream& file)
 	file << total_price << ",";
 	file << buy_cost << ",";
 	file << profit << ",";
-	file << "-1" << std::endl;
+	file << "-1";
 }
 
 /*
