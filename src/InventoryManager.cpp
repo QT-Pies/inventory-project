@@ -1,9 +1,12 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <map>
 #include "InventoryManager.hpp"
 
-InventoryManager::InventoryManager(const bool cli, const std::string file)
+InventoryManager::InventoryManager(const bool cli)
 {
 	command_line = cli;
-	file_name = file;
 }
 
 InventoryManager::~InventoryManager()
