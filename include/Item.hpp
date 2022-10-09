@@ -7,7 +7,7 @@
 class Item
 {
 public:
-    Item(const std::string&, const std::string&, unsigned int, unsigned int, double, double, double);
+    Item(const std::string&, const std::string&, unsigned long, unsigned long, double, double, double);
     virtual ~Item() = default;
     virtual void print() = 0;
 private:
@@ -16,8 +16,8 @@ protected:
     std::string name;
     std::string category;
     std::string sub_category;
-    unsigned int quantity;
-    unsigned int id;
+    unsigned long quantity;
+    unsigned long id;
     double sale_price;
     double buy_cost;
     double tax;
