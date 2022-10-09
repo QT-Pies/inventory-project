@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <map>
 #include "InventoryManager.hpp"
 
-InventoryManager::InventoryManager(const bool cli)
+InventoryManager::InventoryManager(const bool cli, const std::string file)
 {
 	command_line = cli;
+	file_name = file;
 }
 
 InventoryManager::~InventoryManager()
@@ -81,13 +83,13 @@ int InventoryManager::userInput()
 }
 
 /*uses ActiveInventory functions to create items from a csv file*/
-void InventoryManager::readCSVFile(const std::string &file)
+void InventoryManager::readCSVFile()
 {
 	std::string name, str_id, cat, sub_cat, qty, sale_price;
 	std::string tax, total_price, buy_cost, profit, exp, tmp_line; 
 	unsigned long id;
 	
-	std::ifstream csv_file(file);
+	std::ifstream csv_file(file_name);
 
 	if(!csv_file.is_open()) std::cout << "ERROR: unable to open file" << '\n';
 	
@@ -140,4 +142,30 @@ void InventoryManager::readCSVFile(const std::string &file)
     		fprintf(stderr, "Failed to read item %s that we just created.\n", name.c_str());
 		}
 	}
+}
+
+/* traverse active_memory and output content to file */
+int InventoryManager::fileOutput()
+{
+	std::ofstream file;
+	std::map<std::string, std::shared_ptr<Item> >::iterator mit;
+
+	file.open(file_name);
+
+	if (!file.is_open()) {
+		fprintf(stderr, "File %s is unable to open", file_name.c_str());
+		return -1;
+	}
+
+	file << "Name,ID,Category,Sub-Category,Quantity,Sale Price,Tax,Total Price,Buy Cost,Profit,Expiration Date" << std::endl;
+
+	for (mit = active_inventory->inv_by_name.begin(); mit != active_inventory->inv_by_name.end(); mit++) {
+		mit->second->printCSV(file);
+		file << std::endl;
+	}
+
+	file.close();
+
+	std::cout << "Inventory written to " << file_name << std::endl;
+	return 0;
 }

@@ -15,11 +15,13 @@ int main(int argc, char**argv){
 		return -1;
 	}
 
-	InventoryManager im(command_line);
-	im.readCSVFile(csv_file);
-
+	InventoryManager im(command_line, csv_file);
+	im.readCSVFile();
+	
 	while (true) {
-		if(im.userInput() == -1) return -1;
+		if(im.userInput() == -1) break;
 	}
+
+	im.fileOutput();
 	return 0;
 }

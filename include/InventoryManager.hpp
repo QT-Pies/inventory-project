@@ -6,13 +6,15 @@
 class InventoryManager
 {
 public:
-	InventoryManager(const bool);
+	InventoryManager(const bool, const std::string);
 	~InventoryManager();
 	int userInput();
-	void readCSVFile(const std::string&);
+	void readCSVFile();
+	int fileOutput();
 private:
 	bool command_line;
 	std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
+	std::string file_name;
 };
 
 #endif
