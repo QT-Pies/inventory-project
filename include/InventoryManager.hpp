@@ -9,7 +9,10 @@ public:
 	InventoryManager(const bool);
 	~InventoryManager();
 	int userInput();
+<<<<<<< HEAD
 	void readCSVFile(const std::string&);
+=======
+>>>>>>> 5c926920398a41f6d9eb76658e21c4c6b541b208
 	int fileOutput();
 private:
 	bool command_line;

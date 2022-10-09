@@ -81,6 +81,7 @@ int InventoryManager::userInput()
 	return 0;
 }
 
+<<<<<<< HEAD
 /*uses ActiveInventory functions to create items from a csv file*/
 void InventoryManager::readCSVFile(const std::string &file)
 {
@@ -143,6 +144,8 @@ void InventoryManager::readCSVFile(const std::string &file)
 	}
 }
 
+=======
+>>>>>>> 5c926920398a41f6d9eb76658e21c4c6b541b208
 /* traverse active_memory and output content to file */
 int InventoryManager::fileOutput()
 {
@@ -167,5 +170,9 @@ int InventoryManager::fileOutput()
 
 	std::cout << "Inventory written to " << file_name << std::endl;
 	return 0;
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> 5c926920398a41f6d9eb76658e21c4c6b541b208
