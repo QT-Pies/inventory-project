@@ -4,9 +4,10 @@
 #include <map>
 #include "InventoryManager.hpp"
 
-InventoryManager::InventoryManager(const bool cli)
+InventoryManager::InventoryManager(const bool cli, const std::string file)
 {
 	command_line = cli;
+	file_name = file;
 }
 
 InventoryManager::~InventoryManager()
@@ -82,14 +83,13 @@ int InventoryManager::userInput()
 }
 
 /*uses ActiveInventory functions to create items from a csv file*/
-void InventoryManager::readCSVFile(const std::string &file)
+void InventoryManager::readCSVFile()
 {
 	std::string name, str_id, cat, sub_cat, qty, sale_price;
 	std::string tax, total_price, buy_cost, profit, exp, tmp_line; 
 	unsigned long id;
 	
-	file_name = file;
-	std::ifstream csv_file(file);
+	std::ifstream csv_file(file_name);
 
 	if(!csv_file.is_open()) std::cout << "ERROR: unable to open file" << '\n';
 	
