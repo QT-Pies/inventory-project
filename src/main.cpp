@@ -6,7 +6,7 @@ int main(int argc, char**argv){
 	std::string arg, csv_file;
 	bool command_line = false;
 
-	if (argc == 2) {
+	if (argc == 3) {
 		arg = argv[1];
 		csv_file = argv[2];
 		if (arg == "1") command_line = true;
@@ -19,7 +19,7 @@ int main(int argc, char**argv){
 	im.readCSVFile(csv_file);
 	
 	while (true) {
-		if(im.userInput() == -1) return -1;
+		if(im.userInput() == -1) break;
 	}
 
 	im.fileOutput();

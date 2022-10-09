@@ -14,6 +14,7 @@ public:
 private:
 	bool command_line;
 	std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
+	std::string file_name;
 };
 
 #endif

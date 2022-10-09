@@ -88,6 +88,7 @@ void InventoryManager::readCSVFile(const std::string &file)
 	std::string tax, total_price, buy_cost, profit, exp, tmp_line; 
 	unsigned long id;
 	
+	file_name = file;
 	std::ifstream csv_file(file);
 
 	if(!csv_file.is_open()) std::cout << "ERROR: unable to open file" << '\n';
