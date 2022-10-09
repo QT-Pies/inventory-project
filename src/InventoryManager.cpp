@@ -89,7 +89,7 @@ void InventoryManager::readCSVFile(const std::string &file)
 	
 	std::ifstream csv_file(file);
 
-	if(!csv_file.is_open()) std::cout << "ERROR: File Open" << '\n';
+	if(!csv_file.is_open()) std::cout << "ERROR: unable to open file" << '\n';
 	
 	/* This skips the first line for you. */
 	std::getline(csv_file, tmp_line);
@@ -99,7 +99,7 @@ void InventoryManager::readCSVFile(const std::string &file)
 		/*reading in the csv info, converting types*/
 		getline(csv_file, name, ',');
 
-		/*exit the loop if we domaken't read in a new name.*/
+		/*exit the loop if we don't read in a new name.*/
 		if (!csv_file.good()) break;
 
 		getline(csv_file, str_id, ',');
@@ -135,11 +135,8 @@ void InventoryManager::readCSVFile(const std::string &file)
 
 		/* Test to see if we successfully read in item. */
 		auto item_ptr = active_inventory->searchByName(name);
-		if (item_ptr != NULL) {
-			/* Remove this print once you verify that your function is working as you expect. */
-    		item_ptr->print();
-		} 
-		else {
+
+		if (item_ptr == NULL) {
     		fprintf(stderr, "Failed to read item %s that we just created.\n", name.c_str());
 		}
 	}
