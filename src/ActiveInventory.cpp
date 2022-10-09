@@ -39,14 +39,14 @@ int ActiveInventory::addItem(const std::string name, const std::string category,
 
         /* Check if the category is a valid category and add it if is is valid. */
         if (category == "Perishable") {
-            auto new_item = std::make_shared<PerishableItem>(name, "None", item_id, 0, 0, 0, 0, "0");
+            auto new_item = std::make_shared<PerishableItem>(name, "None", 0, item_id, 0, 0, 0, "0");
             new_item->category = "Perishable";
             inv_by_name[name] = new_item;
             inv_by_category[category][name] = new_item;
 	        inv_by_id[item_id] = new_item;
             return 1;
         } else if (category == "NonPerishable") {
-            auto new_item = std::make_shared<NonPerishableItem>(name, "None", item_id, 0, 0, 0, 0);
+            auto new_item = std::make_shared<NonPerishableItem>(name, "None", 0, item_id, 0, 0, 0);
             new_item->category = "NonPerishable";
             inv_by_name[name] = new_item;
             inv_by_category[category][name] = new_item;
