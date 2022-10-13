@@ -16,5 +16,4 @@ jobs:
 
       - name: Verify format matches
         if: steps.linter.outputs.checks-failed > 0
-        run: echo "Some files failed the linting checks!"
         run: exit 1
