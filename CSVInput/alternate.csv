@@ -1,21 +1,2 @@
 Name,ID,Category,Sub-Category,Quantity,Sale Price,Tax,Total Price,Buy Cost,Profit,Expiration Date
-UyJSboxluAkKHwaHxEN,0,NonPerishable,-1,-786,-4141.53,-0.1,-3727.38,1537.33,-5678.87,-1
-aGPxjiK,0,NonPerishable,-1,948,107.662,0.1,118.428,2.49146,105.171,-1
-JozjqppVkzNmEBUEX,0,NonPerishable,-1,-873,-8827.5,-0.1,-7944.75,49.6984,-8877.2,-1
-oBHxTKfrBomPHcLPA,0,NonPerishable,-1,233,3881.58,0.1,4269.74,886.788,2994.79,-1
-dEpuzqOyrceRVzGW,0,NonPerishable,-1,-72,-4341.33,-0.1,-3907.19,835.113,-5176.44,-1
-pOCTxqYaTEGUmhDBKKQQGsbEQsnn,0,NonPerishable,-1,107,9732.12,0.1,10705.3,623.961,9108.16,-1
-HyaUgL,0,NonPerishable,-1,-23,-7405.39,-0.1,-6664.85,2499.12,-9904.51,-1
-HrIxVMGjcCKcXOStBGgwsh,0,NonPerishable,-1,142,3091.53,0.1,3400.68,502.57,2588.96,-1
-lLEtxvxhT,0,NonPerishable,-1,-23,-2641.13,-0.1,-2377.02,255.928,-2897.06,-1
-ZiiWVxEvfsIaRGxxAyaAxsjE,0,NonPerishable,-1,962,3852.42,0.1,4237.66,1474.3,2378.12,-1
-j,0,Perishable,-1,-363,-4463.19,-0.1,-4016.87,196.149,-4659.34,-1
-zm,0,Perishable,-1,146,2689.76,0.1,2958.73,1303.93,1385.82,7/16/2031
-LNrVWDz,0,Perishable,-1,-782,-5964.7,-0.1,-5368.23,937.998,-6902.7,-1
-sYAzKJMwCYpeFEeVEMZdzTdLzZJsdX,0,Perishable,-1,699,4876.93,0.1,5364.63,1693.7,3183.23,4/4/2034
-SvyLbVqAYrYK,0,Perishable,-1,-896,-7345.86,-0.1,-6611.28,1965.66,-9311.53,-1
-yMH,0,Perishable,-1,300,6754.58,0.1,7430.04,2018.23,4736.35,6/17/2028
-HQeovhNaydzevtomBHoxDmPqXKSQJ,0,Perishable,-1,-287,-2459.84,-0.1,-2213.85,638.263,-3098.1,-1
-uFlGWC,0,Perishable,-1,780,9843.98,0.1,10828.4,280.946,9563.03,10/20/2025
-cQRqtgGdYcahnjVz,0,Perishable,-1,-996,-6121.66,-0.1,-5509.5,529.281,-6650.94,-1
-WKNVaf,0,Perishable,-1,677,1391.17,0.1,1530.29,516.993,874.177,11/1/2027
+UyJSboxluAkKHwaHxEN,0,NonPerishable,-1,18446744073709550830,-4141.53,-0.1,-3727.38,1537.33,-5678.87,-1

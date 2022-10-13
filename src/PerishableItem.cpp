@@ -3,8 +3,8 @@
 /*
  * Constructor for PerishableItem; calls base Item constructor, initializes expiration_date member.
 */
-PerishableItem::PerishableItem(const std::string& nm, const std::string& cat, unsigned long qty, unsigned long idd, double price, double cost, double tx, const std::string& exp)
-: Item(nm, cat, qty, idd, price, cost, tx), expiration_date(Date(exp))
+PerishableItem::PerishableItem(const std::string& nm, const std::string& cat, const std::string& sub_cat, unsigned long qty, unsigned long idd, double price, double cost, double tx, const std::string& exp)
+: Item(nm, cat, sub_cat, qty, idd, price, cost, tx), expiration_date(Date(exp))
 {
 }
 

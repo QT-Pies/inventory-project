@@ -14,50 +14,27 @@ ActiveInventory::ActiveInventory()
     std::make_unique<std::map <unsigned long, std::shared_ptr<Item> > >(inv_by_id);
 };
 
-ActiveInventory::ActiveInventory(std::string file_name) 
-{
-    //TODO: Here we will call the inputFile function when it is made.
-    (void)file_name;
-    ActiveInventory();
-};
-
 ActiveInventory::~ActiveInventory() 
 {
     //All objects of this class are smart pointers that will free themselves.
 };
 
-int ActiveInventory::addItem(const std::string name, const std::string category, unsigned long item_id)
+int ActiveInventory::addItem(std::shared_ptr<Item> new_item)
 {
-    if (inv_by_name.find(name) != inv_by_name.end()) //Check if item is already in the inventory.
+    if (inv_by_name.find(new_item->name) != inv_by_name.end()) //Check if item is already in the inventory.
     {
-        fprintf(stderr, "%s is already in the inventory.\n", name.c_str());
+        fprintf(stderr, "%s is already in the inventory.\n", new_item->name.c_str());
         return -1;
-    } else  if (inv_by_id.find(item_id) != inv_by_id.end()) {
-	fprintf(stderr, "%lu is already an id for another Item\n", item_id);
+    } else  if (inv_by_id.find(new_item->id) != inv_by_id.end()) {
+	fprintf(stderr, "%lu is already an id for another Item\n", new_item->id);
 	return -1;
     } else {
-
-        /* Check if the category is a valid category and add it if is is valid. */
-        if (category == "Perishable") {
-            auto new_item = std::make_shared<PerishableItem>(name, "None", 0, item_id, 0, 0, 0, "0");
-            new_item->category = "Perishable";
-            inv_by_name[name] = new_item;
-            inv_by_category[category][name] = new_item;
-	        inv_by_id[item_id] = new_item;
-            return 1;
-        } else if (category == "NonPerishable") {
-            auto new_item = std::make_shared<NonPerishableItem>(name, "None", 0, item_id, 0, 0, 0);
-            new_item->category = "NonPerishable";
-            inv_by_name[name] = new_item;
-            inv_by_category[category][name] = new_item;
-	        inv_by_id[item_id] = new_item;
-            return 1;
-        } else {
-            fprintf(stderr, "Invalid category given: %s\n", category.c_str());
-            return -1;
-        }
+        inv_by_name[new_item->name] = new_item;
+        inv_by_category[new_item->category][new_item->name] = new_item;
+	inv_by_id[new_item->id] = new_item;
+        return 1;
     }
-    return -1;
+    return -1; //This shouldn't be reached.
 }
 
 int ActiveInventory::removeItem(std::string name)
@@ -186,7 +163,7 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             return -1;
         }
     }
-    return 1; //This shouldn't be reached.
+    return 1; //Returns that an item was updated.
 }
 
 std::shared_ptr<Item> ActiveInventory::searchByName (std::string item_name) {
