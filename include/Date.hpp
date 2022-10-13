@@ -6,22 +6,22 @@
 #include <string>
 
 class Date {
- public:
-  /*
-   * @brief Constructor; converts std::string into Date.
-   * @param std::string Date in string format
-   */
-  Date(const std::string&);
+   public:
+    /*
+     * @brief Constructor; converts std::string into Date.
+     * @param std::string Date in string format
+     */
+    Date(const std::string&);
 
-  /* I opted to make these members public, as I think it makes sense in a
-   * non-important class like this. */
-  std::string string_date;
-  unsigned int year;
-  unsigned int month;
-  unsigned int day;
+    /* I opted to make these members public, as I think it makes sense in a
+     * non-important class like this. */
+    std::string string_date;
+    unsigned int year;
+    unsigned int month;
+    unsigned int day;
 
- private:
-  friend class ActiveInventory;
+   private:
+    friend class ActiveInventory;
 };
 
 #endif
