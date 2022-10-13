@@ -1,8 +1,5 @@
 #include "Sales.hpp"
 
-/*
- * Constructor for base Sales class, initializes data to given values.
- */
 Sale::Sale(const unsigned long id, const unsigned long sn, const std::string& d,
            const unsigned long as, const double sp, const double t,
            const std::string& b, const std::string& s)
@@ -18,24 +15,13 @@ Sale::Sale(const unsigned long id, const unsigned long sn, const std::string& d,
 }
 
 Sale::~Sale() {
-  /*
-   * Shared pointers are used, so pointers will free themselves.
-   */
 }
 
-/*
- * Initilizes what file will be used to load/save the sales data to.
- */
 SaleList::SaleList(const std::string& f) {
   file_name = f;
   offset = 0;
 }
 
-/*
- * Creates a new sale to put in the sales vector.
- * May change to throwing an exeption in the future.
- * Also may change error checking here based on Sales date restrictions.
- */
 bool SaleList::addSale(const unsigned long id, const unsigned long sn,
                        const std::string& d, const unsigned long as,
                        const double sp, const double t, const std::string& b,
@@ -66,10 +52,6 @@ bool SaleList::newFile() {
   return true;
 }
 
-/*
- * Reads in information from given file and holds it in the sales vector
- * If addSale returns false, then an error occured and false is returned.
- */
 bool SaleList::load() {
   std::ifstream fin;
   std::string line;
@@ -105,10 +87,6 @@ bool SaleList::load() {
   return true;
 }
 
-/*
- * Saves the sales information from the vector to the given file, uses append
- * and the offset value so only newly added information will be saved.
- */
 bool SaleList::save() {
   std::ofstream fout;
   unsigned int i;

@@ -2,6 +2,7 @@
 
 #include "InventoryManager.hpp"
 
+/* Entry point for InventoryManager */
 int main(int argc, char** argv) {
   std::string arg, csv_file;
   bool command_line = false;

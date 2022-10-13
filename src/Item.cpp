@@ -1,8 +1,5 @@
 #include "Item.hpp"
 
-/*
- * Constructor for base Item class; initializes data to given values.
- */
 Item::Item(const std::string& nm, const std::string& cat,
            const std::string& sub_cat, unsigned long qty, unsigned long idd,
            double price, double cost, double tx)

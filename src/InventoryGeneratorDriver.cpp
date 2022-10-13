@@ -17,9 +17,12 @@ int main(int argc, char** argv) {
   int i;
   int input;
 
-  help_arg = argv[1];
+  help_arg = "";
+  if (argc == 2) {
+    help_arg = argv[1];
+  }
 
-  if (argc == 2 && (help_arg == "--help" || help_arg == "-h")) {
+  if ((help_arg == "--help" || help_arg == "-h")) {
     std::cout << "inventory-generator" << std::endl;
     printUsage(std::cout);
     std::cout << std::endl;

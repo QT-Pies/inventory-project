@@ -17,8 +17,6 @@ InventoryManager::~InventoryManager() {
   /* using smart pointer for active inventory so no deletion neccessary */
 }
 
-/* gets command line input from user and calls methods from active inventory
- * class */
 int InventoryManager::userInput() {
   char argument;
   std::string name, category, sub_category, expiration, value;
@@ -164,7 +162,6 @@ void InventoryManager::readCSVFile() {
   }
 }
 
-/* traverse active_memory and output content to file */
 int InventoryManager::fileOutput() {
   std::ofstream file;
   std::map<std::string, std::shared_ptr<Item> >::iterator mit;

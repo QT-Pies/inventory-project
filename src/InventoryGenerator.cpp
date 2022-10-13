@@ -7,9 +7,6 @@ InventoryGenerator::InventoryGenerator() {
   bad = false;
 }
 
-/*
- * Generates a file named by the file_name param. with entries number of items.
- */
 void InventoryGenerator::generateFile(const std::string& file_name,
                                       unsigned int unknown,
                                       unsigned int non_perishable,
@@ -117,18 +114,12 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
   return entry;
 }
 
-/*
- * Generate a non-perishable Item.
- */
 std::shared_ptr<CSVEntry> InventoryGenerator::generateNonPerishableItem() {
   auto entry = generateItem();
   entry->category = "NonPerishable";
   return entry;
 }
 
-/*
- * Generate a perishable item.
- */
 std::shared_ptr<CSVEntry> InventoryGenerator::generatePerishableItem() {
   std::random_device rand;
   std::mt19937 gen(rand());
@@ -156,29 +147,17 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generatePerishableItem() {
   return entry;
 }
 
-/*
- * Tell the generator to set bad vals for this key.
- */
 void InventoryGenerator::setBadKey(const std::string& key) {
   bad_keys.insert(key);
   bad = true;
 }
 
-/*
- * Returns whether or not the given key is in the bad key set.
- */
 bool InventoryGenerator::isBadKey(const std::string& key) {
   if (random && bad_keys.empty()) return bad;
   auto it = bad_keys.find(key);
   return !(it == bad_keys.end());
 }
 
-/*
- * Toggles random on/off.
- */
 void InventoryGenerator::toggleRandom() { random = !random; }
 
-/*
- * Sets the random factor.
- */
 void InventoryGenerator::setRandomFactor(const int& i) { factor = i; }
