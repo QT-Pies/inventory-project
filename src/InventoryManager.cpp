@@ -33,7 +33,7 @@ int InventoryManager::userInput()
 	/* switch on argument specified from user and then prompt them accordingly for further input */
 	switch(argument)
 	{
-		case 'A':
+		case 'A': case 'a':
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');
 			
@@ -45,7 +45,7 @@ int InventoryManager::userInput()
 			}
 			break;
 
-		case 'R':
+		case 'R': case 'r':
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');
 
@@ -57,7 +57,7 @@ int InventoryManager::userInput()
 			} 
 			break;
 
-		case 'U':
+		case 'U': case 'u':
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');
 			
@@ -68,7 +68,7 @@ int InventoryManager::userInput()
 				std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
 			}
 			break;
-		case 'Q':
+		case 'Q': case 'q':
 			printf("Quitting\n");
 			return -1;
 		default:
