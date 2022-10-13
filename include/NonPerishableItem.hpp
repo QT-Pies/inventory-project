@@ -5,7 +5,7 @@
 
 class NonPerishableItem : public Item {
  public:
-   /*
+  /*
    * @brief Constructs a NonPerishableItem with the given values
    * @param std::string Name
    * @param std::string Category
@@ -15,7 +15,7 @@ class NonPerishableItem : public Item {
    * @param double Price
    * @param double Cost for store to purchase
    * @param double Tax
-  */
+   */
   NonPerishableItem(const std::string&, const std::string&, const std::string&,
                     unsigned long, unsigned long, double, double, double);
 
@@ -24,13 +24,13 @@ class NonPerishableItem : public Item {
 
   /*
    * @brief Prints the Item in a human friendly way
-  */
+   */
   void print() override;
 
   /*
    * @brief Prints the Item as a CSV entry
    * @param std::ofstream ofstream to write to
-  */
+   */
   void printCSV(std::ofstream&) override;
 
  private:

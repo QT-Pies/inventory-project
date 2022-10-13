@@ -17,7 +17,8 @@ class InventoryGenerator {
   InventoryGenerator();
 
   /*
-   * @brief Generates a file with the specified number of unspecified, non-perishable, and perishable items
+   * @brief Generates a file with the specified number of unspecified,
+   * non-perishable, and perishable items
    * @param string File name
    * @param unsigned-long Number of unknown Items
    * @param unsigned-long Number of NonPerishableItems
@@ -29,42 +30,41 @@ class InventoryGenerator {
   /*
    * @brief Adds the given key to the bad key set
    * @param string - Key/Field to add to bad key set
-  */                   
+   */
   void setBadKey(const std::string&);
 
   /*
    * @brief Set the random factor to not use the default (2).
    * @param int New random factor -- higher the number, lower the chance.
-  */
+   */
   void setRandomFactor(const int&);
 
   /*
    * @brief Toggle whether bad input is random.
-  */
+   */
   void toggleRandom();
 
  protected:
-  
   /*
    * @brief Generates an Item
-  */
+   */
   std::shared_ptr<CSVEntry> generateItem();
 
   /*
    * @brief Generates a NonPerishableItem
-  */
+   */
   std::shared_ptr<CSVEntry> generateNonPerishableItem();
 
   /*
    * @brief Generates a PerishableItem
-  */
+   */
   std::shared_ptr<CSVEntry> generatePerishableItem();
 
   /*
    * @brief Checks whether the given key is in the bad key set
    * @param std::string Key to check
    * @return true if bad key, false if good key
-  */
+   */
   bool isBadKey(const std::string&);
 
   /* Expected columns */

@@ -14,8 +14,7 @@ Sale::Sale(const unsigned long id, const unsigned long sn, const std::string& d,
   total_price = sale_price + (tax * sale_price);
 }
 
-Sale::~Sale() {
-}
+Sale::~Sale() {}
 
 SaleList::SaleList(const std::string& f) {
   file_name = f;
