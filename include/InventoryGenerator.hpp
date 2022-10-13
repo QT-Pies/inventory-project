@@ -46,16 +46,19 @@ class InventoryGenerator {
    protected:
     /*
      * @brief Generates an Item
+     * @return std::shared_ptr<CSVEntry> with values to match Item
      */
     std::shared_ptr<CSVEntry> generateItem();
 
     /*
      * @brief Generates a NonPerishableItem
+     * @return std::shared_ptr<CSVEntry> with values to match NonPerishableItem
      */
     std::shared_ptr<CSVEntry> generateNonPerishableItem();
 
     /*
      * @brief Generates a PerishableItem
+     * @return std::shared_ptr<CSVEntry> with values to match PerishableItem
      */
     std::shared_ptr<CSVEntry> generatePerishableItem();
 

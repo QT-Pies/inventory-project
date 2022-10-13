@@ -13,7 +13,8 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     file_name = file;
 }
 
-InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */ }
+InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
+}
 
 int InventoryManager::userInput() {
     char argument;

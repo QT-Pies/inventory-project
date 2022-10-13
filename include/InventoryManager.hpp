@@ -18,6 +18,7 @@ class InventoryManager {
 
     /*
      * @brief Reads standard input from user
+     * @return 0 on success, -1 on failure
      */
     int userInput();
 
@@ -28,6 +29,7 @@ class InventoryManager {
 
     /*
      * @brief Saves the current inventory to disk
+     * @return 0 on success, -1 on failure
      */
     int fileOutput();
 
