@@ -83,3 +83,4 @@ output_file.csv is the name of the of the file you want to generate -- straightf
 #### Known Issues / Future Improvements
 1. Seg-fault if used improperly; i.e, running ```./bin/gen-inventory``` with no arguments results in a seg fault.
 2. Names are unrealistic.
+3. Sub-categories are not generated.
