@@ -11,6 +11,11 @@ class CSVEntry {
 
  public:
   CSVEntry();
+
+  /*
+   * @brief Prints the entry out to an ostream in CSV format
+   * @param std::ostream& ostream to output to (std::cout | std::ofstream)
+  */
   void printEntry(std::ostream&);
 
  protected:

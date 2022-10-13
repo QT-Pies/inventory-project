@@ -7,7 +7,10 @@
 
 class Date {
  public:
-  /* Constructor; takes std::string, stores it into class data. */
+  /* 
+   * @brief Constructor; converts std::string into Date.
+   * @param std::string Date in string format
+   */
   Date(const std::string&);
 
   /* I opted to make these members public, as I think it makes sense in a

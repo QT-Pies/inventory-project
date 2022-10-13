@@ -14,34 +14,43 @@ class ActiveInventory {
   ~ActiveInventory();
 
   /*
-   * This function will add an item to the inventory maps and return
+   * @brief This function will add an item to the inventory maps and return
    * how many items were actually added.
-   * If there is an error it will return -1.
+   * @param std::shared_ptr<Item> Item to insert
+   * @return 0 on success, -1 on failure
    */
   int addItem(std::shared_ptr<Item>);
 
   /*
-   * This function will remove an item from the inventroy maps based
+   * @brief This function will remove an item from the inventroy maps based
    * on the given string name, and return how many items were actually
-   * removed. If there is an error it will return -1.
+   * removed.
+   * @param std::string Name of Item to remove
+   * @return 0 on success, -1 on failure
    */
   int removeItem(std::string);
 
-  /* This function will update an existing item based on given item
+  /* @brief This function will update an existing item based on given item
    * name and property name. It will return the number of fields
-   * updated. If there is an error it will return a -1.
+   * updated.
+   * @param std::string Name of Item to update
+   * @param std::string Field on Item to update
+   * @param std::string New value for field
+   * @return 0 on success, -1 on failure
    */
   int updateItem(std::string, std::string, std::string);
 
   /*
-   * This function will look up an item based on it's name. Returns
-   * NULL if the item doesn't exist.
+   * @brief This function will look up an item based on it's name.
+   * @param std::string Name of Item to search for
+   * @return std::shared_ptr<Item> to Item, or NULL if Item not found
    */
   std::shared_ptr<Item> searchByName(std::string);
 
   /*
-   * This function will look up an item based on it's id. Returns
-   * NULL if the item doesn't exist.
+   * @brief This function will look up an item based on it's id.
+   * @param unsigned-long ID of Item to search for
+   * @return std::shared_ptr<Item> to Item, or NULL if Item not found
    */
   std::shared_ptr<Item> searchById(unsigned long);
 
