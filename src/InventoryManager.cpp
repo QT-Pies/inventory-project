@@ -3,6 +3,8 @@
 #include <fstream>
 #include <map>
 #include "InventoryManager.hpp"
+#include "PerishableItem.hpp"
+#include "NonPerishableItem.hpp"
 
 InventoryManager::InventoryManager(const bool cli, const std::string file)
 {
@@ -19,8 +21,10 @@ InventoryManager::~InventoryManager()
 int InventoryManager::userInput()
 {
 	char argument;
-	std::string name, category, value;
-	unsigned long id; 
+	std::string name, category, sub_category, expiration, value;
+	unsigned long id, quantity;
+        double sale_price, buy_price, tax;
+	std::shared_ptr<Item> new_item;
 	
 	if (command_line == false) {
         fprintf(stderr, "Command line is currently set to false\n");
@@ -37,10 +41,24 @@ int InventoryManager::userInput()
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');
 			
-			std::cout << "Name Perishable/NonPerishable ID: ";
-			std::cin >> name >> category >> id;
+			std::cout << "Name Perishable/NonPerishable SubCategory Quantity ID SalePrice CostOfGood Tax ExpirationDate: \n    If you don't know one of these or they do not apply, set to -1000000";
+			std::cin >> name >> category >> sub_category >>
+				quantity >> id >> sale_price >> buy_price >>
+				tax >> expiration;
+			if (category == "Perishable") {
+				new_item = std::make_shared<PerishableItem>(
+				    name, category, sub_category, quantity, id,
+				    sale_price, buy_price, tax, expiration);
+			} else if (category == "NonPerishable") {
+				new_item = std::make_shared<NonPerishableItem>(
+				    name, category, sub_category, quantity, id, 
+				    sale_price, buy_price, tax);
+			} else {
+			        fprintf(stderr, "Invalid category\n");
+				break;
+			}
 
-			if (active_inventory->addItem(name, category, id) != -1) {
+			if (active_inventory->addItem(new_item) != -1) {
 				std::cout << "Added " << name << " of type " << category << std::endl;
 			}
 			break;
@@ -87,7 +105,7 @@ void InventoryManager::readCSVFile()
 {
 	std::string name, str_id, cat, sub_cat, qty, sale_price;
 	std::string tax, total_price, buy_cost, profit, exp, tmp_line; 
-	unsigned long id;
+	std::shared_ptr<Item> new_item;
 	
 	std::ifstream csv_file(file_name);
 
@@ -105,7 +123,6 @@ void InventoryManager::readCSVFile()
 		if (!csv_file.good()) break;
 
 		getline(csv_file, str_id, ',');
-		id = std::stoul(str_id);
 		getline(csv_file, cat, ',');
 		getline(csv_file, sub_cat, ',');
 		getline(csv_file, qty, ',');
@@ -116,30 +133,25 @@ void InventoryManager::readCSVFile()
 		getline(csv_file, profit, ',');
 		getline(csv_file, exp, '\n');
 
-		/* Add the item to the inventory. */
-		if (active_inventory->addItem(name, cat, id) != -1) {
-			std::cout << "Added " << name << " of type " << cat << std::endl;
+		/* Create the Item to be added. */
+		if (cat == "Perishable") {
+			new_item = std::make_shared<PerishableItem>(name, cat, 
+				sub_cat, stoul(qty), stoul(str_id), stod(sale_price), stod(buy_cost), stod(tax), exp);	
+		} else if (cat == "NonPerishable") {
+			new_item = std::make_shared<NonPerishableItem>(name, 
+				cat, sub_cat, stoul(qty), stoul(str_id), stod(sale_price), stod(buy_cost), stod(tax));
 		} else {
-			fprintf(stderr, "Failed to read in item %s with ID %lu.\n", name.c_str(), id);
+			fprintf(stderr, "Invalid category.\n");
 		}
 
-		/* Update all the item categories */
-		active_inventory->updateItem(name, "sub_category", sub_cat);
-		active_inventory->updateItem(name, "quantity", qty);
-		active_inventory->updateItem(name, "sale_price", sale_price);
-		active_inventory->updateItem(name, "buy_cost", buy_cost);
-		active_inventory->updateItem(name, "tax", tax);
-		active_inventory->updateItem(name, "total_price", total_price);
-		active_inventory->updateItem(name, "profit", profit);
-		if (cat == "Perishable") {
-			active_inventory->updateItem(name, "expiration_date", exp);
-		}
+		/* Add the item to the active inventory. */
+		active_inventory->addItem(new_item);
 
 		/* Test to see if we successfully read in item. */
 		auto item_ptr = active_inventory->searchByName(name);
 
 		if (item_ptr == NULL) {
-    		fprintf(stderr, "Failed to read item %s that we just created.\n", name.c_str());
+    			fprintf(stderr, "Failed to read item %s that we just created.\n", name.c_str());
 		}
 	}
 }

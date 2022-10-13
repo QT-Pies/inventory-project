@@ -11,12 +11,6 @@ class ActiveInventory {
         
 	ActiveInventory();
 
-	/*
-	 * This constructor will call the file input function on the given
-	 * file name.
-	 */
-	ActiveInventory(std::string);
-
 	~ActiveInventory();
 
 	/* 
@@ -24,7 +18,7 @@ class ActiveInventory {
 	 * how many items were actually added.
 	 * If there is an error it will return -1.
          */
-        int addItem(const std::string, const std::string, const unsigned long);
+        int addItem(std::shared_ptr<Item>);
 
 	/*
 	 * This function will remove an item from the inventroy maps based 

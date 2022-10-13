@@ -7,7 +7,7 @@
 class Item
 {
 public:
-    Item(const std::string&, const std::string&, unsigned long, unsigned long, double, double, double);
+    Item(const std::string&, const std::string&, const std::string& ,unsigned long, unsigned long, double, double, double);
     virtual ~Item() = default;
     virtual void print() = 0;
     virtual void printCSV(std::ofstream&) = 0;
