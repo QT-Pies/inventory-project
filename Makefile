@@ -50,3 +50,6 @@ obj/Sales.o: src/Sales.cpp
 
 clean: 
 	rm $(EXECUTABLES) obj/*.o 
+
+better:
+	clang-format -i src/* include/*

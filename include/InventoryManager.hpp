@@ -3,18 +3,40 @@
 
 #include "ActiveInventory.hpp"
 
-class InventoryManager
-{
-public:
-	InventoryManager(const bool, const std::string);
-	~InventoryManager();
-	int userInput();
-	void readCSVFile();
-	int fileOutput();
-private:
-	bool command_line;
-	std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
-	std::string file_name;
+class InventoryManager {
+   public:
+    /*
+     * @brief Constructor; specifies whether CLI mode is enabled, and the file to
+     * open.
+     * @param bool CLI mode
+     * @param std::string Inventory file to read in
+     */
+    InventoryManager(const bool, const std::string);
+
+    /* @brief Destructor; does nothing */
+    ~InventoryManager();
+
+    /*
+     * @brief Reads standard input from user
+     * @return 0 on success, -1 on failure
+     */
+    int userInput();
+
+    /*
+     * @brief Reads in CSV file and stores it into active_inventory
+     */
+    void readCSVFile();
+
+    /*
+     * @brief Saves the current inventory to disk
+     * @return 0 on success, -1 on failure
+     */
+    int fileOutput();
+
+   private:
+    bool command_line;
+    std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
+    std::string file_name;
 };
 
 #endif

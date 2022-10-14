@@ -1,18 +1,11 @@
 #include "PerishableItem.hpp"
 
-/*
- * Constructor for PerishableItem; calls base Item constructor, initializes expiration_date member.
-*/
-PerishableItem::PerishableItem(const std::string& nm, const std::string& cat, const std::string& sub_cat, unsigned long qty, unsigned long idd, double price, double cost, double tx, const std::string& exp)
-: Item(nm, cat, sub_cat, qty, idd, price, cost, tx), expiration_date(Date(exp))
-{
-}
+PerishableItem::PerishableItem(const std::string &nm, const std::string &cat, const std::string &sub_cat,
+                               unsigned long qty, unsigned long idd, double price, double cost, double tx,
+                               const std::string &exp)
+    : Item(nm, cat, sub_cat, qty, idd, price, cost, tx), expiration_date(Date(exp)) {}
 
-/*
- * Prints out the item information to standard output.
-*/
-void PerishableItem::print()
-{
+void PerishableItem::print() {
     std::cout << "ID: " << id << " Item: " << name << std::endl;
     std::cout << "Expiration Date: " << expiration_date.string_date << std::endl;
     std::cout << "In-Stock: " << quantity << std::endl;
@@ -22,27 +15,18 @@ void PerishableItem::print()
     std::cout << "Profit per unit sold: " << profit << std::endl;
 }
 
-/* print out item in csv format */
-void PerishableItem::printCSV(std::ofstream& file)
-{
-	file << name << ",";
-	file << id << ",";
-	file << category << ",";
-	file << sub_category << ",";
-	file << quantity << ",";
-	file << sale_price << ",";
-	file << tax << ",";
-	file << total_price << ",";
-	file << buy_cost << ",";
-	file << profit << ",";
-	file << expiration_date.string_date;
-	
+void PerishableItem::printCSV(std::ofstream &file) {
+    file << name << ",";
+    file << id << ",";
+    file << category << ",";
+    file << sub_category << ",";
+    file << quantity << ",";
+    file << sale_price << ",";
+    file << tax << ",";
+    file << total_price << ",";
+    file << buy_cost << ",";
+    file << profit << ",";
+    file << expiration_date.string_date;
 }
 
-/*
- * Destructor; empty implementation, but needed to shut compiler up.
-*/
-PerishableItem::~PerishableItem()
-{
-    
-}
+PerishableItem::~PerishableItem() {}
