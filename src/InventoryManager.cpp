@@ -28,7 +28,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (P)rint, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -40,8 +40,7 @@ int InventoryManager::userInput() {
             std::cin.ignore(10000, '\n');
 
             std::cout << "Name Perishable/NonPerishable SubCategory Quantity ID SalePrice "
-                         "CostOfGood Tax ExpirationDate: \n    If you don't know one of "
-                         "these or they do not apply, set to -1000000";
+                         "CostOfGood Tax ExpirationDate (Enter -1000000 if unsure): ";
             std::cin >> name >> category >> sub_category >> quantity >> id >> sale_price >> buy_price >> tax >>
                 expiration;
             if (category == "Perishable") {
@@ -85,12 +84,23 @@ int InventoryManager::userInput() {
                 std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
             }
             break;
+
+        case 'P':
+        case 'p':
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            
+            std::cout << "All | Perishable | NonPerishable | Item Name: ";
+            std::cin >> category;
+            active_inventory->printItems(category);
+            break;
+        
         case 'Q':
         case 'q':
             printf("Quitting\n");
             return -1;
         default:
-            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate>" << std::endl;
+            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (P)rint | (Q)uit>" << std::endl;
             break;
     }
 
