@@ -89,12 +89,12 @@ int InventoryManager::userInput() {
         case 'p':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
-            
+
             std::cout << "All | Perishable | NonPerishable | Item Name: ";
             std::cin >> category;
             active_inventory->printItems(category);
             break;
-        
+
         case 'Q':
         case 'q':
             printf("Quitting\n");

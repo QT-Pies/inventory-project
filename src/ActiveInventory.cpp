@@ -182,38 +182,33 @@ std::shared_ptr<Item> ActiveInventory::searchById(unsigned long item_id) {
 }
 
 void ActiveInventory::printItems(std::string value) {
-
     std::shared_ptr<Item> item;
-    std::map<unsigned long, std::shared_ptr<Item> >::iterator id_it;
-    std::map<std::string, std::map<std::string, std::shared_ptr<Item> > >::iterator cat_it;
-    std::map<std::string, std::shared_ptr<Item> >::iterator name_it;
 
     if (value == "All") {
-        
         /* if map is empty print error message and return*/
         if (inv_by_id.size() == 0) {
             fprintf(stderr, "Inventory is currently empty\n");
             return;
         }
         printHead();
-        for (id_it = inv_by_id.begin(); id_it != inv_by_id.end(); id_it++) {
+        for (auto id_it = inv_by_id.begin(); id_it != inv_by_id.end(); id_it++) {
             id_it->second->print();
         }
 
     } else if (value == "Perishable" || value == "NonPerishable") {
-        cat_it = inv_by_category.find(value);
-        
+        auto cat_it = inv_by_category.find(value);
+
         /*if category is empty print error message and return*/
         if (cat_it == inv_by_category.end()) {
             fprintf(stderr, "%s category is currently empty\n", value.c_str());
             return;
         }
         printHead();
-        for (name_it = cat_it->second.begin(); name_it != cat_it->second.end(); name_it++) {
+        for (auto name_it = cat_it->second.begin(); name_it != cat_it->second.end(); name_it++) {
             name_it->second->print();
         }
 
-    } else{
+    } else {
         item = searchByName(value);
 
         /* if item does not exist then print error message and return */
@@ -227,17 +222,10 @@ void ActiveInventory::printItems(std::string value) {
     }
 }
 
-
 void ActiveInventory::printHead() {
-    std::cout << 
-    std::left << std::setw(7) << "ID" << 
-    std::left << std::setw(40) << "ITEM" <<
-    std::left << std::setw(17) << "CATEGORY" <<
-    std::left << std::setw(10) << "STOCK" <<
-    std::left << std::setw(15) << "PURCHASE_COST" <<
-    std::left << std::setw(15) << "SALE-PRICE" <<
-    std::left << std::setw(15) << "TAX-ON-ITEM" <<
-    std::left << std::setw(15) << "TOTAL-PRICE" << 
-    std::left << std::setw(10) << "PROFIT" << 
-    std::left << std::setw(10) << "EXPIRATION" << std::endl;
+    std::cout << std::left << std::setw(7) << "ID" << std::left << std::setw(40) << "ITEM" << std::left << std::setw(17)
+              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(15) << "PURCHASE_COST"
+              << std::left << std::setw(15) << "SALE-PRICE" << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left
+              << std::setw(15) << "TOTAL-PRICE" << std::left << std::setw(10) << "PROFIT" << std::left << std::setw(10)
+              << "EXPIRATION" << std::endl;
 }
