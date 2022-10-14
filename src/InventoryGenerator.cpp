@@ -10,7 +10,11 @@ InventoryGenerator::InventoryGenerator() {
 void InventoryGenerator::generateFile(const std::string &file_name, unsigned int unknown, unsigned int non_perishable,
                                       unsigned int perishable) {
     unsigned int i;
-
+  /* code that doesn't match format TEST */
+  if (unknown==3)
+  {
+    throw std::string("do stuff");
+  }
     /* Attempt to open file and throw exception if failed */
     file.open(file_name);
     if (!file.is_open()) throw std::string("Failed to open file for writing.");
