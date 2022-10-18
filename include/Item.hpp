@@ -2,8 +2,10 @@
 #define ITEM_HPP
 
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
+
 class Item {
    public:
     /*

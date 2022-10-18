@@ -54,6 +54,18 @@ class ActiveInventory {
      */
     std::shared_ptr<Item> searchById(unsigned long);
 
+    /*
+     * @brief this function will print out all items, Perishable item, NonPerishable items, or
+     * an individual item base on user input.
+     * @param std::string Category to print
+     */
+    void printItems(std::string);
+
+    /*
+     * @brief this function will print the head for the printItems function
+     */
+    void printHead();
+
    private:
     friend class InventoryManager;
     /*

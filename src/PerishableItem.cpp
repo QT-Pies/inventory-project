@@ -6,13 +6,11 @@ PerishableItem::PerishableItem(const std::string &nm, const std::string &cat, co
     : Item(nm, cat, sub_cat, qty, idd, price, cost, tx), expiration_date(Date(exp)) {}
 
 void PerishableItem::print() {
-    std::cout << "ID: " << id << " Item: " << name << std::endl;
-    std::cout << "Expiration Date: " << expiration_date.string_date << std::endl;
-    std::cout << "In-Stock: " << quantity << std::endl;
-    std::cout << "Stocking/Purchase Cost: " << buy_cost << std::endl;
-    std::cout << "Sale Price: " << sale_price << std::endl;
-    std::cout << "Tax on Item: " << tax * sale_price << std::endl;
-    std::cout << "Profit per unit sold: " << profit << std::endl;
+    std::cout << std::left << std::setw(7) << id << std::left << std::setw(40) << name << std::left << std::setw(17)
+              << category << std::left << std::setw(10) << quantity << std::left << std::setw(15) << buy_cost
+              << std::left << std::setw(15) << sale_price << std::left << std::setw(15) << tax * sale_price << std::left
+              << std::setw(15) << total_price << std::left << std::setw(10) << profit << std::left << std::setw(10)
+              << expiration_date.string_date << std::endl;
 }
 
 void PerishableItem::printCSV(std::ofstream &file) {
