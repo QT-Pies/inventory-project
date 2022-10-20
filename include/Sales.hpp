@@ -28,6 +28,8 @@ class Sale {
      * @param string Buyer
      * @param string Seller
      */
+    // 10 parameters lol, this is really redundant, might want to make sale just about the cild file, then sale list with parent file
+    // sale_id | num_items | 
     Sale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double,
          const std::string&, const std::string&);
 
@@ -35,15 +37,13 @@ class Sale {
     ~Sale();
 
    protected:
-    unsigned long identification;
-    unsigned long sale_number;
-    std::string date;
-    unsigned long amount_sold;
+    // variables for both
+    unsigned long sale_id;
+    // variables for parent
+    unsigned long num_items;
+    // variables used for child file
+    unsigned long item_id, quantity_sold;
     double sale_price;
-    double tax;
-    std::string buyer;
-    std::string seller;
-    double total_price;
 };
 
 class SaleList {
@@ -52,22 +52,7 @@ class SaleList {
      * @brief Constructor; creates list of sales from given file.
      * @param std::string Name of file
      */
-    SaleList(const std::string&);
-
-    /*
-     * @brief Adds a sale to the vector by using the Sale class constructor,
-     * returns false if an error occurs These errors include certain numbers being
-     * 0 or strings being empty.
-     * @param unsigned-long ID
-     * @param unsigned-long Sale number
-     * @param string Date of sale
-     * @param unsigned-long Amount sold in transaction
-     * @param double Sale subtotal
-     * @param double Sales tax
-     * @param string Buyer
-     * @param string Seller
-     * @return true on success, false on failure
-     */
+    SaleList();
     bool addSale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double,
                  const double, const std::string&, const std::string&);
 
@@ -94,8 +79,9 @@ class SaleList {
     bool save();
 
    protected:
+   // will change this data structure, want to impliment a bit first
     std::vector<std::shared_ptr<Sale> > sales;
-    std::string file_name;
+    std::string parent_file, child_file;
     int offset;
 };
 

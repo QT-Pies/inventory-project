@@ -2,6 +2,7 @@
 #define INVENTORY_MANAGER_HPP
 
 #include "ActiveInventory.hpp"
+#include "Sales.hpp"
 
 class InventoryManager {
    public:
@@ -37,6 +38,7 @@ class InventoryManager {
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::string file_name;
+    std::vector<std::shared_ptr<SaleList> > sales_list;
 };
 
 #endif

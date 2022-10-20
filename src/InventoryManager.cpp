@@ -18,9 +18,9 @@ InventoryManager::~InventoryManager() { /* using smart pointer for active invent
 
 int InventoryManager::userInput() {
     char argument;
-    std::string name, category, sub_category, expiration, value;
+    std::string name, category, sub_category, expiration, value, date, buyer, seller;
     unsigned long id, quantity;
-    double sale_price, buy_price, tax;
+    double sale_price, buy_price, tax, total_price;
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
@@ -28,7 +28,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (P)rint, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (P)rint, (S)ale, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -94,7 +94,20 @@ int InventoryManager::userInput() {
             std::cin >> category;
             active_inventory->printItems(category);
             break;
+// this is what i am adding
+        case 'S':
+        case 's':
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
 
+            sale_list.load();
+
+            std::cout << "Items in Sale | Date | Total Price | Buyer | Seller";
+            // just added all necisary variables
+            std::cin >> quantity >> date >> total_price >> buyer >> seller;
+            
+            break;
+// end of what I am adding
         case 'Q':
         case 'q':
             printf("Quitting\n");
