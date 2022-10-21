@@ -94,7 +94,7 @@ int InventoryManager::userInput() {
             std::cin >> category;
             active_inventory->printItems(category);
             break;
-// this is what i am adding
+// this is what i am adding, 
         case 'S':
         case 's':
             std::cin.clear();

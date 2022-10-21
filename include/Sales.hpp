@@ -7,6 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <map>
 #include <vector>
 
 #include "Item.hpp"
@@ -19,31 +20,37 @@ class Sale {
      * @brief Sale constructor that sets all the data for the given sale.
      * Note it is checked at some point that most the numbers are not 0 and
      * strings are not empty.
-     * @param unsigned-long ID
-     * @param unsigned-long Sale number
-     * @param string Date of sale
-     * @param unsigned-long Amount sold in transaction
-     * @param double Sale subtotal
-     * @param double Sales tax
-     * @param string Buyer
-     * @param string Seller
      */
-    // 10 parameters lol, this is really redundant, might want to make sale just about the cild file, then sale list with parent file
-    // sale_id | num_items | 
-    Sale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double, const double,
-         const std::string&, const std::string&);
+    // sale_id | item_id | num_sold | sale_price
+    Sale(const unsigned long, const unsigned long, const unsigned long, const double);
 
     /* @brief Destructor; does nothing */
     ~Sale();
 
    protected:
-    // variables for both
-    unsigned long sale_id;
-    // variables for parent
-    unsigned long num_items;
-    // variables used for child file
-    unsigned long item_id, quantity_sold;
+    unsigned long sale_id, item_id, num_sold;
     double sale_price;
+};
+
+class Transaction {
+    friend class SaleList;
+
+   public:
+   // sale_id | buyer | seller | 
+    Transaction(const unsigned long, const std::string, const std::string, const std::string);
+    ~Transaction();
+    // will call sale constructor with these 
+    bool add_sale(const unsigned long, const unsigned long, const unsigned long);
+    // will calculate total_price and set num_sales appropriatly, tax will be hard coded at .0635, average in us
+    // will want to change tax appropriatly, maybe add tax break feture to
+    // date will be set with automatically as well, baised on current day or file reading
+
+   protected:
+    int sale_id, num_sales;
+    double total_price;
+    std::string date, buyer, seller;
+    std::vector<std::shared_ptr<Sale> > sales;
+
 };
 
 class SaleList {
@@ -53,8 +60,8 @@ class SaleList {
      * @param std::string Name of file
      */
     SaleList();
-    bool addSale(const unsigned long, const unsigned long, const std::string&, const unsigned long, const double,
-                 const double, const std::string&, const std::string&);
+    // will call Transaction constructor
+    bool add_transaction(const unsigned long, const std::string, const std::string, const std::string);
 
     /*
      * @brief Creates a new File with the given file name, will add the begining
@@ -77,12 +84,25 @@ class SaleList {
      * @return true on success, false on failure
      */
     bool save();
+    // prints all transactions
+    void print();
 
    protected:
-   // will change this data structure, want to impliment a bit first
-    std::vector<std::shared_ptr<Sale> > sales;
+    // will change this data structure, want to impliment a bit first
+    // std::vector<std::shared_ptr<Sale> > sales;
+    // year, month, day, then 
+    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
     std::string parent_file, child_file;
-    int offset;
 };
 
 #endif
+
+// in constructor, initilizes maps of sales and transactions, so I dont have to worry about 
+
+// search by day, return just the day
+// should also do month and year, returning the respectice maps
+
+// have (S) take in a full transaction, first check to see if files are open, and have correct starting format, if empty create new file, else load, 
+// have a check to seee if previously loaded, maybe just see if its empty or not
+// take in sales, maybe until a particular string is read in, then after save to file, not append
+// also
