@@ -37,10 +37,10 @@ class Transaction {
 
    public:
    // sale_id | buyer | seller | 
-    Transaction(const unsigned long, const std::string, const std::string, const std::string);
+    Transaction(const unsigned long, const std::string, const std::string); // may change to take in date, may not, could just calculat here
     ~Transaction();
     // will call sale constructor with these 
-    bool add_sale(const unsigned long, const unsigned long, const unsigned long);
+    bool add_sale(const unsigned long, const unsigned long, const unsigned long, const double);
     // will calculate total_price and set num_sales appropriatly, tax will be hard coded at .0635, average in us
     // will want to change tax appropriatly, maybe add tax break feture to
     // date will be set with automatically as well, baised on current day or file reading
@@ -59,9 +59,9 @@ class SaleList {
      * @brief Constructor; creates list of sales from given file.
      * @param std::string Name of file
      */
-    SaleList();
+    SaleList(const std::string);
     // will call Transaction constructor
-    bool add_transaction(const unsigned long, const std::string, const std::string, const std::string);
+    bool add_transaction(const unsigned long, const std::string, const std::string);
 
     /*
      * @brief Creates a new File with the given file name, will add the begining
@@ -90,7 +90,8 @@ class SaleList {
    protected:
     // will change this data structure, want to impliment a bit first
     // std::vector<std::shared_ptr<Sale> > sales;
-    // year, month, day, then 
+    // year, month, day, then the transactions on that day
+
     std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
     std::string parent_file, child_file;
 };

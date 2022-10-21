@@ -1,30 +1,62 @@
 #include "Sales.hpp"
-
-Sale::Sale(const unsigned long id, const unsigned long sn, const std::string &d, const unsigned long as,
-           const double sp, const double t, const std::string &b, const std::string &s)
-    : identification(id), sale_number(sn), date(d), amount_sold(as), sale_price(sp), tax(t), buyer(b), seller(s) {
-    total_price = sale_price + (tax * sale_price);
+    // sale_id | item_id | num_sold | sale_price
+Sale::Sale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp)
+    : sale_id(id), item_id(iid), num_sold(ns), sale_price(sp) {
 }
 
 Sale::~Sale() {}
 
-SaleList::SaleList() {
-    parent_file = "Parrent_Sales.csv";
-    child_file = "Child_Sales.csv";
-    offset = 0;
+Transaction::Transaction(const unsigned long sid, const std::string b, const std::string s)
+    : sale_id(sid), buyer(b), seller(s) {
+    total_price = 0;
+    num_sales = 0;
+    // set date here, will have to adjust it so be prepared.
+
 }
 
-bool SaleList::addSale(const unsigned long id, const unsigned long sn, const std::string &d, const unsigned long as,
-                       const double sp, const double t, const std::string &b, const std::string &s) {
-    if (id == 0 || sn == 0 || as == 0 || sp == 0 || d == "" || b == "") {
-        std::cerr << "Failed to read Sales Input. Note that the ID, Sales Number, "
-                     "and Sales Price cannot be 0 and a Date and Buyer must be "
-                     "given.\nContinuing to read.";
+Transaction::~Transaction() {}
+
+bool Transaction::add_sale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp) {
+    if(sid == 0 || iid == 0 || ns == 0){
+        std::cerr << "Invalid input. Make sure Sale ID, Item ID, and amount sold are greater than 0. Continuing to read\n";
         return false;
     }
-
-    auto new_sale = std::make_shared<Sale>(id, sn, d, as, sp, t, b, s);
+    auto new_sale = std::make_shared<Sale>(sid, iid, ns, sp);
     sales.push_back(new_sale);
+    total_price += (ns * sp);
+    num_sales++;
+    return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SaleList::SaleList(const std::string f) {
+    // change to where te files are the baised on the given file name, then maybe just add _parent and _child, use substring
+    parent_file = "Parrent_Sales.csv";
+    child_file = "Child_Sales.csv";
+}
+
+bool SaleList::add_transaction(const unsigned long sid, const std::string b, const std::string s) {
+    if (sid == 0 || b == "" || s == "") {
+        std::cerr << "Failed to read Sales Input. Note that the Sales ID"
+                     "and a Date and Buyer must be given.\nContinuing to read.";
+        return false;
+    }
+    // get date here, then put the new transaction in the appropriate place based on the date
+    auto new_transaction = std::make_shared<Transaction>(sid, b, s);
     return true;
 }
 
@@ -41,7 +73,7 @@ bool SaleList::newFile() {
 
     fout.open(child_file.c_str());
     if (!fout.is_open()) return false;
-    fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price, Tax";
+    fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price";
     fout.close();
     return true;
 }
