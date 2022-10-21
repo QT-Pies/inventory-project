@@ -10,14 +10,14 @@ class NonPerishableItem : public Item {
      * @param std::string Name
      * @param std::string Category
      * @param std::string Sub-Category
-     * @param unsigned-long Quantity
-     * @param unsigned-long ID
-     * @param double Price
-     * @param double Cost for store to purchase
-     * @param double Tax
+     * @param std::string Quantity
+     * @param std::string ID
+     * @param std::string Price
+     * @param std::string Cost for store to purchase
+     * @param std::string Tax
      */
-    NonPerishableItem(const std::string&, const std::string&, const std::string&, unsigned long, unsigned long, double,
-                      double, double);
+    NonPerishableItem(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+                      const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     ~NonPerishableItem() override;
@@ -26,6 +26,8 @@ class NonPerishableItem : public Item {
      * @brief Prints the Item in a human friendly way
      */
     void print() override;
+
+    /* Don't need to override setValue because we don't have any extra members. */
 
     /*
      * @brief Prints the Item as a CSV entry

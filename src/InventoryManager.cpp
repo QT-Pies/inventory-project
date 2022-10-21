@@ -19,8 +19,8 @@ InventoryManager::~InventoryManager() { /* using smart pointer for active invent
 int InventoryManager::userInput() {
     char argument;
     std::string name, category, sub_category, expiration, value;
-    unsigned long id, quantity;
-    double sale_price, buy_price, tax;
+    std::string id, quantity;
+    std::string sale_price, buy_price, tax;
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
@@ -143,11 +143,11 @@ void InventoryManager::readCSVFile() {
 
         /* Create the Item to be added. */
         if (cat == "Perishable") {
-            new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, stoul(qty), stoul(str_id), stod(sale_price),
-                                                        stod(buy_cost), stod(tax), exp);
+            new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, qty, str_id, sale_price,
+                                                        buy_cost, tax, exp);
         } else if (cat == "NonPerishable") {
-            new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, stoul(qty), stoul(str_id),
-                                                           stod(sale_price), stod(buy_cost), stod(tax));
+            new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, str_id,
+                                                           sale_price, buy_cost, tax);
         } else {
             fprintf(stderr, "Invalid category.\n");
         }

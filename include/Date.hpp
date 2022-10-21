@@ -7,6 +7,9 @@
 
 class Date {
    public:
+
+    Date() = default;
+
     /*
      * @brief Constructor; converts std::string into Date.
      * @param std::string Date in string format

@@ -1,7 +1,7 @@
 #include "NonPerishableItem.hpp"
 
 NonPerishableItem::NonPerishableItem(const std::string &nm, const std::string &cat, const std::string &sub_cat,
-                                     unsigned long qty, unsigned long idd, double price, double cost, double tx)
+                                     const std::string &qty, const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx)
     : Item(nm, cat, sub_cat, qty, idd, price, cost, tx) {}
 
 void NonPerishableItem::print() {

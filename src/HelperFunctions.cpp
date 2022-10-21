@@ -3,7 +3,7 @@
 unsigned long toUnsignedLong(const std::string& str) {
     /* Check if number is negative */
     if (str.front() == '-') {
-        throw std::bad_argument("toUnsignedLong -- Expected number >= 0.");
+        throw std::invalid_argument("toUnsignedLong -- Expected number >= 0.");
     }
 
     /* Otherwise, it's >= 0, return it. */
@@ -13,7 +13,7 @@ unsigned long toUnsignedLong(const std::string& str) {
 double toFauxUnsignedDouble(const std::string& str) {
     /* Check if number is negative */
     if (str.front() == '-') {
-        throw std::bad_argument("toFauxUnsignedDouble -- Expected number >= 0.");
+        throw std::invalid_argument("toFauxUnsignedDouble -- Expected number >= 0.");
     }
 
     /* Otherwise, it's >= 0, return it. */
