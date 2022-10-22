@@ -196,6 +196,8 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             inv_by_id.erase(inv_by_id.find(item->id));
             item->setValue(field, value);
             inv_by_id[item->id] = item;
+        } else if (field == "category") {
+            throw std::invalid_argument("You can only set category when creating an Item.");
         } /* Otherwise, all other fields shouldn't need any additional checks. */ 
         else {
             item->setValue(field, value);

@@ -53,8 +53,8 @@ bool Item::setValue(std::string key, const std::string& value) {
             tax = toFauxUnsignedDouble(value);
             return true;
         } else {
-            std::cerr << "Could not find key '" << key << "' in Item or any of its inherited class." << std::endl;
-            return false;
+            /* This throw will get overwritten, but still throw. */
+            throw std::invalid_argument("Could not find key '" + key + "' in Item or the subclass you called this method on.");
         }
     } catch (std::invalid_argument& e) {
         /* We don't care about the error message thrown from the helper functions, throw another one that's more useful to the end user. */
