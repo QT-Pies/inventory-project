@@ -18,8 +18,8 @@ class PerishableItem : public Item {
      * @param std::string Tax
      * @param std::string Expiration date
      */
-    PerishableItem(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
-                   const std::string&, const std::string&, const std::string&);
+    PerishableItem(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+                   const std::string&, const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     ~PerishableItem() override;

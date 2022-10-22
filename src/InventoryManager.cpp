@@ -43,14 +43,14 @@ int InventoryManager::userInput() {
                          "CostOfGood Tax ExpirationDate (Enter -1000000 if unsure): ";
             std::cin >> name >> category >> sub_category >> quantity >> id >> sale_price >> buy_price >> tax >>
                 expiration;
-            
+
             try {
                 if (category == "Perishable") {
                     new_item = std::make_shared<PerishableItem>(name, category, sub_category, quantity, id, sale_price,
                                                                 buy_price, tax, expiration);
                 } else if (category == "NonPerishable") {
-                    new_item = std::make_shared<NonPerishableItem>(name, category, sub_category, quantity, id, sale_price,
-                                                                buy_price, tax);
+                    new_item = std::make_shared<NonPerishableItem>(name, category, sub_category, quantity, id,
+                                                                   sale_price, buy_price, tax);
                 } else {
                     fprintf(stderr, "Invalid category\n");
                     break;
@@ -157,11 +157,11 @@ void InventoryManager::readCSVFile() {
         try {
             /* Create the Item to be added. */
             if (cat == "Perishable") {
-                new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, qty, str_id, sale_price,
-                                                            buy_cost, tax, exp);
+                new_item =
+                    std::make_shared<PerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax, exp);
             } else if (cat == "NonPerishable") {
-                new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, str_id,
-                                                            sale_price, buy_cost, tax);
+                new_item =
+                    std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax);
             } else {
                 fprintf(stderr, "Invalid category.\n");
             }
@@ -189,7 +189,10 @@ void InventoryManager::readCSVFile() {
     }
 
     if (lines_read != lines_successful) {
-        fprintf(stderr, "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into the inventory and will be lost on file save.\n", lines_read, lines_successful, lines_read - lines_successful);
+        fprintf(stderr,
+                "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into "
+                "the inventory and will be lost on file save.\n",
+                lines_read, lines_successful, lines_read - lines_successful);
     }
 }
 

@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+
 #include "HelperFunctions.hpp"
 
 class Item {
@@ -20,18 +21,18 @@ class Item {
      * @param std::string Cost for store to purchase
      * @param std::string Tax
      */
-    Item(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
-         const std::string&);
+    Item(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+         const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     virtual ~Item() = default;
-    
+
     /*
      * @brief Validates input and sets value for given key.
      * @param std::string Key / Field to validate for and set.
      * @param std::string Value to set.
      * @return true if valid, false if invalid
-    */
+     */
     virtual bool setValue(std::string, const std::string&);
 
     /*

@@ -3,7 +3,7 @@
 Item::Item(const std::string &nm, const std::string &cat, const std::string &sub_cat, const std::string &qty,
            const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
     bool validated = true;
-    
+
     /* Validate input */
     validated &= setValue("name", nm);
     validated &= setValue("category", cat);
@@ -14,7 +14,8 @@ Item::Item(const std::string &nm, const std::string &cat, const std::string &sub
     validated &= setValue("buy_cost", cost);
     validated &= setValue("tax", tx);
 
-    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is wrong with the program. */
+    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is
+     * wrong with the program. */
     if (!validated) {
         std::cerr << "I am an Item, and I am broken.  So terribly broken." << std::endl;
         throw std::runtime_error("Something went wrong with reading an item.");
@@ -24,7 +25,7 @@ Item::Item(const std::string &nm, const std::string &cat, const std::string &sub
     total_price = sale_price + (tax * sale_price);
 }
 
-bool Item::setValue(std::string key, const std::string& value) {
+bool Item::setValue(std::string key, const std::string &value) {
     /* Big try / catch to catch all possible bad_argument exceptions */
     try {
         /* Check if key is any of Item's members */
@@ -39,7 +40,7 @@ bool Item::setValue(std::string key, const std::string& value) {
             return true;
         } else if (key == "quantity") {
             quantity = toUnsignedLong(value);
-            return true; 
+            return true;
         } else if (key == "id") {
             id = toUnsignedLong(value);
             return true;
@@ -54,10 +55,13 @@ bool Item::setValue(std::string key, const std::string& value) {
             return true;
         } else {
             /* This throw will get overwritten, but still throw. */
-            throw std::invalid_argument("Could not find key '" + key + "' in Item or the subclass you called this method on.");
+            throw std::invalid_argument("Could not find key '" + key +
+                                        "' in Item or the subclass you called this method on.");
         }
-    } catch (std::invalid_argument& e) {
-        /* We don't care about the error message thrown from the helper functions, throw another one that's more useful to the end user. */
-        throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name + "'.");
+    } catch (std::invalid_argument &e) {
+        /* We don't care about the error message thrown from the helper functions, throw another one that's more useful
+         * to the end user. */
+        throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name +
+                                    "'.");
     }
 }

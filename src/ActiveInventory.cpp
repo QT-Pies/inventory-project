@@ -86,7 +86,7 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         } /* If field is ID, verify it is not already taken. */
         else if (field == "id") {
             auto long_id = toUnsignedLong(value);
-            
+
             /* Check that ID is not taken */
             if (searchById(long_id) != NULL) {
                 throw std::invalid_argument("ID '" + value + "' is already used by another Item.");
@@ -98,7 +98,7 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             inv_by_id[item->id] = item;
         } else if (field == "category") {
             throw std::invalid_argument("You can only set category when creating an Item.");
-        } /* Otherwise, all other fields shouldn't need any additional checks. */ 
+        } /* Otherwise, all other fields shouldn't need any additional checks. */
         else {
             item->setValue(field, value);
         }

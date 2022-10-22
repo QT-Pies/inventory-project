@@ -7,7 +7,6 @@
 
 class Date {
    public:
-
     Date() = default;
 
     /*
