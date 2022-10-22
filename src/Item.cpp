@@ -55,13 +55,8 @@ bool Item::setValue(std::string key, const std::string& value) {
             std::cerr << "Could not find key '" << key << "' in Item or any of its inherited class." << std::endl;
             return false;
         }
-    } 
-    /* may need to move this */
-    catch (std::invalid_argument& e) {
-            /* Bad_argument exception is caught here to avoid crashing program */
-            std::cerr << e.what() << std::endl;
-            std::cerr << "Failed to validate value " << value << " for key " << key << std::endl;
-            throw e;
-            return false;
+    } catch (std::invalid_argument& e) {
+        /* We don't care about the error message thrown from the helper functions, throw another one. */
+        throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name + "'.");
     }
 }

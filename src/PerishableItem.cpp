@@ -30,11 +30,8 @@ bool PerishableItem::setValue(std::string key, const std::string& value) {
             return Item::setValue(key, value);
         }
     } catch (std::invalid_argument& e) {
-            /* Bad_argument exception is caught here to avoid crashing program */
-            std::cerr << e.what() << std::endl;
-            std::cerr << "Failed to validate value " << value << " for key " << key << std::endl;
-            throw e;
-            return false;
+            /* We don't care about the error message thrown from the helper functions, throw another one. */
+            throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name + "'.");
     }
 }
 
