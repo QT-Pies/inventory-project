@@ -52,8 +52,7 @@ class Login {
          * @brief verifies username and password
          * @param std::string name
          * @param std::string password
-         * @return true if successfull
-         * @return false otherwise
+         * @return shared_ptr to user 
          */
         std::shared_ptr<User> verifyUser(std::string, std::string);
         
