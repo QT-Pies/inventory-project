@@ -11,6 +11,8 @@
 InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
+    sale_list->load(file);
+
 }
 
 InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
@@ -100,8 +102,9 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
-            sale_list.load();
-
+            std::cout << "Buyer | Seller\n";
+            std::cin >> buyer >> seller;
+            
             std::cout << "Items in Sale | Date | Total Price | Buyer | Seller";
             // just added all necisary variables
             std::cin >> quantity >> date >> total_price >> buyer >> seller;
@@ -200,5 +203,6 @@ int InventoryManager::fileOutput() {
     file.close();
 
     std::cout << "Inventory written to " << file_name << std::endl;
+
     return 0;
 }

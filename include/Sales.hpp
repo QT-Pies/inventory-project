@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <ctime>
 
 #include "Item.hpp"
 
@@ -36,19 +37,21 @@ class Transaction {
     friend class SaleList;
 
    public:
-   // sale_id | buyer | seller | 
-    Transaction(const unsigned long, const std::string, const std::string); // may change to take in date, may not, could just calculat here
+   // sale_id | buyer | seller | year | month | day
+    Transaction(const unsigned long, const std::string, const std::string, 
+                const unsigned int, const unsigned int, const unsigned int);
     ~Transaction();
     // will call sale constructor with these 
-    bool add_sale(const unsigned long, const unsigned long, const unsigned long, const double);
+    bool addSale(const unsigned long, const unsigned long, const unsigned long, const double);
     // will calculate total_price and set num_sales appropriatly, tax will be hard coded at .0635, average in us
     // will want to change tax appropriatly, maybe add tax break feture to
     // date will be set with automatically as well, baised on current day or file reading
 
    protected:
-    int sale_id, num_sales;
+    unsigned long sale_id, num_sales;
+    unsigned int year, month, day;
     double total_price;
-    std::string date, buyer, seller;
+    std::string buyer, seller;
     std::vector<std::shared_ptr<Sale> > sales;
 
 };
@@ -59,10 +62,12 @@ class SaleList {
      * @brief Constructor; creates list of sales from given file.
      * @param std::string Name of file
      */
-    SaleList(const std::string);
+    SaleList();
+    ~SaleList();
     // will call Transaction constructor
-    bool add_transaction(const unsigned long, const std::string, const std::string);
-
+    bool addTransaction(const unsigned long, const std::string, const std::string);
+    bool loadTransaction(const unsigned long, const std::string, const std::string, 
+                         const unsigned int, const unsigned int, const unsigned int); // same as above, but also reads in the date from the file
     /*
      * @brief Creates a new File with the given file name, will add the begining
      * CSV header for what data is being stored.
@@ -75,7 +80,7 @@ class SaleList {
      * vector. If addSale returns false, an error occurred.
      * @return true on success, false on failure
      */
-    bool load();
+    bool load(const std::string);
 
     /*
      * @brief Appends to the given File and adds any new sales.
@@ -94,6 +99,7 @@ class SaleList {
 
     std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
     std::string parent_file, child_file;
+    unsigned int curr_sale_id;
 };
 
 #endif
