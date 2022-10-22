@@ -190,3 +190,12 @@ int InventoryManager::fileOutput() {
     return 0;
 }
 
+bool InventoryManager::userLogin() {
+
+    login->readCSV();
+    auto u = login->userInput();
+    
+    if(u == NULL) return false;
+
+    return true;
+}

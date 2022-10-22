@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <iostream>
 
 class User {
     public:
@@ -16,6 +17,7 @@ class User {
         */
         User(std::string, std::string, std::string);
     private:
+        friend class Login;
         std::string name;
         std::string password;
         std::string account_type;
@@ -59,15 +61,19 @@ class Login {
          * @return false is unable to write to file
          */
         bool outputCSV();
+
+        /*
+         * @brief verifies username and password
+         * @param std::string name
+         * @param std::string password
+         * @return true if successfull
+         * @return false otherwise
+         */
+        std::shared_ptr<User> verifyUser(std::string, std::string);
         
 
-    private:
-
-       
-        /*
-         * stores file_name and valid users
-        */
-        std::string file_name;
+    private:     
+        std::string file_name = "accounts.csv";
         std::map <std::string, std::shared_ptr<User>> users;
         
 };

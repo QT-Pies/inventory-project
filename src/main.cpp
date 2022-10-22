@@ -17,8 +17,10 @@ int main(int argc, char **argv) {
     }
 
     InventoryManager im(command_line, csv_file);
+    
     im.readCSVFile();
-
+    if(im.userLogin() == false) return -1; 
+    
     while (true) {
         if (im.userInput() == -1) break;
     }

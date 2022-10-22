@@ -21,14 +21,65 @@ Login::~Login() {
 
 bool Login::createUser(std::string name, std::string password, std::string account) {
 
-    if(users.find(name) != users.end()) {
+    if(users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
+        users[name] = new_user;
     } else {
         fprintf(stderr, "User %s already exists\n", name.c_str());
         return false;
     }
 
     return true;
+}
+
+std::shared_ptr<User> Login::userInput() {
+    
+    char argument;
+    std::string category, name, password, account;
+
+    std::cout << "(L)ogin or (C)reate User: ";
+    std::cin >> argument;
+
+    switch (argument) {
+        case 'l':
+        case 'L':
+        {
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+
+            std::cout << "Name: ";
+            std::cin >> name;
+            std::cout << "Password: ";
+            std::cin >> password;
+
+            auto user = verifyUser(name, password);
+            if(user != NULL) {
+                return user;
+            } else {
+                return NULL;
+            }
+            break;
+        }
+        case 'c':
+        case 'C':
+        {    
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+
+            std::cout << "Name: ";
+            std::cin >> name;
+            std::cout << "Password: ";
+            std::cin >> password;
+            std::cout << "Account Type: ";
+            std::cin >> account;
+
+            createUser(name, password, account);
+            break;
+        }
+        default:
+            break;
+    }
+    return NULL;
 }
 
   
@@ -46,8 +97,10 @@ bool Login::readCSV() {
     std::getline(user_file, head);
 
     while(user_file.good()) {
-
-        user_file >> name  >> password >> account;
+        
+        getline(user_file, name, ',');
+        getline(user_file, password, ',');
+        getline(user_file, account, '\n');
         created = createUser(name, password, account);
         
         if(!created) {
@@ -63,4 +116,19 @@ bool Login::readCSV() {
       
 bool Login::outputCSV() {
     return false;
+}
+
+std::shared_ptr<User> Login::verifyUser(std::string name, std::string password) {
+
+    auto it = users.find(name);
+    
+    if(it != users.end()) {
+        if(it->second->password == password){
+            return it->second;    
+        }
+    } else {
+        return NULL;
+    }
+
+    return NULL;
 }
