@@ -26,52 +26,54 @@ std::shared_ptr<User> Login::userInput() {
     
     char argument;
     std::string category, name, password, account;
+    
+    while (true) {
+        
+        std::cout << "\n(L)ogin or (C)reate User: ";
+        std::cin >> argument;
+    
+        switch (argument) {
+            case 'l':
+            case 'L':
+            {
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
 
-    std::cout << "(L)ogin or (C)reate User: ";
-    std::cin >> argument;
+                std::cout << "Name: ";
+                std::cin >> name;
+                std::cout << "Password: ";
+                std::cin >> password;
 
-    switch (argument) {
-        case 'l':
-        case 'L':
-        {
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            std::cout << "Name: ";
-            std::cin >> name;
-            std::cout << "Password: ";
-            std::cin >> password;
-
-            auto user = verifyUser(name, password);
-            if(user != NULL) {
-                return user;
-            } else {
-                return NULL;
-            }
-            break;
-        }
-        case 'c':
-        case 'C':
-        {    
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            std::cout << "Name: ";
-            std::cin >> name;
-            std::cout << "Password: ";
-            std::cin >> password;
-            std::cout << "Account Type: ";
-            std::cin >> account;
-
-            if(createUser(name, password, account)) {
-                std::cout << "\nCreated user: " << name << std::endl;
                 auto user = verifyUser(name, password);
-                return user;
+                if(user != NULL) {
+                    return user;
+                } else {
+                    return NULL;
+                }
+                break;
             }
-            break;
+            case 'c':
+            case 'C':
+            {    
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
+
+                std::cout << "Name: ";
+                std::cin >> name;
+                std::cout << "Password: ";
+                std::cin >> password;
+                std::cout << "Account Type: ";
+                std::cin >> account;
+                createUser(name, password, account);
+                break;
+            }
+            default:
+                break;
         }
-        default:
-            break;
+
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
     }
     return NULL;
 }
@@ -90,7 +92,7 @@ bool Login::readCSV() {
 
     std::getline(user_file, head);
 
-    while(user_file.good()) {
+    while(user_file.peek() != EOF) {
         
         getline(user_file, name, ',');
         getline(user_file, password, ',');
