@@ -35,6 +35,7 @@ SaleList::SaleList() {
     // change to where te files are the based on the given file name, then maybe just add _parent and _child, use substring
     // will assume that the last 4 characters in the string are .csv, unless file name is >=4 characters long
     std::make_unique <std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(transaction_by_date);
+    std::make_unique <std::vector<std::shared_ptr<Transaction> > > (transaction_by_id);
     parent_file = "Parrent_Sales.csv";
     child_file = "Child_Sales.csv";
     curr_sale_id = 1;
@@ -70,11 +71,9 @@ bool SaleList::loadTransaction(const unsigned long sid, const std::string b, con
         return false;
     }
     auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
+    transaction_by_id.push_back(new_transaction);
+    // need to also add it to the by date map
     return true;
-
-    //transaction_by_date
-
-
 }
 
 /*
@@ -96,28 +95,53 @@ bool SaleList::newFile() {
 }
 
 bool SaleList::load(const std::string file) {
-    (void) file;
-    // ALSO SET PARENT AND CHILD FILE NAMES HERE, will also have to change newFile to do this
-    // std::ifstream p_fin, c_fin;
-    // std::string line;
+    (void) file;    // will set the file name here,
+    // ALSO SET CURR SALE ID HERE, do by checking date and maps
+    std::ifstream p_fin, c_fin;
+    std::string p_line, c_line;
+    unsigned long s_id, s_id_check, i_id, item_quantity, sold_quantity;
+    unsigned int y, m, d, i;
+    double tot_price, i_price;
+    char b[50], s[50];
 
-    // unsigned long id;
-    // // unsigned long sn;
-    // //char d[20];
-    // //unsigned long as;
-    // //double sp;
-    // //double t;
-    // char b[50];
-    // char s[50];
-    // unsigned int y, m, d;
+    // oppening parent file
+     p_fin.open(parent_file.c_str());
+     if (!p_fin.is_open()) {
+        std::cout << "Unable to open Sales Parent File\n";
+        return false;
+     }
+     c_fin.open(child_file.c_str());
+     if (!c_fin.is_open()) {
+        std::cout << "Unable to open Sales Child File\n";
+        return false;
+     }
 
-    // p_fin.open(parent_file.c_str());
-    // if (!p_fin.is_open()) return false;
-    // std::getline(p_fin, line);
-    // if (line != "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller") {
-    //     std::cout << "Unable to load Parent Sales file. New one created.\n";
-    //     return newFile();
-    // };
+     getline(p_fin, p_line);
+     getline(c_fin, c_line);
+     if (p_line != "Sale_ID, Date,Total_Price,Quantity_of_Items,Buyer,Seller") {
+         std::cout << "Curuption in Parent Sales file. Creating new sales files.\n";
+         return newFile();
+     };
+     if (c_line != "Sale_ID,Item_ID,Quantity_Sold,Sale_Price") {
+         std::cout << "Curuption in Child Sales file. Creating new sales files.\n";
+         return newFile();
+     };
+     curr_transaction = 0;
+     while(!(p_fin.eof())){
+        getline(p_fin, p_line);
+        sscanf(p_line.c_str(), "%lu,%u/%u/%u,%lf,%lu,%s,%s", &s_id, &y, &m, &d, &tot_price, &item_quantity, b, s );
+        loadTransaction(s_id, b, s, y, m, d);
+        // when items are saved to the file, they should be orginized so it can be read like this, files should start with 
+        // will need to add date feilds in sale class to, also check this along with sales id
+        for(i = 0; i < item_quantity; i++){
+            getline(c_fin, c_line);
+            sscanf(c_line.c_str(), "%lu,%lu,%lu,%lf", &s_id_check, &i_id, &sold_quantity, &i_price);
+            transaction_by_id[0]->addSale(s_id_check, i_id, sold_quantity, i_price);
+            //trasactions
+            // do a check for ids
+        }
+        curr_transaction++;
+     }
 
     // while (!(p_fin.eof())) {
     //     getline(p_fin, line);
@@ -127,7 +151,8 @@ bool SaleList::load(const std::string file) {
     //         return false;
     //     }
     // }
-    // p_fin.close();
+    p_fin.close();
+    c_fin.close();
     return true;
 }
 

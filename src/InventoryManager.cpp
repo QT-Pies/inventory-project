@@ -23,6 +23,7 @@ int InventoryManager::userInput() {
     std::string name, category, sub_category, expiration, value, date, buyer, seller;
     unsigned long id, quantity;
     double sale_price, buy_price, tax, total_price;
+    unsigned int i, num_items;
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
@@ -104,10 +105,19 @@ int InventoryManager::userInput() {
 
             std::cout << "Buyer | Seller\n";
             std::cin >> buyer >> seller;
+            sale_list->addTransaction(sale_list->curr_sale_id, buyer, seller);
+            std::cout << "Items in Transaction: ";
+            std::cin >> num_items;
+            // std::cout << 
+            for(i = 0; i < num_items; i++){
+                (void) total_price;
+                sale_list->transaction_by_id[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, id, quantity, sale_price );
+            }
+            // in morning, add the saving feture, just use the vector, that will be the easiest i think
             
-            std::cout << "Items in Sale | Date | Total Price | Buyer | Seller";
+            //std::cout << "Items in Sale | Date | Total Price | Buyer | Seller";
             // just added all necisary variables
-            std::cin >> quantity >> date >> total_price >> buyer >> seller;
+            // std::cin >> quantity >> date >> total_price >> buyer >> seller;
             
             break;
 // end of what I am adding

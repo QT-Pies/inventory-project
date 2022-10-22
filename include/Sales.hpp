@@ -57,6 +57,7 @@ class Transaction {
 };
 
 class SaleList {
+    friend class InventoryManager;
    public:
     /*
      * @brief Constructor; creates list of sales from given file.
@@ -92,14 +93,17 @@ class SaleList {
     // prints all transactions
     void print();
 
+    unsigned long curr_sale_id;
+
    protected:
     // will change this data structure, want to impliment a bit first
     // std::vector<std::shared_ptr<Sale> > sales;
     // year, month, day, then the transactions on that day
 
     std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
+    std::vector<std::shared_ptr<Transaction> > transaction_by_id;
     std::string parent_file, child_file;
-    unsigned int curr_sale_id;
+    unsigned int curr_transaction; // may change name to include totals
 };
 
 #endif
