@@ -29,8 +29,13 @@ class PerishableItem : public Item {
      */
     void print() override;
 
-    /* @brief Override Item::setValue() to support additional data members. */
-    bool setValue(std::string, const std::string&) override;
+    /* 
+     * @brief Override Item::setValue() to support Perishable data members (expiration_date).
+     * @brief Throws exception if invalid.
+     * @param std::string Key to set
+     * @param std::string Value to set key with
+     */
+    void setValue(std::string, const std::string&) override;
 
     /*
      * @brief Prints the Item as a CSV entry

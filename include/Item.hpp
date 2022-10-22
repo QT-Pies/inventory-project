@@ -29,11 +29,11 @@ class Item {
 
     /*
      * @brief Validates input and sets value for given key.
+     * @brief Throws exception if invalid.
      * @param std::string Key / Field to validate for and set.
      * @param std::string Value to set.
-     * @return true if valid, false if invalid
      */
-    virtual bool setValue(std::string, const std::string&);
+    virtual void setValue(std::string, const std::string&);
 
     /*
      * @brief Virtual print method that inherited classes will implement.

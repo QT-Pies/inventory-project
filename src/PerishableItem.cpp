@@ -4,16 +4,7 @@ PerishableItem::PerishableItem(const std::string &nm, const std::string &cat, co
                                const std::string &qty, const std::string &idd, const std::string &price,
                                const std::string &cost, const std::string &tx, const std::string &exp)
     : Item(nm, cat, sub_cat, qty, idd, price, cost, tx) {
-    bool validate = true;
-
-    validate &= setValue("expiration_date", exp);
-
-    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is
-     * wrong with the program. */
-    if (!validate) {
-        std::cerr << "I am broken.  So terribly broken." << std::endl;
-        throw std::runtime_error("Something went wrong with reading a PerishableItem.");
-    }
+    setValue("expiration_date", exp);
 }
 
 void PerishableItem::print() {
@@ -24,13 +15,12 @@ void PerishableItem::print() {
               << expiration_date.string_date << std::endl;
 }
 
-bool PerishableItem::setValue(std::string key, const std::string &value) {
+void PerishableItem::setValue(std::string key, const std::string &value) {
     try {
         if (key == "expiration_date") {
             expiration_date = Date(value);
-            return true;
         } else {
-            return Item::setValue(key, value);
+            Item::setValue(key, value);
         }
     } catch (std::invalid_argument &e) {
         /* We don't care about the error message thrown from the helper functions, throw another one that's more useful

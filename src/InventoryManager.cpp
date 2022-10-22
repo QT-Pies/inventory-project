@@ -58,6 +58,7 @@ int InventoryManager::userInput() {
             } catch (std::exception& e) {
                 /* Catch exception, print out its message, but continue to run as normal. */
                 std::cerr << e.what() << std::endl;
+                std::cerr << "Your item has not been added to the inventory.  Please correct the input and try again." << std::endl;
                 break;
             }
 

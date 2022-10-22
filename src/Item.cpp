@@ -2,57 +2,40 @@
 
 Item::Item(const std::string &nm, const std::string &cat, const std::string &sub_cat, const std::string &qty,
            const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
-    bool validated = true;
-
     /* Validate input */
-    validated &= setValue("name", nm);
-    validated &= setValue("category", cat);
-    validated &= setValue("sub_category", sub_cat);
-    validated &= setValue("quantity", qty);
-    validated &= setValue("id", idd);
-    validated &= setValue("sale_price", price);
-    validated &= setValue("buy_cost", cost);
-    validated &= setValue("tax", tx);
-
-    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is
-     * wrong with the program. */
-    if (!validated) {
-        std::cerr << "I am an Item, and I am broken.  So terribly broken." << std::endl;
-        throw std::runtime_error("Something went wrong with reading an item.");
-    }
+    setValue("name", nm);
+    setValue("category", cat);
+    setValue("sub_category", sub_cat);
+    setValue("quantity", qty);
+    setValue("id", idd);
+    setValue("sale_price", price);
+    setValue("buy_cost", cost);
+    setValue("tax", tx);
 
     profit = sale_price - buy_cost;
     total_price = sale_price + (tax * sale_price);
 }
 
-bool Item::setValue(std::string key, const std::string &value) {
+void Item::setValue(std::string key, const std::string &value) {
     /* Big try / catch to catch all possible bad_argument exceptions */
     try {
         /* Check if key is any of Item's members */
         if (key == "name") {
             name = value;
-            return true;
         } else if (key == "category") {
             category = value;
-            return true;
         } else if (key == "sub_category") {
             sub_category = value;
-            return true;
         } else if (key == "quantity") {
             quantity = toUnsignedLong(value);
-            return true;
         } else if (key == "id") {
             id = toUnsignedLong(value);
-            return true;
         } else if (key == "sale_price") {
             sale_price = toFauxUnsignedDouble(value);
-            return true;
         } else if (key == "buy_cost") {
             buy_cost = toFauxUnsignedDouble(value);
-            return true;
         } else if (key == "tax") {
             tax = toFauxUnsignedDouble(value);
-            return true;
         } else {
             /* This throw will get overwritten, but still throw. */
             throw std::invalid_argument("Could not find key '" + key +
