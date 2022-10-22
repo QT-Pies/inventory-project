@@ -1,22 +1,12 @@
 #include "Login.hpp"
 
-User::User(std::string username, std::string pswd, std::string acc_type) {
-
-    name = username;
-    password = pswd;
-    account_type = acc_type;
-
-    if(acc_type == "owner") permission = 5;
-    if(acc_type == "manager") permission = 3;
-    if(acc_type == "employee") permission = 1;
-}
-
 Login::Login() {
     /* does nothing */
 }
 
 Login::~Login() {
     /* no deletion required*/
+    outputCSV();
 }
 
 bool Login::createUser(std::string name, std::string password, std::string account) {
@@ -73,7 +63,11 @@ std::shared_ptr<User> Login::userInput() {
             std::cout << "Account Type: ";
             std::cin >> account;
 
-            createUser(name, password, account);
+            if(createUser(name, password, account)) {
+                std::cout << "\nCreated user: " << name << std::endl;
+                auto user = verifyUser(name, password);
+                return user;
+            }
             break;
         }
         default:
@@ -115,7 +109,24 @@ bool Login::readCSV() {
 
       
 bool Login::outputCSV() {
-    return false;
+    std::ofstream file;
+
+    file.open(file_name);
+
+    if (!file.is_open()) {
+        fprintf(stderr, "File %s is unable to open", file_name.c_str());
+        return false;
+    }
+
+    file << "NAME,PASSWORD,ACCOUNT"<< std::endl;
+
+    for (auto mit = users.begin(); mit != users.end(); mit++) {
+        file << mit->second->name << "," << mit->second->password << "," << mit->second->account_type << std::endl; 
+    }
+
+    file.close();
+
+    return true;
 }
 
 std::shared_ptr<User> Login::verifyUser(std::string name, std::string password) {
