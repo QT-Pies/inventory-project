@@ -8,8 +8,10 @@ PerishableItem::PerishableItem(const std::string &nm, const std::string &cat, co
 
     validate &= setValue("expiration_date", exp);
 
+    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is wrong with the program. */
     if (!validate) {
         std::cerr << "I am broken.  So terribly broken." << std::endl;
+        throw std::runtime_error("Something went wrong with reading a PerishableItem.");
     }
 }
 
@@ -30,8 +32,8 @@ bool PerishableItem::setValue(std::string key, const std::string& value) {
             return Item::setValue(key, value);
         }
     } catch (std::invalid_argument& e) {
-            /* We don't care about the error message thrown from the helper functions, throw another one. */
-            throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name + "'.");
+            /* We don't care about the error message thrown from the helper functions, throw another one that's more useful to the end user. */
+            throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for PerishableItem '" + name + "'.");
     }
 }
 

@@ -19,4 +19,10 @@ unsigned long toUnsignedLong(const std::string&);
 */
 double toFauxUnsignedDouble(const std::string&);
 
+/*
+ * @brief Converts a string to the lowercase equivalent.
+ * @param std::string String to lowercase.
+ * @return Nothing -- takes reference.
+*/
+void lowerCaseString(std::string&);
 #endif

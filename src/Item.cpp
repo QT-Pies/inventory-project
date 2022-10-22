@@ -4,7 +4,6 @@ Item::Item(const std::string &nm, const std::string &cat, const std::string &sub
            const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
     bool validated = true;
     
-
     /* Validate input */
     validated &= setValue("name", nm);
     validated &= setValue("category", cat);
@@ -15,8 +14,10 @@ Item::Item(const std::string &nm, const std::string &cat, const std::string &sub
     validated &= setValue("buy_cost", cost);
     validated &= setValue("tax", tx);
 
+    /* This should never be reached, but I'm keeping it here as a safety-net.  If this has been reached, something is wrong with the program. */
     if (!validated) {
-        std::cerr << "Failed to construct Item with given parameters." << std::endl;
+        std::cerr << "I am an Item, and I am broken.  So terribly broken." << std::endl;
+        throw std::runtime_error("Something went wrong with reading an item.");
     }
 
     profit = sale_price - buy_cost;
@@ -56,7 +57,7 @@ bool Item::setValue(std::string key, const std::string& value) {
             return false;
         }
     } catch (std::invalid_argument& e) {
-        /* We don't care about the error message thrown from the helper functions, throw another one. */
+        /* We don't care about the error message thrown from the helper functions, throw another one that's more useful to the end user. */
         throw std::invalid_argument("Failed to set value '" + value + "' for key '" + key + "' for Item '" + name + "'.");
     }
 }

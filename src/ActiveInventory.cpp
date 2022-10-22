@@ -55,7 +55,7 @@ int ActiveInventory::removeItem(std::string name) {
 
     return -1;  // If this is reached an error has occurred.
 }
-
+/*
 int ActiveInventory::updateItem(std::string item_name, std::string field, std::string value) {
     std::string cat;
 
@@ -153,6 +153,59 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         }
     }
     return 1;  // Returns that an item was updated.
+}
+*/
+
+int ActiveInventory::updateItem(std::string item_name, std::string field, std::string value) {
+    try {
+        auto item = searchByName(item_name);
+
+        /* Convert string to lowercase to allow support for FIELD or field */
+        lowerCaseString(field);
+
+        /* Throw exception if couldn't find item. */
+        if (item == NULL) {
+            throw std::invalid_argument(item_name + " is not in the inventory.");
+        }
+
+        /* If field is Name, verify it is not already taken. */
+        if (field == "name") {
+            if (searchByName(value) != NULL) {
+                throw std::invalid_argument("Name '" + value + "' is already used by another Item.");
+            }
+
+            /* Remove existing entry for Item in inventory */
+            inv_by_name.erase(inv_by_name.find(item->name));
+            inv_by_category[item->category].erase(inv_by_category[item->category].find(item->name));
+
+            /* Update item name and re-insert */
+            item->setValue(field, value);
+            inv_by_name[item->name] = item;
+            inv_by_category[item->category][item->name] = item;
+
+        } /* If field is ID, verify it is not already taken. */
+        else if (field == "id") {
+            auto long_id = toUnsignedLong(value);
+            
+            /* Check that ID is not taken */
+            if (searchById(long_id) != NULL) {
+                throw std::invalid_argument("ID '" + value + "' is already used by another Item.");
+            }
+
+            /* Remove old ID, set new, re-insert. */
+            inv_by_id.erase(inv_by_id.find(item->id));
+            item->setValue(field, value);
+            inv_by_id[item->id] = item;
+        } /* Otherwise, all other fields shouldn't need any additional checks. */ 
+        else {
+            item->setValue(field, value);
+        }
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return -1;
+    }
+
+    return 0;
 }
 
 std::shared_ptr<Item> ActiveInventory::searchByName(std::string item_name) {
