@@ -2,6 +2,7 @@
 #define INVENTORY_MANAGER_HPP
 
 #include "ActiveInventory.hpp"
+#include "Login.hpp"
 
 class InventoryManager {
    public:

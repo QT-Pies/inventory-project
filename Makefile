@@ -4,8 +4,8 @@ CFLAGS = -g -Wall -Werror -std=c++14 $(INCLUDES) -O3
 
 EXECUTABLES = bin/main bin/gen-inventory
 
-SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp
-OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o
+SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp
+OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o
 
 all: $(EXECUTABLES) $(OBJECT)
 
@@ -42,12 +42,14 @@ obj/PerishableItem.o: src/PerishableItem.cpp
 obj/ActiveInventory.o: src/ActiveInventory.cpp
 	$(CC) $(CFLAGS) -c src/ActiveInventory.cpp -o obj/ActiveInventory.o
 
-obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o
+obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o
 	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
 
 obj/Sales.o: src/Sales.cpp
 	$(CC) $(CFLAGS) -c src/Sales.cpp -o obj/Sales.o
 
+obj/Login.o: src/Login.cpp
+	$(CC) $(CFLAGS) -c src/Login.cpp -o obj/Login.o
 clean: 
 	rm $(EXECUTABLES) obj/*.o 
 
