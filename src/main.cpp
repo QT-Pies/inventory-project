@@ -16,13 +16,24 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    InventoryManager im(command_line, csv_file);
-    im.readCSVFile();
+    /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
+    try {
+        InventoryManager im(command_line, csv_file);
+        im.readCSVFile();
 
-    while (true) {
-        if (im.userInput() == -1) break;
+        while (true) {
+            if (im.userInput() == -1) break;
+        }
+
+        im.fileOutput();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+
+        /* Call fileOutput and exit with error code. */
+        im.fileOutput();
+
+        return 1;
     }
 
-    im.fileOutput();
     return 0;
 }
