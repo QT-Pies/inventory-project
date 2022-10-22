@@ -34,6 +34,8 @@ class InventoryManager {
     int fileOutput();
 
    private:
+    const unsigned long ERROR_PRINT_LIMIT = 5;
+
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::string file_name;

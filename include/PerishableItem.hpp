@@ -11,15 +11,15 @@ class PerishableItem : public Item {
      * @param std::string Name
      * @param std::string Category
      * @param std::string Sub-Category
-     * @param unsigned-long Quantity
-     * @param unsigned-long ID
-     * @param double Price
-     * @param double Cost for store to purchase
-     * @param double Tax
+     * @param std::string Quantity
+     * @param std::string ID
+     * @param std::string Price
+     * @param std::string Cost for store to purchase
+     * @param std::string Tax
      * @param std::string Expiration date
      */
-    PerishableItem(const std::string&, const std::string&, const std::string&, unsigned long, unsigned long, double,
-                   double, double, const std::string&);
+    PerishableItem(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+                   const std::string&, const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     ~PerishableItem() override;
@@ -28,6 +28,14 @@ class PerishableItem : public Item {
      * @brief Prints the Item in a human friendly way
      */
     void print() override;
+
+    /*
+     * @brief Override Item::setValue() to support Perishable data members (expiration_date).
+     * @brief Throws exception if invalid.
+     * @param std::string Key to set
+     * @param std::string Value to set key with
+     */
+    void setValue(std::string, const std::string&) override;
 
     /*
      * @brief Prints the Item as a CSV entry

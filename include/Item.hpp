@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "HelperFunctions.hpp"
+
 class Item {
    public:
     /*
@@ -13,17 +15,25 @@ class Item {
      * @param std::string Name
      * @param std::string Category
      * @param std::string Sub-Category
-     * @param unsigned-long Quantity
-     * @param unsigned-long ID
-     * @param double Price
-     * @param double Cost for store to purchase
-     * @param double Tax
+     * @param std::string Quantity
+     * @param std::string ID
+     * @param std::string Price
+     * @param std::string Cost for store to purchase
+     * @param std::string Tax
      */
-    Item(const std::string&, const std::string&, const std::string&, unsigned long, unsigned long, double, double,
-         double);
+    Item(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+         const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     virtual ~Item() = default;
+
+    /*
+     * @brief Validates input and sets value for given key.
+     * @brief Throws exception if invalid.
+     * @param std::string Key / Field to validate for and set.
+     * @param std::string Value to set.
+     */
+    virtual void setValue(std::string, const std::string&);
 
     /*
      * @brief Virtual print method that inherited classes will implement.
