@@ -172,7 +172,7 @@ void InventoryManager::readCSVFile() {
             if (errors < ERROR_PRINT_LIMIT) {
                 std::cerr << e.what() << std::endl;
             } else if (errors == ERROR_PRINT_LIMIT) {
-                std::cerr << "Overwhelmingly amount of failures -- ceasing output of error messages." << std::endl;
+                std::cerr << "Overwhelming amount of failures -- ceasing output of error messages." << std::endl;
             }
             continue;
         }
