@@ -15,8 +15,6 @@
 #include "Date.hpp"
 
 class Sale {
-    friend class SaleList;
-
    public:
     /*
      * @brief Sale constructor that sets all the data for the given sale.
@@ -30,14 +28,17 @@ class Sale {
     /* @brief Destructor; does nothing */
     ~Sale();
 
+   private:
+    friend class Transaction;
+    friend class SaleList;
+
    protected:
     unsigned long sale_id, item_id, num_sold;
     double sale_price;
+    std::string unique_sale_id;
 };
 
 class Transaction {
-    friend class SaleList;
-
    public:
    /*
      * @brief Transaction constructor that sets all the data for the given transaction.
@@ -60,14 +61,28 @@ class Transaction {
      * @param unsigned long itemID
      * @param unsigned long Amount of items sold in sale
      * @param unsigned long Sale Price of item when sale is made
+     * returns true if added, false if failed
      */
     bool addSale(const unsigned long, const unsigned long, const unsigned long, const double);
+
+    /*
+     * @brief removes a sale from the transaction and makes the ptr NULL in the vector
+     * @param unsigned long saleID
+     * @param unsigned long itemID
+     * @param unsigned long Amount of items sold in sale
+     * @param unsigned long Sale Price of item when sale is made
+     * @return true if removed, false if sale was not found
+     */
+    bool removeSale(const unsigned long, const unsigned long, const unsigned long, const double);
+
+   private:
+    friend class SaleList;
 
    protected:
     unsigned long sale_id, num_sales;
     unsigned int year, month, day;
     double total_price;
-    std::string buyer, seller, date, unique_id;
+    std::string buyer, seller, date, unique_transaction_id;
     std::vector<std::shared_ptr<Sale> > sales;
 };
 
@@ -87,7 +102,7 @@ class SaleList {
      * @param unsigned int Month sale is made
      * @param unsigned int Day sale is made
      */
-    bool userTransaction(const unsigned long, const std::string, const std::string);
+    void userTransaction(const unsigned long, const std::string, const std::string);
 
     /*
      * @brief Adds a new transaction based on the sales file or on a call by userTransaction
@@ -97,9 +112,8 @@ class SaleList {
      * @param unsigned int Year sale is made
      * @param unsigned int Month sale is made
      * @param unsigned int Day sale is made
-     * @return true on success, false on failure
      */
-    bool newTransaction(const unsigned long, const std::string, const std::string, 
+    void newTransaction(const unsigned long, const std::string, const std::string, 
                          const unsigned int, const unsigned int, const unsigned int);
 
     /*
