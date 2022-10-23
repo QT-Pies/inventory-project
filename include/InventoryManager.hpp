@@ -34,11 +34,18 @@ class InventoryManager {
      */
     int fileOutput();
 
+    /*
+     * @brief call userInput in Login class
+     * @return return true if successful login and false if not
+     */
+    bool userLogin();
+
    private:
     const unsigned long ERROR_PRINT_LIMIT = 5;
 
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
+    std::shared_ptr<Login> login{new Login};
     std::string file_name;
 };
 

@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
 
     InventoryManager im(command_line, csv_file);
 
+
     /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
     try {
         im.readCSVFile();
@@ -34,6 +35,7 @@ int main(int argc, char** argv) {
         im.fileOutput();
 
         return 1;
+
     }
 
     return 0;
