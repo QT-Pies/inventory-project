@@ -4,8 +4,13 @@ CFLAGS = -g -Wall -Werror -std=c++14 $(INCLUDES) -O3
 
 EXECUTABLES = bin/main bin/gen-inventory
 
+<<<<<<< HEAD
 SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp
 OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o
+=======
+SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp
+OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o
+>>>>>>> 0c81cf1 (#21 everything appears to be working / still need to set current user in IM)
 
 
 all: $(OBJECT) $(EXECUTABLES)
@@ -13,9 +18,14 @@ all: $(OBJECT) $(EXECUTABLES)
 obj/main.o: src/main.cpp obj/InventoryManager.o
 	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
 
+<<<<<<< HEAD
 bin/main: obj/main.o obj/InventoryManager.o obj/HelperFunctions.o
 	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o
 
+=======
+bin/main: obj/main.o obj/InventoryManager.o
+	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/Login.o obj/User.o
+>>>>>>> 0c81cf1 (#21 everything appears to be working / still need to set current user in IM)
 
 obj/CSVEntry.o: src/CSVEntry.cpp
 	$(CC) $(CFLAGS) -c src/CSVEntry.cpp -o obj/CSVEntry.o
@@ -47,7 +57,7 @@ obj/PerishableItem.o: src/PerishableItem.cpp
 obj/ActiveInventory.o: src/ActiveInventory.cpp
 	$(CC) $(CFLAGS) -c src/ActiveInventory.cpp -o obj/ActiveInventory.o
 
-obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o
+obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o obj/User.o
 	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
 
 obj/Sales.o: src/Sales.cpp
@@ -55,6 +65,9 @@ obj/Sales.o: src/Sales.cpp
 
 obj/Login.o: src/Login.cpp
 	$(CC) $(CFLAGS) -c src/Login.cpp -o obj/Login.o
+
+obj/User.o: src/User.cpp
+	$(CC) $(CFLAGS) -c src/User.cpp -o obj/User.o
 clean: 
 	rm $(EXECUTABLES) obj/*.o 
 

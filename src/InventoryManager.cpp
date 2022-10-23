@@ -248,9 +248,9 @@ int InventoryManager::fileOutput() {
 bool InventoryManager::userLogin() {
 
     login->readCSV();
-    auto u = login->userInput();
+    auto user = login->userInput();
     
-    if(u == NULL) return false;
+    if(user == NULL) return false;
 
     return true;
 }
