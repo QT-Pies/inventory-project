@@ -3,7 +3,7 @@
 #include "InventoryManager.hpp"
 
 /* Entry point for InventoryManager */
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     std::string arg, csv_file;
     bool command_line = false;
 
@@ -17,12 +17,24 @@ int main(int argc, char **argv) {
     }
 
     InventoryManager im(command_line, csv_file);
-    im.readCSVFile();
 
-    while (true) {
-        if (im.userInput() == -1) break;
+    /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
+    try {
+        im.readCSVFile();
+
+        while (true) {
+            if (im.userInput() == -1) break;
+        }
+
+        im.fileOutput();
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
+
+        /* Call fileOutput and exit with error code. */
+        im.fileOutput();
+
+        return 1;
     }
 
-    im.fileOutput();
     return 0;
 }

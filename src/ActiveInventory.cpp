@@ -57,102 +57,57 @@ int ActiveInventory::removeItem(std::string name) {
 }
 
 int ActiveInventory::updateItem(std::string item_name, std::string field, std::string value) {
-    std::string cat;
+    try {
+        auto item = searchByName(item_name);
 
-    if (inv_by_name.find(item_name) == inv_by_name.end()) {
-        fprintf(stderr, "%s is not in the inventory.\n", item_name.c_str());
+        /* Convert string to lowercase to allow support for FIELD or field */
+        lowerCaseString(field);
+
+        /* Throw exception if couldn't find item. */
+        if (item == NULL) {
+            throw std::invalid_argument(item_name + " is not in the inventory.");
+        }
+
+        /* If field is Name, verify it is not already taken. */
+        if (field == "name") {
+            if (searchByName(value) != NULL) {
+                throw std::invalid_argument("Name '" + value + "' is already used by another Item.");
+            }
+
+            /* Remove existing entry for Item in inventory */
+            inv_by_name.erase(inv_by_name.find(item->name));
+            inv_by_category[item->category].erase(inv_by_category[item->category].find(item->name));
+
+            /* Update item name and re-insert */
+            item->setValue(field, value);
+            inv_by_name[item->name] = item;
+            inv_by_category[item->category][item->name] = item;
+
+        } /* If field is ID, verify it is not already taken. */
+        else if (field == "id") {
+            auto long_id = toUnsignedLong(value);
+
+            /* Check that ID is not taken */
+            if (searchById(long_id) != NULL) {
+                throw std::invalid_argument("ID '" + value + "' is already used by another Item.");
+            }
+
+            /* Remove old ID, set new, re-insert. */
+            inv_by_id.erase(inv_by_id.find(item->id));
+            item->setValue(field, value);
+            inv_by_id[item->id] = item;
+        } else if (field == "category") {
+            throw std::invalid_argument("You can only set category when creating an Item.");
+        } /* Otherwise, all other fields shouldn't need any additional checks. */
+        else {
+            item->setValue(field, value);
+        }
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
         return -1;
     }
 
-    cat = inv_by_name.find(item_name)->second->category;
-
-    // Here we find the item and field to update.
-    if (cat == "Perishable") {
-        // auto tmp = dynamic_cast<Item&>(inv_by_name.find(item_name)->second);
-        std::shared_ptr<PerishableItem> to_update = std::dynamic_pointer_cast<PerishableItem>(inv_by_name[item_name]);
-        if (field == "name")  // If the name is to be changed we will have to
-                              // re-enter it into the maps.
-        {
-            if (searchByName(value) != NULL) {
-                fprintf(stderr, "Cannot change name to %s as it already exists.\n", value.c_str());
-            } else {  // Remove old name from maps and add the new one.
-                inv_by_name.erase(inv_by_name.find(to_update->name));
-                inv_by_category[to_update->category].erase(inv_by_category[to_update->category].find(to_update->name));
-                to_update->name = value;
-                inv_by_name[to_update->name] = to_update;
-                inv_by_category[to_update->category][to_update->name] = to_update;
-            }
-        } else if (field == "sub_category") {
-            to_update->sub_category = value;
-        } else if (field == "quantity") {
-            to_update->quantity = stoul(value);
-        } else if (field == "id") {
-            if (searchById(stoi(value)) != NULL) {
-                printf("Id %lu is already used by another Item.\n", stoul(value));
-            } else {
-                inv_by_id.erase(inv_by_id.find(to_update->id));
-                to_update->id = stoul(value);
-                inv_by_id[to_update->id] = to_update;
-            }
-        } else if (field == "sale_price") {
-            to_update->sale_price = stod(value);
-        } else if (field == "buy_cost") {
-            to_update->buy_cost = stod(value);
-        } else if (field == "tax") {
-            to_update->tax = stod(value);
-        } else if (field == "total_price") {
-            to_update->total_price = stod(value);
-        } else if (field == "profit") {
-            to_update->profit = stod(value);
-        } else if (field == "expiration_date") {
-            to_update->expiration_date = Date(value);
-        } else {
-            fprintf(stderr, "Invalid field to update: %s.\n", field.c_str());
-            return -1;
-        }
-    } else {
-        std::shared_ptr<NonPerishableItem> to_update =
-            std::dynamic_pointer_cast<NonPerishableItem>(inv_by_name[item_name]);
-        if (field == "name")  // If the name is to be changed we will have to
-                              // re-enter it into the maps.
-        {
-            if (searchByName(value) != NULL) {
-                fprintf(stderr, "Cannot change name to %s as it already exists.\n", value.c_str());
-            } else {  // Remove the old name and add the new name.
-                inv_by_name.erase(inv_by_name.find(to_update->name));
-                inv_by_category[to_update->category].erase(inv_by_category[to_update->category].find(to_update->name));
-                to_update->name = value;
-                inv_by_name[to_update->name] = to_update;
-                inv_by_category[to_update->category][to_update->name] = to_update;
-            }
-        } else if (field == "sub_category") {
-            to_update->sub_category = value;
-        } else if (field == "quantity") {
-            to_update->quantity = stoul(value);
-        } else if (field == "id") {
-            if (searchById(stoul(value)) != NULL) {
-                printf("Id %lu is already used by another Item.\n", stoul(value));
-            } else {
-                inv_by_id.erase(inv_by_id.find(to_update->id));
-                to_update->id = stoul(value);
-                inv_by_id[to_update->id] = to_update;
-            }
-        } else if (field == "sale_price") {
-            to_update->sale_price = stod(value);
-        } else if (field == "buy_cost") {
-            to_update->buy_cost = stod(value);
-        } else if (field == "tax") {
-            to_update->tax = stod(value);
-        } else if (field == "total_price") {
-            to_update->total_price = stod(value);
-        } else if (field == "profit") {
-            to_update->profit = stod(value);
-        } else {
-            fprintf(stderr, "Invalid field to update.\n");
-            return -1;
-        }
-    }
-    return 1;  // Returns that an item was updated.
+    return 0;
 }
 
 std::shared_ptr<Item> ActiveInventory::searchByName(std::string item_name) {

@@ -14,14 +14,15 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     sale_list->loadSales(file);
 }
 
-InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
+InventoryManager::~InventoryManager() { 
+    /* using smart pointer for active inventory so no deletion neccessary */    
 }
 
 int InventoryManager::userInput() {
     char argument;
     std::string name, category, sub_category, expiration, value, date, buyer, seller;
-    unsigned long id, quantity;
-    double sale_price, buy_price, tax;
+    std::string id, quantity;
+    std::string sale_price, buy_price, tax;
     bool valid_transaction;
     std::shared_ptr<Item> new_item;
 
@@ -41,18 +42,42 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
-            std::cout << "Name Perishable/NonPerishable SubCategory Quantity ID SalePrice "
-                         "CostOfGood Tax ExpirationDate (Enter -1000000 if unsure): ";
-            std::cin >> name >> category >> sub_category >> quantity >> id >> sale_price >> buy_price >> tax >>
-                expiration;
-            if (category == "Perishable") {
-                new_item = std::make_shared<PerishableItem>(name, category, sub_category, quantity, id, sale_price,
-                                                            buy_price, tax, expiration);
-            } else if (category == "NonPerishable") {
-                new_item = std::make_shared<NonPerishableItem>(name, category, sub_category, quantity, id, sale_price,
-                                                               buy_price, tax);
-            } else {
-                fprintf(stderr, "Invalid category\n");
+            std::cout << "Enter item name: ";
+            std::cin >> name;
+            std::cout << "Enter item category (Perishable or NonPerishable): ";
+            std::cin >> category;
+            std::cout << "Enter item sub-category: ";
+            std::cin >> sub_category;
+            std::cout << "Enter item quantity: ";
+            std::cin >> quantity;
+            std::cout << "Enter item id: ";
+            std::cin >> id;
+            std::cout << "Enter sale price: (format xx.xx) $";
+            std::cin >> sale_price;
+            std::cout << "Enter purchase cost: (format xx.xx) $";
+            std::cin >> buy_price;
+            std::cout << "Enter item tax as a decimal value: ";
+            std::cin >> tax;
+            std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
+            std::cin >> expiration;
+
+            lowerCaseString(category);
+            try {
+                if (category == "perishable") {
+                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, id, sale_price,
+                                                                buy_price, tax, expiration);
+                } else if (category == "nonperishable") {
+                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, id,
+                                                                   sale_price, buy_price, tax);
+                } else {
+                    fprintf(stderr, "Invalid category\n");
+                    break;
+                }
+            } catch (std::exception& e) {
+                /* Catch exception, print out its message, but continue to run as normal. */
+                std::cerr << e.what() << std::endl;
+                std::cerr << "Your item has not been added to the inventory. Please correct the input and try again."
+                          << std::endl;
                 break;
             }
 
@@ -79,8 +104,12 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
-            std::cout << "Name Field Value: ";
-            std::cin >> name >> category >> value;
+            std::cout << "Enter name of item to update: ";
+            std::cin >> name;
+            std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
+            std::cin >> category;
+            std::cout << "Enter new value for " << category << ": ";
+            std::cin >> value;
 
             if (active_inventory->updateItem(name, category, value) != -1) {
                 std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
@@ -92,7 +121,8 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
-            std::cout << "All | Perishable | NonPerishable | Item Name: ";
+            std::cout << "\nPlease select a category to print or enter an item name.\n";
+            std::cout << "All | Perishable | NonPerishable | Item Name : ";
             std::cin >> category;
             active_inventory->printItems(category);
             break;
@@ -113,8 +143,8 @@ int InventoryManager::userInput() {
                 if(name == "Q" || name == "q" || quantity == 0) break;
                 auto item_ptr = active_inventory->searchByName(name);
                 if(item_ptr != NULL) {
-                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, quantity, item_ptr->sale_price );
-                    item_ptr->quantity -= quantity;
+                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price );
+                    // item_ptr->quantity -= quantity;
                     valid_transaction = true;
                 }
                 else std::cerr << "Invalid Item. Continuing to read\n";
@@ -147,6 +177,7 @@ void InventoryManager::readCSVFile() {
     std::string name, str_id, cat, sub_cat, qty, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;
     std::shared_ptr<Item> new_item;
+    unsigned long lines_read, lines_successful, errors;
 
     std::ifstream csv_file(file_name);
 
@@ -155,12 +186,17 @@ void InventoryManager::readCSVFile() {
     /* This skips the first line for you. */
     std::getline(csv_file, tmp_line);
 
+    lines_successful = 0;
+    lines_read = 0;
+    errors = 0;
+
     while (csv_file.good()) {
         /*reading in the csv info, converting types*/
         getline(csv_file, name, ',');
 
         /*exit the loop if we don't read in a new name.*/
         if (!csv_file.good()) break;
+        ++lines_read;
 
         getline(csv_file, str_id, ',');
         getline(csv_file, cat, ',');
@@ -173,15 +209,25 @@ void InventoryManager::readCSVFile() {
         getline(csv_file, profit, ',');
         getline(csv_file, exp, '\n');
 
-        /* Create the Item to be added. */
-        if (cat == "Perishable") {
-            new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, stoul(qty), stoul(str_id), stod(sale_price),
-                                                        stod(buy_cost), stod(tax), exp);
-        } else if (cat == "NonPerishable") {
-            new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, stoul(qty), stoul(str_id),
-                                                           stod(sale_price), stod(buy_cost), stod(tax));
-        } else {
-            fprintf(stderr, "Invalid category.\n");
+        try {
+            /* Create the Item to be added. */
+            if (cat == "Perishable") {
+                new_item =
+                    std::make_shared<PerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax, exp);
+            } else if (cat == "NonPerishable") {
+                new_item =
+                    std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax);
+            } else {
+                fprintf(stderr, "Invalid category.\n");
+            }
+        } catch (std::exception& e) {
+            ++errors;
+            if (errors < ERROR_PRINT_LIMIT) {
+                std::cerr << e.what() << std::endl;
+            } else if (errors == ERROR_PRINT_LIMIT) {
+                std::cerr << "Overwhelming amount of failures -- ceasing output of error messages." << std::endl;
+            }
+            continue;
         }
 
         /* Add the item to the active inventory. */
@@ -191,8 +237,17 @@ void InventoryManager::readCSVFile() {
         auto item_ptr = active_inventory->searchByName(name);
 
         if (item_ptr == NULL) {
-            fprintf(stderr, "Failed to read item %s that we just created.\n", name.c_str());
+            fprintf(stderr, "Failed to read new item %s.\n", name.c_str());
         }
+
+        ++lines_successful;
+    }
+
+    if (lines_read != lines_successful) {
+        fprintf(stderr,
+                "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into "
+                "the inventory and will be lost on file save.\n",
+                lines_read, lines_successful, lines_read - lines_successful);
     }
 }
 
