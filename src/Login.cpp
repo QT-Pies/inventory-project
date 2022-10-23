@@ -1,6 +1,7 @@
 #include "Login.hpp"
 
-Login::Login() { /* does nothing */ }
+Login::Login() { /* does nothing */
+}
 
 Login::~Login() {
     /* no deletion required*/
