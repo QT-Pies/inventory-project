@@ -48,6 +48,7 @@ class Item {
 
    private:
     friend class ActiveInventory;
+    friend class InventoryManager;
 
    protected:
     std::string name;

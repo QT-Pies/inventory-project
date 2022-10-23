@@ -3,6 +3,7 @@
 
 #include "ActiveInventory.hpp"
 #include "Login.hpp"
+#include "Sales.hpp"
 
 class InventoryManager {
    public:
@@ -47,6 +48,7 @@ class InventoryManager {
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
+    std::shared_ptr<SaleList> sale_list{new SaleList};
     std::string file_name;
 };
 
