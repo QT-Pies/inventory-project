@@ -9,6 +9,11 @@ Login::~Login() {
 }
 
 bool Login::createUser(const std::string name, const std::string password, const std::string account) {
+    if (account != "manager" && account != "owner" && account != "employee") {
+        fprintf(stderr, "Invalid account type\n");
+        return false;
+    }
+
     if (users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
