@@ -69,11 +69,12 @@ bool SaleList::newTransaction(const unsigned long sid, const std::string b, cons
 bool SaleList::loadSales(const std::string file) {
     std::ifstream p_fin, c_fin;
     std::string p_line, c_line;
-    unsigned long s_id, s_id_check, i_id, item_quantity, sold_quantity;
-    unsigned int y, m, d, curr_y, curr_m, curr_d, i;
-    double tot_price, i_price;
-    char b[50], s[50];
-    std::string buyer, seller;
+    std::string s_id, s_id_check, i_id, item_quantity, sold_quantity;
+    std::string y, m, d; 
+    unsigned int curr_y, curr_m, curr_d, i;
+    std::string tot_price, i_price;
+    // char b[50], s[50];
+    std::string b, s;
     time_t current_date;
 
     // getting current date to check if transactions have been added on the same day
@@ -109,25 +110,30 @@ bool SaleList::loadSales(const std::string file) {
          return false;
      }
 
-     while(!(p_fin.eof())){
-        getline(p_fin, p_line);
-        if(p_line == "") break;
-        memset(b, '\0', 50);
-        memset(s, '\0', 50);
-        sscanf(p_line.c_str(), "%lu,%u/%u/%u,%lf,%lu,%s,%s", &s_id, &y, &m, &d, &tot_price, &item_quantity, b, s );
-        buyer = b;
-        seller = s;
-        
-        newTransaction(s_id, buyer, seller, y, m, d);
+     while(p_fin.good()){
+        getline(p_fin, s_id, ',');
+        if(!p_fin.good()) break;
+        getline(p_fin, y, '/');
+        getline(p_fin, m, '/');
+        getline(p_fin, d, ',');
+        getline(p_fin, tot_price, ',');
+        getline(p_fin, item_quantity, ',');
+        getline(p_fin, b, ',');
+        getline(p_fin, s, '\n');
+
+        // note total price and item quantity are automatically set when newTransaction is called
+        newTransaction(stoul(s_id), b, s, stoul(y), stoul(m), stoul(d));
         // When items are saved to the file, they should be orginized in order from oldest to newest so it can be read like this.
-        for(i = 0; i < item_quantity; i++){
-            getline(c_fin, c_line);
-            sscanf(c_line.c_str(), "%lu,%lu,%lu,%lf", &s_id_check, &i_id, &sold_quantity, &i_price);
-            if(s_id_check == s_id) transaction_by_order[curr_transaction]->addSale(s_id_check, i_id, sold_quantity, i_price);
+        for(i = 0; i < stoul(item_quantity); i++){
+            getline(c_fin, s_id_check, ',');
+            getline(c_fin, i_id, ',');
+            getline(c_fin, sold_quantity, ',');
+            getline(c_fin, i_price, '\n');
+            if(stoul(s_id_check) == stoul(s_id)) transaction_by_order[curr_transaction]->addSale(stoul(s_id_check), stoul(i_id), stoul(sold_quantity), stod(i_price));
         }
         // sale_id is based on the day, so if previous sales have been added today, the sale Id must account for it
-        if(y == curr_y && m == curr_m && d == curr_d){
-            curr_sale_id = s_id + 1;
+        if(stoul(y) == curr_y && stoul(m) == curr_m && stoul(d) == curr_d){
+            curr_sale_id = stoul(s_id) + 1;
         }
      }
 
@@ -174,8 +180,7 @@ void SaleList::print() {
         std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date << " | "
                   << "Total Price: " << transaction_by_order[i]->total_price << std::endl;
         for(j = 0; j < transaction_by_order[i]->num_sales; j++) {
-            // add part to look up item by id and print the item name instead of just the itemID
-            std::cout << "Item: " << transaction_by_order[i]->sales[j]->item_id << " | " 
+            std::cout << "ItemID: " << transaction_by_order[i]->sales[j]->item_id << " | " 
                       << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
                       << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
         }
