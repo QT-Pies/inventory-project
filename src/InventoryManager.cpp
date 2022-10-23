@@ -39,6 +39,11 @@ int InventoryManager::userInput() {
         case 'a':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+            
+            if(current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to add an item\n", current_user->name.c_str());
+                break;
+            } 
 
             std::cout << "Enter item name: ";
             std::cin >> name;
@@ -89,6 +94,11 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
+            if(current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to remove an item\n", current_user->name.c_str());
+                break;
+            }
+
             std::cout << "Name: ";
             std::cin >> name;
 
@@ -101,6 +111,11 @@ int InventoryManager::userInput() {
         case 'u':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+            
+            if(current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to update an item\n", current_user->name.c_str());
+                break;
+            } 
 
             std::cout << "Enter name of item to update: ";
             std::cin >> name;
@@ -248,9 +263,9 @@ int InventoryManager::fileOutput() {
 bool InventoryManager::userLogin() {
 
     login->readCSV();
-    auto user = login->userInput();
+    current_user = login->userInput();
     
-    if(user == NULL) return false;
+    if(current_user == NULL) return false;
 
     return true;
 }
