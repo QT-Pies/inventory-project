@@ -28,7 +28,7 @@ bool SaleList::addSale(const unsigned long id, const unsigned long sn, const std
 }
 
 /*
- * Creates a new file with the propper starting format.
+ * Creates a new file with the proper starting format.
  */
 bool SaleList::newFile() {
     std::ofstream fout;

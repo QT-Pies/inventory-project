@@ -72,7 +72,7 @@ class SaleList {
                  const double, const std::string&, const std::string&);
 
     /*
-     * @brief Creates a new File with the given file name, will add the begining
+     * @brief Creates a new File with the given file name, will add the beginning
      * CSV header for what data is being stored.
      * @return true on success, false on failure
      */
