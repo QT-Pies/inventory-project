@@ -265,6 +265,7 @@ int InventoryManager::fileOutput() {
 bool InventoryManager::userLogin() {
     login->readCSV();
     current_user = login->userInput();
+    login->outputCSV();
 
     if (current_user == NULL) return false;
 

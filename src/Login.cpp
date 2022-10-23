@@ -3,10 +3,7 @@
 Login::Login() { /* does nothing */
 }
 
-Login::~Login() {
-    /* no deletion required*/
-    outputCSV();
-}
+Login::~Login() { /* no deletion required*/ }
 
 bool Login::createUser(const std::string name, const std::string password, const std::string account) {
     if (account != "manager" && account != "owner" && account != "employee") {
