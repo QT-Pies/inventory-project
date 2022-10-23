@@ -135,12 +135,15 @@ int InventoryManager::userInput() {
 
             std::cout << "Buyer | Seller\n";
             std::cin >> buyer >> seller;
-            std::cout << "Item name | Quantity Sold\n(Enter Q for name or 0 for quantity to stop reading sales in the transaction)\n";
-
+            std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
             while(true) {
-                std::cin >> name >> quantity;
-                if(name == "Q" || name == "q" || quantity == "0") break;
+                std::cout << "Item Name: ";
+                std::cin >> name;
+                if(name == "Q" || name == "q") break;
+                std::cout << "Quantity Sold: ";
+                std::cin >> quantity;
+                if( quantity == "0") break;
                 auto item_ptr = active_inventory->searchByName(name);
                 if(item_ptr != NULL) {
                     sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price );
