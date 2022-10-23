@@ -3,16 +3,16 @@
 
 #include <stdio.h>
 
+#include <ctime>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
-#include <map>
 #include <vector>
-#include <ctime>
 
-#include "Item.hpp"
 #include "Date.hpp"
+#include "Item.hpp"
 
 class Sale {
    public:
@@ -40,7 +40,7 @@ class Sale {
 
 class Transaction {
    public:
-   /*
+    /*
      * @brief Transaction constructor that sets all the data for the given transaction.
      * @param unsigned long saleID
      * @param std::string Buyer
@@ -49,8 +49,8 @@ class Transaction {
      * @param unsigned int Month sale is made
      * @param unsigned int Day sale is made
      */
-    Transaction(const unsigned long, const std::string, const std::string, 
-                const unsigned int, const unsigned int, const unsigned int);
+    Transaction(const unsigned long, const std::string, const std::string, const unsigned int, const unsigned int,
+                const unsigned int);
 
     /* @brief Destructor; does nothing */
     ~Transaction();
@@ -86,9 +86,9 @@ class Transaction {
     std::vector<std::shared_ptr<Sale> > sales;
 };
 
-
 class SaleList {
     friend class InventoryManager;
+
    public:
     SaleList();
     ~SaleList();
@@ -113,11 +113,11 @@ class SaleList {
      * @param unsigned int Month sale is made
      * @param unsigned int Day sale is made
      */
-    void newTransaction(const unsigned long, const std::string, const std::string, 
-                         const unsigned int, const unsigned int, const unsigned int);
+    void newTransaction(const unsigned long, const std::string, const std::string, const unsigned int,
+                        const unsigned int, const unsigned int);
 
     /*
-     * @brief Reads in information from given file's parent and child 
+     * @brief Reads in information from given file's parent and child
      * sales files and stores it in appropriate places.
      * Will also set current sale ID. This resets at 1 every day, if there are sales
      * from earlier in the day it will be set appropriatly.
@@ -136,11 +136,12 @@ class SaleList {
     void print();
 
    protected:
-    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
+    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > >
+        transaction_by_date;
     std::vector<std::shared_ptr<Transaction> > transaction_by_order;
     std::string parent_file, child_file;
-    unsigned int curr_transaction;          // is place of the last element in transaction by order
-    unsigned long curr_sale_id;             // is the current saleID for the given day
+    unsigned int curr_transaction;  // is place of the last element in transaction by order
+    unsigned long curr_sale_id;     // is the current saleID for the given day
 };
 
 #endif

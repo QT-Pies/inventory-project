@@ -154,28 +154,30 @@ int InventoryManager::userInput() {
             std::cin >> buyer >> seller;
             std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
-            while(true) {
+            while (true) {
                 std::cout << "Item Name: ";
                 std::cin >> name;
-                if(name == "Q" || name == "q") break;
+                if (name == "Q" || name == "q") break;
                 std::cout << "Quantity Sold: ";
                 std::cin >> quantity;
-                if( quantity == "0") break;
+                if (quantity == "0") break;
                 auto item_ptr = active_inventory->searchByName(name);
-                if(item_ptr != NULL) {
-                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price );
+                if (item_ptr != NULL) {
+                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
+                        sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
                     // item_ptr->quantity -= quantity;
                     valid_transaction = true;
-                }
-                else std::cerr << "Invalid Item. Continuing to read\n";
+                } else
+                    std::cerr << "Invalid Item. Continuing to read\n";
             }
-            /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added this will be changed */
-            if(valid_transaction == false) {
+            /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added
+             * this will be changed */
+            if (valid_transaction == false) {
                 std::cerr << "Invalid Transaction. No valid sales where input. Continuing to read\n";
                 sale_list->transaction_by_order.pop_back();
                 sale_list->curr_transaction--;
-            }
-            else sale_list->curr_sale_id++;
+            } else
+                sale_list->curr_sale_id++;
             break;
         case 'Q':
         case 'q':
