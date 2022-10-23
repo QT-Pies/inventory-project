@@ -22,7 +22,7 @@ class ActiveInventory {
     int addItem(std::shared_ptr<Item>);
 
     /*
-     * @brief This function will remove an item from the inventroy maps based
+     * @brief This function will remove an item from the inventory maps based
      * on the given string name, and return how many items were actually
      * removed.
      * @param std::string Name of Item to remove
