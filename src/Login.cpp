@@ -48,7 +48,8 @@ std::shared_ptr<User> Login::userInput() {
                 if(user != NULL) {
                     return user;
                 } else {
-                    return NULL;
+                    fprintf(stderr, "Invalid usernmae or password\n");
+                    break;
                 }
                 break;
             }
