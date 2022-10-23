@@ -13,7 +13,7 @@ Transaction::Transaction(const unsigned long sid, const std::string b, const std
     total_price = 0;
     num_sales = 0;
     date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
-    unique_id = std::to_string(sid) + std::to_string(y) + std::to_string(m) + std::to_string(d);
+    unique_transaction_id = std::to_string(sid) + std::to_string(y) + std::to_string(m) + std::to_string(d);
 }
 
 Transaction::~Transaction() {}
@@ -28,7 +28,22 @@ bool Transaction::addSale(const unsigned long sid, const unsigned long iid, cons
     sales.push_back(new_sale);
     total_price += (ns * sp);
     num_sales++;
+    new_sale->unique_sale_id = unique_transaction_id + "_" + std::to_string(num_sales);
     return true;
+}
+
+bool Transaction::removeSale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp) {
+    unsigned int i;
+
+    for(i = 0; i < sales.size(); i++) {
+        if(sales[i]->sale_id == sid && sales[i]->item_id == iid && sales[i]->num_sold == ns && sales[i]->sale_price == sp) {
+            sales[i] = NULL;
+            num_sales--;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 SaleList::SaleList() {
@@ -40,7 +55,7 @@ SaleList::SaleList() {
 
 SaleList::~SaleList() {}
 
-bool SaleList::userTransaction(const unsigned long sid, const std::string b, const std::string s) {
+void SaleList::userTransaction(const unsigned long sid, const std::string b, const std::string s) {
     time_t current_date;
     unsigned int y, m, d;
     
@@ -49,21 +64,16 @@ bool SaleList::userTransaction(const unsigned long sid, const std::string b, con
     y = 1900 + ltm->tm_year;
     m = 1 + ltm->tm_mon;
     d = ltm->tm_mday;
-
-    if(newTransaction(sid, b, s, y, m, d)) {
-        return true;
-    }
-    else return false;
+    newTransaction(sid, b, s, y, m, d);
 }
 
-bool SaleList::newTransaction(const unsigned long sid, const std::string b, const std::string s, 
+void SaleList::newTransaction(const unsigned long sid, const std::string b, const std::string s, 
                                const unsigned int y, const unsigned int m, const unsigned int d) {
 
     auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
     transaction_by_order.push_back(new_transaction);
     transaction_by_date[y][m][d] = new_transaction;
     curr_transaction = transaction_by_order.size() - 1;
-    return true;
 }
 
 bool SaleList::loadSales(const std::string file) {
@@ -73,7 +83,6 @@ bool SaleList::loadSales(const std::string file) {
     std::string y, m, d; 
     unsigned int curr_y, curr_m, curr_d, i;
     std::string tot_price, i_price;
-    // char b[50], s[50];
     std::string b, s;
     time_t current_date;
 
@@ -147,9 +156,15 @@ bool SaleList::save() {
     unsigned int i,j;
 
     p_fout.open(parent_file.c_str());
-    if (!p_fout.is_open()) return false;
+    if (!p_fout.is_open()) {
+        std::cerr << "Unable to save to Parent Sales File. Sales Save aborted. Still Quiting.\n";
+        return false;
+    }
     c_fout.open(child_file.c_str());
-    if (!c_fout.is_open()) return false;
+    if (!c_fout.is_open()) {
+        std::cerr << "Unable to save to Child Sales File. Sales Save aborted. Still Quiting.\n";
+        return false;
+    }
     p_fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
     c_fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
@@ -158,9 +173,11 @@ bool SaleList::save() {
                << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
                << transaction_by_order[i]->buyer << ',' << transaction_by_order[i]->seller << std::endl;
         for(j = 0; j < transaction_by_order[i]->num_sales; j++){
-            c_fout << transaction_by_order[i]->sales[j]->sale_id << ','
-                   << transaction_by_order[i]->sales[j]->item_id << ',' << transaction_by_order[i]->sales[j]->num_sold
-                   << ',' << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+            if(transaction_by_order[i]->sales[j] != NULL) {
+                c_fout << transaction_by_order[i]->sales[j]->sale_id << ','
+                       << transaction_by_order[i]->sales[j]->item_id << ',' << transaction_by_order[i]->sales[j]->num_sold
+                       << ',' << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+            }
         }
     }
 
@@ -180,9 +197,11 @@ void SaleList::print() {
         std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date << " | "
                   << "Total Price: " << transaction_by_order[i]->total_price << std::endl;
         for(j = 0; j < transaction_by_order[i]->num_sales; j++) {
-            std::cout << "ItemID: " << transaction_by_order[i]->sales[j]->item_id << " | " 
-                      << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
-                      << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+            if(transaction_by_order[i]->sales[j] != NULL) {
+                std::cout << "ItemID: " << transaction_by_order[i]->sales[j]->item_id << " | " 
+                        << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
+                        << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+            }
         }
     }
 }
