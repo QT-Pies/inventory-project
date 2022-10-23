@@ -1,17 +1,14 @@
 #include "Login.hpp"
 
-Login::Login() {
-    /* does nothing */
-}
+Login::Login() { /* does nothing */ }
 
 Login::~Login() {
     /* no deletion required*/
     outputCSV();
 }
 
-bool Login::createUser(std::string name, std::string password, std::string account) {
-
-    if(users.find(name) == users.end()) {
+bool Login::createUser(const std::string name, const std::string password, const std::string account) {
+    if (users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
     } else {
@@ -23,19 +20,16 @@ bool Login::createUser(std::string name, std::string password, std::string accou
 }
 
 std::shared_ptr<User> Login::userInput() {
-    
     char argument;
     std::string category, name, password, account;
-    
+
     while (true) {
-        
         std::cout << "\n(L)ogin or (C)reate User: ";
         std::cin >> argument;
-    
+
         switch (argument) {
             case 'l':
-            case 'L':
-            {
+            case 'L': {
                 std::cin.clear();
                 std::cin.ignore(10000, '\n');
 
@@ -45,17 +39,16 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin >> password;
 
                 auto user = verifyUser(name, password);
-                if(user != NULL) {
+                if (user != NULL) {
                     return user;
                 } else {
-                    fprintf(stderr, "Invalid usernmae or password\n");
+                    fprintf(stderr, "Invalid username or password\n");
                     break;
                 }
                 break;
             }
             case 'c':
-            case 'C':
-            {    
+            case 'C': {
                 std::cin.clear();
                 std::cin.ignore(10000, '\n');
 
@@ -74,43 +67,38 @@ std::shared_ptr<User> Login::userInput() {
 
         std::cin.clear();
         std::cin.ignore(10000, '\n');
-
     }
     return NULL;
 }
 
-  
 bool Login::readCSV() {
-
     std::string head, name, password, account;
     bool created;
     std::ifstream user_file(file_name);
-    
-    if(!user_file.is_open()) {
+
+    if (!user_file.is_open()) {
         fprintf(stderr, "Unable to open %s\n", file_name.c_str());
         return false;
     }
 
     std::getline(user_file, head);
 
-    while(user_file.peek() != EOF) {
-        
+    while (user_file.peek() != EOF) {
         getline(user_file, name, ',');
         getline(user_file, password, ',');
         getline(user_file, account, '\n');
         created = createUser(name, password, account);
-        
-        if(!created) {
+
+        if (!created) {
             fprintf(stderr, "Unable to add user %s\n", name.c_str());
         }
     }
 
     user_file.close();
-    
+
     return true;
 }
 
-      
 bool Login::outputCSV() {
     std::ofstream file;
 
@@ -121,10 +109,10 @@ bool Login::outputCSV() {
         return false;
     }
 
-    file << "NAME,PASSWORD,ACCOUNT"<< std::endl;
+    file << "NAME,PASSWORD,ACCOUNT" << std::endl;
 
     for (auto mit = users.begin(); mit != users.end(); mit++) {
-        file << mit->second->name << "," << mit->second->password << "," << mit->second->account_type << std::endl; 
+        file << mit->second->name << "," << mit->second->password << "," << mit->second->account_type << std::endl;
     }
 
     file.close();
@@ -132,13 +120,12 @@ bool Login::outputCSV() {
     return true;
 }
 
-std::shared_ptr<User> Login::verifyUser(std::string name, std::string password) {
-
+std::shared_ptr<User> Login::verifyUser(const std::string name, const std::string password) {
     auto it = users.find(name);
-    
-    if(it != users.end()) {
-        if(it->second->password == password){
-            return it->second;    
+
+    if (it != users.end()) {
+        if (it->second->password == password) {
+            return it->second;
         }
     } else {
         return NULL;

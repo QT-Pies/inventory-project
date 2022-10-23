@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
     try {
         im.readCSVFile();
-
+        im.userLogin();
         while (true) {
             if (im.userInput() == -1) break;
         }
@@ -34,7 +34,6 @@ int main(int argc, char** argv) {
         im.fileOutput();
 
         return 1;
-
     }
 
     return 0;
