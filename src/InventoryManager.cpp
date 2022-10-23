@@ -244,3 +244,4 @@ int InventoryManager::fileOutput() {
     std::cout << "Inventory written to " << file_name << std::endl;
     return 0;
 }
+
