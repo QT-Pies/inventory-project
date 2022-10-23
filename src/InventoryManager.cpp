@@ -48,22 +48,23 @@ int InventoryManager::userInput() {
             std::cin >> sub_category;
             std::cout << "Enter item quantity: ";
             std::cin >> quantity;
-            std::cout << "Enter item id: (up to 6 digits) ";
+            std::cout << "Enter item id: ";
             std::cin >> id;
             std::cout << "Enter sale price: (format xx.xx) $";
             std::cin >> sale_price;
             std::cout << "Enter purchase cost: (format xx.xx) $";
             std::cin >> buy_price;
-            std::cout << "Enter item tax: (format xx.xx) $";
+            std::cout << "Enter item tax as a decimal value: ";
             std::cin >> tax;
-            std::cout << "Enter expiration date: (format xx/xx/xxxx) ";
+            std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
             std::cin >> expiration;
 
+            lowerCaseString(category);
             try {
-                if (category == "Perishable" || "perishable") {
+                if (category == "perishable") {
                     new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, id, sale_price,
                                                                 buy_price, tax, expiration);
-                } else if (category == "NonPerishable" || "nonperishable" || "Nonperishable") {
+                } else if (category == "nonperishable") {
                     new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, id,
                                                                    sale_price, buy_price, tax);
                 } else {
@@ -101,8 +102,6 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
-            //std::cout << "Name Field Value: ";
-            //std::cin >> name >> category >> value;
             std::cout << "Enter name of item to update: ";
             std::cin >> name;
             std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
