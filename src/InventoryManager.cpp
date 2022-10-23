@@ -13,8 +13,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     file_name = file;
 }
 
-InventoryManager::~InventoryManager() { 
-    /* using smart pointer for active inventory so no deletion neccessary */    
+InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
 }
 
 int InventoryManager::userInput() {
@@ -40,6 +39,12 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to add an item\n",
+                        current_user->name.c_str());
+                break;
+            }
+
             std::cout << "Enter item name: ";
             std::cin >> name;
             std::cout << "Enter item category (Perishable or NonPerishable): ";
@@ -62,8 +67,8 @@ int InventoryManager::userInput() {
             lowerCaseString(category);
             try {
                 if (category == "perishable") {
-                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, id, sale_price,
-                                                                buy_price, tax, expiration);
+                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, id,
+                                                                sale_price, buy_price, tax, expiration);
                 } else if (category == "nonperishable") {
                     new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, id,
                                                                    sale_price, buy_price, tax);
@@ -89,6 +94,12 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to remove an item\n",
+                        current_user->name.c_str());
+                break;
+            }
+
             std::cout << "Name: ";
             std::cin >> name;
 
@@ -101,6 +112,12 @@ int InventoryManager::userInput() {
         case 'u':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to update an item\n",
+                        current_user->name.c_str());
+                break;
+            }
 
             std::cout << "Enter name of item to update: ";
             std::cin >> name;
@@ -243,4 +260,14 @@ int InventoryManager::fileOutput() {
 
     std::cout << "Inventory written to " << file_name << std::endl;
     return 0;
+}
+
+bool InventoryManager::userLogin() {
+    login->readCSV();
+    current_user = login->userInput();
+    login->outputCSV();
+
+    if (current_user == NULL) return false;
+
+    return true;
 }
