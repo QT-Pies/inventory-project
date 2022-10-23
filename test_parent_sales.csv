@@ -1,4 +1,0 @@
-Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller
-1,2022/10/23,6,2,1,1
-2,2022/10/23,2,1,2,2
-3,2022/10/23,1,1,me,you
