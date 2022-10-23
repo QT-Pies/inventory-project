@@ -140,7 +140,7 @@ int InventoryManager::userInput() {
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
             while(true) {
                 std::cin >> name >> quantity;
-                if(name == "Q" || name == "q" || quantity == 0) break;
+                if(name == "Q" || name == "q" || quantity == "0") break;
                 auto item_ptr = active_inventory->searchByName(name);
                 if(item_ptr != NULL) {
                     sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price );

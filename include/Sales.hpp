@@ -71,40 +71,6 @@ class Transaction {
     std::vector<std::shared_ptr<Sale> > sales;
 };
 
-class SaleList {
-    friend class InventoryManager;
-   public:
-   /*
-     * @brief Transaction constructor that sets all the data for the given transaction.
-     * @param unsigned long saleID
-     * @param std::string Buyer
-     * @param std::string Seller
-     * @param unsigned int Year sale is made
-     * @param unsigned int Month sale is made
-     * @param unsigned int Day sale is made
-     */
-    Transaction(const unsigned long, const std::string, const std::string, 
-                const unsigned int, const unsigned int, const unsigned int);
-
-    /* @brief Destructor; does nothing */
-    ~Transaction();
-
-    /*
-     * @brief Adds a sale to the transaction and stores it in the sales vector
-     * @param unsigned long saleID
-     * @param unsigned long itemID
-     * @param unsigned long Amount of items sold in sale
-     * @param unsigned long Sale Price of item when sale is made
-     */
-    bool addSale(const unsigned long, const unsigned long, const unsigned long, const double);
-
-   protected:
-    unsigned long sale_id, num_sales;
-    unsigned int year, month, day;
-    double total_price;
-    std::string buyer, seller, date, unique_id;
-    std::vector<std::shared_ptr<Sale> > sales;
-};
 
 class SaleList {
     friend class InventoryManager;
