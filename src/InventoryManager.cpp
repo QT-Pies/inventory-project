@@ -11,8 +11,7 @@
 InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
-    sale_list->load(file);
-
+    sale_list->loadSales(file);
 }
 
 InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
@@ -22,8 +21,8 @@ int InventoryManager::userInput() {
     char argument;
     std::string name, category, sub_category, expiration, value, date, buyer, seller;
     unsigned long id, quantity;
-    double sale_price, buy_price, tax, total_price;
-    unsigned int i, num_items;
+    double sale_price, buy_price, tax;
+    bool valid_transaction;
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
@@ -31,7 +30,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (P)rint, (S)ale, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (P)rint, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -97,36 +96,43 @@ int InventoryManager::userInput() {
             std::cin >> category;
             active_inventory->printItems(category);
             break;
-// this is what i am adding, 
         case 'S':
         case 's':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
+            valid_transaction = false;
+
             std::cout << "Buyer | Seller\n";
             std::cin >> buyer >> seller;
-            sale_list->addTransaction(sale_list->curr_sale_id, buyer, seller);
-            std::cout << "Items in Transaction: ";
-            std::cin >> num_items;
-            // std::cout << 
-            for(i = 0; i < num_items; i++){
-                (void) total_price;
-                sale_list->transaction_by_id[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, id, quantity, sale_price );
+            std::cout << "Item name | Quantity Sold\n(Enter Q for name or 0 for quantity to stop reading sales in the transaction)\n";
+
+            sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+            while(true) {
+                std::cin >> name >> quantity;
+                if(name == "Q" || name == "q" || quantity == 0) break;
+                auto item_ptr = active_inventory->searchByName(name);
+                if(item_ptr != NULL) {
+                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item_ptr->id, quantity, item_ptr->sale_price );
+                    item_ptr->quantity -= quantity;
+                    valid_transaction = true;
+                }
+                else std::cerr << "Invalid Item. Continuing to read\n";
             }
-            // in morning, add the saving feture, just use the vector, that will be the easiest i think
-            
-            //std::cout << "Items in Sale | Date | Total Price | Buyer | Seller";
-            // just added all necisary variables
-            // std::cin >> quantity >> date >> total_price >> buyer >> seller;
-            
+            /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added this will be changed */
+            if(valid_transaction == false) {
+                std::cerr << "Invalid Transaction. No valid sales where input. Continuing to read\n";
+                sale_list->transaction_by_order.pop_back();
+                sale_list->curr_transaction--;
+            }
+            else sale_list->curr_sale_id++;
             break;
-// end of what I am adding
         case 'Q':
         case 'q':
             printf("Quitting\n");
             return -1;
         default:
-            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (P)rint | (Q)uit>" << std::endl;
+            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (Q)uit>" << std::endl;
             break;
     }
 
@@ -213,6 +219,8 @@ int InventoryManager::fileOutput() {
     file.close();
 
     std::cout << "Inventory written to " << file_name << std::endl;
+
+    sale_list->save();
 
     return 0;
 }

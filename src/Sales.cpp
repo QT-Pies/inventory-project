@@ -1,5 +1,5 @@
 #include "Sales.hpp"
-    // sale_id | item_id | num_sold | sale_price
+
 Sale::Sale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp)
     : sale_id(sid), item_id(iid), num_sold(ns), sale_price(sp) {
 }
@@ -11,13 +11,16 @@ Transaction::Transaction(const unsigned long sid, const std::string b, const std
     : sale_id(sid), buyer(b), seller(s) {
     total_price = 0;
     num_sales = 0;
+    date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
+    unique_id = std::to_string(sid) + std::to_string(y) + std::to_string(m) + std::to_string(d);
 }
 
 Transaction::~Transaction() {}
 
 bool Transaction::addSale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp) {
-    if(sid == 0 || iid == 0 || ns == 0){
-        std::cerr << "Invalid input. Make sure Sale ID, Item ID, and amount sold are greater than 0. Continuing to read\n";
+    // making sure items are sold in the sale, if not the sale is considered invalid
+    if(ns == 0){
+        std::cerr << "Invalid input. Make sure Amount sold are greater than 0. Continuing to read\n";
         return false;
     }
     auto new_sale = std::make_shared<Sale>(sid, iid, ns, sp);
@@ -27,27 +30,18 @@ bool Transaction::addSale(const unsigned long sid, const unsigned long iid, cons
     return true;
 }
 
-
-
-
-
 SaleList::SaleList() {
-    // change to where te files are the based on the given file name, then maybe just add _parent and _child, use substring
-    // will assume that the last 4 characters in the string are .csv, unless file name is >=4 characters long
-    std::make_unique <std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(transaction_by_date);
-    std::make_unique <std::vector<std::shared_ptr<Transaction> > > (transaction_by_id);
-    parent_file = "Parrent_Sales.csv";
-    child_file = "Child_Sales.csv";
+    std::make_unique<std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(transaction_by_date);
+    std::make_unique<std::vector<std::shared_ptr<Transaction> > > (transaction_by_order);
     curr_sale_id = 1;
+    curr_transaction = 0;
 }
 
 SaleList::~SaleList() {}
 
-// uses current time to set date feilds
-bool SaleList::addTransaction(const unsigned long sid, const std::string b, const std::string s) {
+bool SaleList::userTransaction(const unsigned long sid, const std::string b, const std::string s) {
     time_t current_date;
     unsigned int y, m, d;
-
     
     current_date = time(0);
     tm *ltm = localtime(&current_date);
@@ -55,56 +49,43 @@ bool SaleList::addTransaction(const unsigned long sid, const std::string b, cons
     m = 1 + ltm->tm_mon;
     d = ltm->tm_mday;
 
-    if(loadTransaction(sid, b, s, y, m, d)) return true;
+    if(newTransaction(sid, b, s, y, m, d)) {
+        return true;
+    }
     else return false;
 }
-// reads in input to set date feilds, based on csv files
-bool SaleList::loadTransaction(const unsigned long sid, const std::string b, const std::string s, 
+
+bool SaleList::newTransaction(const unsigned long sid, const std::string b, const std::string s, 
                                const unsigned int y, const unsigned int m, const unsigned int d) {
-    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > >::iterator yit;
-    std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > >::iterator mit;
-    std::map<unsigned int, std::shared_ptr<Transaction> >::iterator dit;
 
-    if (sid == 0 || b == "" || s == "") {
-        std::cerr << "Failed to read Sales Input. Note that the Sales ID"
-                     "and a Date and Buyer must be given.\nContinuing to read.";
-        return false;
-    }
     auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
-    transaction_by_id.push_back(new_transaction);
-    // need to also add it to the by date map
+    transaction_by_order.push_back(new_transaction);
+    transaction_by_date[y][m][d] = new_transaction;
+    curr_transaction = transaction_by_order.size() - 1;
     return true;
 }
 
-/*
- * Creates a new file with the propper starting format.
- */
-bool SaleList::newFile() {
-    std::ofstream fout;
-
-    fout.open(parent_file.c_str());
-    if (!fout.is_open()) return false;
-    fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller";
-    fout.close();
-
-    fout.open(child_file.c_str());
-    if (!fout.is_open()) return false;
-    fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price";
-    fout.close();
-    return true;
-}
-
-bool SaleList::load(const std::string file) {
-    (void) file;    // will set the file name here,
-    // ALSO SET CURR SALE ID HERE, do by checking date and maps
+bool SaleList::loadSales(const std::string file) {
     std::ifstream p_fin, c_fin;
     std::string p_line, c_line;
     unsigned long s_id, s_id_check, i_id, item_quantity, sold_quantity;
-    unsigned int y, m, d, i;
+    unsigned int y, m, d, curr_y, curr_m, curr_d, i;
     double tot_price, i_price;
     char b[50], s[50];
+    std::string buyer, seller;
+    time_t current_date;
 
-    // oppening parent file
+    // getting current date to check if transactions have been added on the same day
+    current_date = time(0);
+    tm *ltm = localtime(&current_date);
+    curr_y = 1900 + ltm->tm_year;
+    curr_m = 1 + ltm->tm_mon;
+    curr_d = ltm->tm_mday;
+
+    // assuming all files end in .csv
+    parent_file = file.substr(0, file.size() - 4) + "_parent_sales.csv";
+    child_file = file.substr(0, file.size() - 4) + "_child_sales.csv";
+
      p_fin.open(parent_file.c_str());
      if (!p_fin.is_open()) {
         std::cout << "Unable to open Sales Parent File\n";
@@ -118,39 +99,35 @@ bool SaleList::load(const std::string file) {
 
      getline(p_fin, p_line);
      getline(c_fin, c_line);
-     if (p_line != "Sale_ID, Date,Total_Price,Quantity_of_Items,Buyer,Seller") {
-         std::cout << "Curuption in Parent Sales file. Creating new sales files.\n";
-         return newFile();
-     };
-     if (c_line != "Sale_ID,Item_ID,Quantity_Sold,Sale_Price") {
-         std::cout << "Curuption in Child Sales file. Creating new sales files.\n";
-         return newFile();
-     };
-     curr_transaction = 0;
+     if (p_line != "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller") {
+         std::cerr << "Invalid Parent Sales file. Continuing without loading Sales.\n";
+         return false;
+     }
+     if (c_line != "Sale_ID, Item_ID, Quantity_Sold, Sale_Price") {
+         std::cerr << "Invalid Child Sales file.  Continuing without loading Sales.\n";
+         return false;
+     }
+
      while(!(p_fin.eof())){
         getline(p_fin, p_line);
+        if(p_line == "") break;
         sscanf(p_line.c_str(), "%lu,%u/%u/%u,%lf,%lu,%s,%s", &s_id, &y, &m, &d, &tot_price, &item_quantity, b, s );
-        loadTransaction(s_id, b, s, y, m, d);
-        // when items are saved to the file, they should be orginized so it can be read like this, files should start with 
-        // will need to add date feilds in sale class to, also check this along with sales id
+        buyer = b;
+        seller = s;
+        
+        newTransaction(s_id, buyer, seller, y, m, d);
+        // When items are saved to the file, they should be orginized in order from oldest to newest so it can be read like this.
         for(i = 0; i < item_quantity; i++){
             getline(c_fin, c_line);
             sscanf(c_line.c_str(), "%lu,%lu,%lu,%lf", &s_id_check, &i_id, &sold_quantity, &i_price);
-            transaction_by_id[0]->addSale(s_id_check, i_id, sold_quantity, i_price);
-            //trasactions
-            // do a check for ids
+            if(s_id_check == s_id) transaction_by_order[curr_transaction]->addSale(s_id_check, i_id, sold_quantity, i_price);
         }
-        curr_transaction++;
+        // sale_id is based on the day, so if previous sales have been added today, the sale Id must account for it
+        if(y == curr_y && m == curr_m && d == curr_d){
+            curr_sale_id = s_id + 1;
+        }
      }
 
-    // while (!(p_fin.eof())) {
-    //     getline(p_fin, line);
-    //     //sscanf(line.c_str(), "%lu,%s,%lu,%lf,%lf,%s,%s", &id, &tp, &sp, &t, b, s);
-    //     if (!loadTransaction(id, b, s, y, m, d)) {
-    //         std::cerr << "FILE CURRUPTION DETECTED in File: " << parent_file << std::endl;
-    //         return false;
-    //     }
-    // }
     p_fin.close();
     c_fin.close();
     return true;
@@ -158,12 +135,46 @@ bool SaleList::load(const std::string file) {
 
 bool SaleList::save() {
     std::ofstream p_fout, c_fout;
-    //unsigned int i;
+    unsigned int i,j;
 
     p_fout.open(parent_file.c_str());
     if (!p_fout.is_open()) return false;
+    c_fout.open(child_file.c_str());
+    if (!c_fout.is_open()) return false;
+    p_fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
+    c_fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
-    // will have to redo this completely
+    for(i = 0; i <= curr_transaction; i++){
+        p_fout << transaction_by_order[i]->sale_id << ',' << transaction_by_order[i]->date << ','
+               << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
+               << transaction_by_order[i]->buyer << ',' << transaction_by_order[i]->seller << std::endl;
+        for(j = 0; j < transaction_by_order[i]->num_sales; j++){
+            c_fout << transaction_by_order[i]->sales[j]->sale_id << ','
+                   << transaction_by_order[i]->sales[j]->item_id << ',' << transaction_by_order[i]->sales[j]->num_sold
+                   << ',' << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+        }
+    }
+
     p_fout.close();
+    c_fout.close();
+
+    std::cout << "Parent Sales File writen to " << parent_file << std::endl;
+    std::cout << "Child Sales File writen to " << child_file << std::endl;
+
     return true;
+}
+
+void SaleList::print() {
+    unsigned int i,j;
+
+    for(i = 0; i <= curr_transaction; i++) {
+        std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date << " | "
+                  << "Total Price: " << transaction_by_order[i]->total_price << std::endl;
+        for(j = 0; j < transaction_by_order[i]->num_sales; j++) {
+            // add part to look up item by id and print the item name instead of just the itemID
+            std::cout << "Item: " << transaction_by_order[i]->sales[j]->item_id << " | " 
+                      << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
+                      << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+        }
+    }
 }

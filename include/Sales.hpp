@@ -12,6 +12,7 @@
 #include <ctime>
 
 #include "Item.hpp"
+#include "Date.hpp"
 
 class Sale {
     friend class SaleList;
@@ -19,10 +20,11 @@ class Sale {
    public:
     /*
      * @brief Sale constructor that sets all the data for the given sale.
-     * Note it is checked at some point that most the numbers are not 0 and
-     * strings are not empty.
+     * @param unsigned long saleID
+     * @param unsigned long itemID
+     * @param unsigned long Amount of items sold in sale
+     * @param unsigned long Sale Price of item when sale is made
      */
-    // sale_id | item_id | num_sold | sale_price
     Sale(const unsigned long, const unsigned long, const unsigned long, const double);
 
     /* @brief Destructor; does nothing */
@@ -37,73 +39,93 @@ class Transaction {
     friend class SaleList;
 
    public:
-   // sale_id | buyer | seller | year | month | day
+   /*
+     * @brief Transaction constructor that sets all the data for the given transaction.
+     * @param unsigned long saleID
+     * @param std::string Buyer
+     * @param std::string Seller
+     * @param unsigned int Year sale is made
+     * @param unsigned int Month sale is made
+     * @param unsigned int Day sale is made
+     */
     Transaction(const unsigned long, const std::string, const std::string, 
                 const unsigned int, const unsigned int, const unsigned int);
+
+    /* @brief Destructor; does nothing */
     ~Transaction();
-    // will call sale constructor with these 
+
+    /*
+     * @brief Adds a sale to the transaction and stores it in the sales vector
+     * @param unsigned long saleID
+     * @param unsigned long itemID
+     * @param unsigned long Amount of items sold in sale
+     * @param unsigned long Sale Price of item when sale is made
+     */
     bool addSale(const unsigned long, const unsigned long, const unsigned long, const double);
-    // will calculate total_price and set num_sales appropriatly, tax will be hard coded at .0635, average in us
-    // will want to change tax appropriatly, maybe add tax break feture to
-    // date will be set with automatically as well, baised on current day or file reading
 
    protected:
     unsigned long sale_id, num_sales;
     unsigned int year, month, day;
     double total_price;
-    std::string buyer, seller;
+    std::string buyer, seller, date, unique_id;
     std::vector<std::shared_ptr<Sale> > sales;
-
 };
 
 class SaleList {
     friend class InventoryManager;
    public:
-    /*
-     * @brief Constructor; creates list of sales from given file.
-     * @param std::string Name of file
-     */
     SaleList();
     ~SaleList();
-    // will call Transaction constructor
-    bool addTransaction(const unsigned long, const std::string, const std::string);
-    bool loadTransaction(const unsigned long, const std::string, const std::string, 
-                         const unsigned int, const unsigned int, const unsigned int); // same as above, but also reads in the date from the file
-    /*
-     * @brief Creates a new File with the given file name, will add the begining
-     * CSV header for what data is being stored.
-     * @return true on success, false on failure
-     */
-    bool newFile();
 
     /*
-     * @brief Reads in information from given file and holds it in the sales
-     * vector. If addSale returns false, an error occurred.
-     * @return true on success, false on failure
+     * @brief Adds a new transaction based on user input, date is set based on current day
+     * @param unsigned long saleID
+     * @param std::string Buyer
+     * @param std::string Seller
+     * @param unsigned int Year sale is made
+     * @param unsigned int Month sale is made
+     * @param unsigned int Day sale is made
      */
-    bool load(const std::string);
+    bool userTransaction(const unsigned long, const std::string, const std::string);
 
     /*
-     * @brief Appends to the given File and adds any new sales.
-     * This assumes that once a sale is finalized it cannot be deleted
-     * and uses an offset that will be set previously to keep track of new sales.
+     * @brief Adds a new transaction based on the sales file or on a call by userTransaction
+     * @param unsigned long saleID
+     * @param std::string Buyer
+     * @param std::string Seller
+     * @param unsigned int Year sale is made
+     * @param unsigned int Month sale is made
+     * @param unsigned int Day sale is made
+     * @return true on success, false on failure
+     */
+    bool newTransaction(const unsigned long, const std::string, const std::string, 
+                         const unsigned int, const unsigned int, const unsigned int);
+
+    /*
+     * @brief Reads in information from given file's parent and child 
+     * sales files and stores it in appropriate places.
+     * Will also set current sale ID. This resets at 1 every day, if there are sales
+     * from earlier in the day it will be set appropriatly.
+     * @return true on success, false on failure
+     */
+    bool loadSales(const std::string);
+
+    /*
+     * @brief Writes to the given Files and adds all sales and transactions
+     * to the child and parent files respectively
      * @return true on success, false on failure
      */
     bool save();
-    // prints all transactions
+
+    /* @brief Prints out all of the transactions in order from oldest to newest */
     void print();
 
-    unsigned long curr_sale_id;
-
    protected:
-    // will change this data structure, want to impliment a bit first
-    // std::vector<std::shared_ptr<Sale> > sales;
-    // year, month, day, then the transactions on that day
-
     std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > transaction_by_date;
-    std::vector<std::shared_ptr<Transaction> > transaction_by_id;
+    std::vector<std::shared_ptr<Transaction> > transaction_by_order;
     std::string parent_file, child_file;
-    unsigned int curr_transaction; // may change name to include totals
+    unsigned int curr_transaction;          // is place of the last element in transaction by order
+    unsigned long curr_sale_id;             // is the current saleID for the given day
 };
 
 #endif
@@ -117,3 +139,5 @@ class SaleList {
 // have a check to seee if previously loaded, maybe just see if its empty or not
 // take in sales, maybe until a particular string is read in, then after save to file, not append
 // also
+
+// add functions for 
