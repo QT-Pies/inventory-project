@@ -1,4 +1,5 @@
 #include "Sales.hpp"
+#include <cstring>
 
 Sale::Sale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp)
     : sale_id(sid), item_id(iid), num_sold(ns), sale_price(sp) {
@@ -111,6 +112,8 @@ bool SaleList::loadSales(const std::string file) {
      while(!(p_fin.eof())){
         getline(p_fin, p_line);
         if(p_line == "") break;
+        memset(b, '\0', 50);
+        memset(s, '\0', 50);
         sscanf(p_line.c_str(), "%lu,%u/%u/%u,%lf,%lu,%s,%s", &s_id, &y, &m, &d, &tot_price, &item_quantity, b, s );
         buyer = b;
         seller = s;
