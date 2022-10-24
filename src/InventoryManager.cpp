@@ -11,17 +11,18 @@
 InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
+    sale_list->loadSales(file);
 }
 
-InventoryManager::~InventoryManager() { 
-    /* using smart pointer for active inventory so no deletion neccessary */    
+InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
 }
 
 int InventoryManager::userInput() {
     char argument;
     std::string name, category, sub_category, expiration, value;
-    std::string id, quantity, backorder;
+    std::string id, backorder, quantity, buyer, seller, date;
     std::string sale_price, buy_price, tax;
+    bool valid_transaction;
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
@@ -29,7 +30,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (P)rint, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (P)rint, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -39,6 +40,12 @@ int InventoryManager::userInput() {
         case 'a':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to add an item\n",
+                        current_user->name.c_str());
+                break;
+            }
 
             std::cout << "Enter item name: ";
             std::cin >> name;
@@ -91,6 +98,12 @@ int InventoryManager::userInput() {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
 
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to remove an item\n",
+                        current_user->name.c_str());
+                break;
+            }
+
             std::cout << "Name: ";
             std::cin >> name;
 
@@ -103,6 +116,12 @@ int InventoryManager::userInput() {
         case 'u':
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+
+            if (current_user->permission < 3) {
+                fprintf(stderr, "User %s does not have the required permissions to update an item\n",
+                        current_user->name.c_str());
+                break;
+            }
 
             std::cout << "Enter name of item to update: ";
             std::cin >> name;
@@ -126,13 +145,48 @@ int InventoryManager::userInput() {
             std::cin >> category;
             active_inventory->printItems(category);
             break;
+        case 'S':
+        case 's':
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
 
+            valid_transaction = false;
+
+            std::cout << "Buyer | Seller\n";
+            std::cin >> buyer >> seller;
+            std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
+            sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+            while (true) {
+                std::cout << "Item Name: ";
+                std::cin >> name;
+                if (name == "Q" || name == "q") break;
+                std::cout << "Quantity Sold: ";
+                std::cin >> quantity;
+                if (quantity == "0") break;
+                auto item_ptr = active_inventory->searchByName(name);
+                if (item_ptr != NULL) {
+                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
+                        sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
+                    // item_ptr->quantity -= quantity;
+                    valid_transaction = true;
+                } else
+                    std::cerr << "Invalid Item. Continuing to read\n";
+            }
+            /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added
+             * this will be changed */
+            if (valid_transaction == false) {
+                std::cerr << "Invalid Transaction. No valid sales where input. Continuing to read\n";
+                sale_list->transaction_by_order.pop_back();
+                sale_list->curr_transaction--;
+            } else
+                sale_list->curr_sale_id++;
+            break;
         case 'Q':
         case 'q':
             printf("Quitting\n");
             return -1;
         default:
-            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (P)rint | (Q)uit>" << std::endl;
+            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (Q)uit>" << std::endl;
             break;
     }
 
@@ -245,5 +299,18 @@ int InventoryManager::fileOutput() {
     file.close();
 
     std::cout << "Inventory written to " << file_name << std::endl;
+
+    sale_list->save();
+
     return 0;
+}
+
+bool InventoryManager::userLogin() {
+    login->readCSV();
+    current_user = login->userInput();
+    login->outputCSV();
+
+    if (current_user == NULL) return false;
+
+    return true;
 }
