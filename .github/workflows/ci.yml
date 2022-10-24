@@ -19,6 +19,7 @@ jobs:
         cd /usr/src/gtest
         sudo cmake CMakeLists.txt
         sudo make
+        sudo cp lib/libgtest* /usr/lib
 
     - name: make
       run: make all
