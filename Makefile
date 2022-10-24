@@ -67,4 +67,4 @@ clean:
 	rm $(EXECUTABLES) obj/*.o 
 
 better:
-	clang-format -i src/* include/*
+	clang-format -i src/* include/* tests/*
