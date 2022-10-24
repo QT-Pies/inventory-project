@@ -16,13 +16,14 @@ class Item {
      * @param std::string Category
      * @param std::string Sub-Category
      * @param std::string Quantity
+     * @param std::string Backorder
      * @param std::string ID
      * @param std::string Price
      * @param std::string Cost for store to purchase
      * @param std::string Tax
      */
     Item(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
-         const std::string&, const std::string&, const std::string&);
+         const std::string&, const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     virtual ~Item() = default;
@@ -54,6 +55,7 @@ class Item {
     std::string category;
     std::string sub_category;
     unsigned long quantity;
+    unsigned long backorder;
     unsigned long id;
     double sale_price;
     double buy_cost;
