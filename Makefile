@@ -57,11 +57,8 @@ obj/Login.o: src/Login.cpp
 obj/User.o: src/User.cpp
 	$(CC) $(CFLAGS) -c src/User.cpp -o obj/User.o
 
-obj/unit_tests.o: src/unit_tests.cpp
-	$(CC) $(CFLAGS) -c src/unit_tests.cpp -o obj/unit_tests.o
-
-bin/unit_tests: obj/unit_tests.o
-	$(CC) $(CFLAGS) -o bin/unit_tests obj/unit_tests.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o -lgtest -lgtest_main
+bin/unit_tests:
+	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lgtest_main obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
 
 clean: 
 	rm $(EXECUTABLES) obj/*.o 
