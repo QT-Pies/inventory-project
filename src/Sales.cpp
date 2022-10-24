@@ -174,16 +174,18 @@ bool SaleList::save() {
     p_fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
     c_fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
-    for (i = 0; i <= curr_transaction; i++) {
-        p_fout << transaction_by_order[i]->sale_id << ',' << transaction_by_order[i]->date << ','
-               << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
-               << transaction_by_order[i]->buyer << ',' << transaction_by_order[i]->seller << std::endl;
-        for (j = 0; j < transaction_by_order[i]->num_sales; j++) {
-            if (transaction_by_order[i]->sales[j] != NULL) {
-                c_fout << transaction_by_order[i]->sales[j]->sale_id << ','
-                       << transaction_by_order[i]->sales[j]->item_id << ','
-                       << transaction_by_order[i]->sales[j]->num_sold << ','
-                       << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+    if(transaction_by_order.empty() != true) {
+        for (i = 0; i <= curr_transaction; i++) {
+            p_fout << transaction_by_order[i]->sale_id << ',' << transaction_by_order[i]->date << ','
+                   << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
+                   << transaction_by_order[i]->buyer << ',' << transaction_by_order[i]->seller << std::endl;
+            for (j = 0; j < transaction_by_order[i]->num_sales; j++) {
+                if (transaction_by_order[i]->sales[j] != NULL) {
+                    c_fout << transaction_by_order[i]->sales[j]->sale_id << ','
+                           << transaction_by_order[i]->sales[j]->item_id << ','
+                           << transaction_by_order[i]->sales[j]->num_sold << ','
+                           << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+                }
             }
         }
     }
@@ -200,15 +202,17 @@ bool SaleList::save() {
 void SaleList::print() {
     unsigned int i, j;
 
-    for (i = 0; i <= curr_transaction; i++) {
-        std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date
-                  << " | "
-                  << "Total Price: " << transaction_by_order[i]->total_price << std::endl;
-        for (j = 0; j < transaction_by_order[i]->num_sales; j++) {
-            if (transaction_by_order[i]->sales[j] != NULL) {
-                std::cout << "ItemID: " << transaction_by_order[i]->sales[j]->item_id << " | "
-                          << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
-                          << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+    if(transaction_by_order.empty() != true) {
+        for (i = 0; i <= curr_transaction; i++) {
+            std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date
+                      << " | "
+                      << "Total Price: " << transaction_by_order[i]->total_price << std::endl;
+            for (j = 0; j < transaction_by_order[i]->num_sales; j++) {
+                if (transaction_by_order[i]->sales[j] != NULL) {
+                    std::cout << "ItemID: " << transaction_by_order[i]->sales[j]->item_id << " | "
+                              << "Quantity Sold: " << transaction_by_order[i]->sales[j]->num_sold << " | "
+                              << "Item Price: " << transaction_by_order[i]->sales[j]->sale_price << std::endl;
+                }
             }
         }
     }
