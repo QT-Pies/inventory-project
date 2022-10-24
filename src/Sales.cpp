@@ -64,7 +64,7 @@ bool SaleList::load() {
         std::getline(fin, line);
         sscanf(line.c_str(), "%lu,%lu,%s,%lu,%lf,%lf,%s,%s", &id, &sn, d, &as, &sp, &t, b, s);
         if (!addSale(id, sn, d, as, sp, t, b, s)) {
-            std::cerr << "FILE CURRUPTION DETECTED in File: " << file_name << std::endl;
+            std::cerr << "FILE CORRUPTION DETECTED in File: " << file_name << std::endl;
             return false;
         }
         offset++;
