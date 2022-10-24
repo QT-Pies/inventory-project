@@ -2,7 +2,7 @@ CC = g++
 INCLUDES = -I./include
 CFLAGS = -g -Wall -Werror -std=c++14 $(INCLUDES) -O3
 
-EXECUTABLES = bin/main bin/gen-inventory
+EXECUTABLES = bin/main bin/gen-inventory bin/unit_tests
 
 SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp
 OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o
@@ -56,6 +56,13 @@ obj/Login.o: src/Login.cpp
 
 obj/User.o: src/User.cpp
 	$(CC) $(CFLAGS) -c src/User.cpp -o obj/User.o
+
+obj/unit_tests.o: src/unit_tests.cpp
+	$(CC) $(CFLAGS) -c src/unit_tests.cpp -o obj/unit_tests.o
+
+bin/unit_tests: obj/unit_tests.o
+	$(CC) $(CFLAGS) -o bin/unit_tests obj/unit_tests.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o -lgtest -lgtest_main
+
 clean: 
 	rm $(EXECUTABLES) obj/*.o 
 
