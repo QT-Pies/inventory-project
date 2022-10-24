@@ -18,7 +18,15 @@ A project for COSC340; our aim is to create a program to help business owners ma
 Currently, the inventory manager is command-line only; in the future, it will be support both graphical and command line modes.
 
 #### Install
-Firstly, the program needs to be installed.  As of the time this is being written, no install kits have been released, so you will need to compile from soure.
+Firstly, install cmake and libgtest-dev on your linux machine with the following command line commands:
+	
+	sudo apt-get install libgtest-dev
+	sudo apt-get install cmake
+	cd /usr/src/gtest
+	sudo cmake CMakeLists.txt
+	sudo make
+
+Secondly, the program needs to be installed.  As of the time this is being written, no install kits have been released, so you will need to compile from soure.
 
 1. Clone this repo: ```git clone git@github.com:QT-Pies/inventory-project.git```
 2. cd into the repo directory if not already in: ```cd inventory-project```
