@@ -17,7 +17,7 @@ TEST(ActiveInventory, AddItem) {
 
     /* Create a PerishableItem, ensure it is made, and make sure it is added right. */
     std::shared_ptr<PerishableItem> new_item{
-        new PerishableItem("Apple", "Perishable", "None", "10", "0", "1.50", "0.50", "0.10", "10/22/2023")};
+        new PerishableItem("Apple", "Perishable", "None", "10", "0", "0", "1.50", "0.50", "0.10", "10/22/2023")};
     EXPECT_NE(new_item, nullptr);
 
     active_inventory->addItem(new_item);
@@ -26,7 +26,7 @@ TEST(ActiveInventory, AddItem) {
 
     /* Create and try to add a new item with the same id as an old one. */
     std::shared_ptr<PerishableItem> newer_item{
-        new PerishableItem("Orange", "Perishable", "None", "10", "0", "1.50", "0.50", "0.10", "10/22/2023")};
+        new PerishableItem("Orange", "Perishable", "None", "10", "0", "0", "1.50", "0.50", "0.10", "10/22/2023")};
 
     EXPECT_EQ(active_inventory->addItem(newer_item), -1);
 
@@ -39,13 +39,13 @@ TEST(ActiveInventory, UpdateItem) {
     EXPECT_NE(active_inventory, nullptr);
 
     std::shared_ptr<PerishableItem> new_item{
-        new PerishableItem("Apple", "Perishable", "None", "10", "0", "1.50", "0.50", "0.10", "10/22/2023")};
+        new PerishableItem("Apple", "Perishable", "None", "10", "0", "0", "1.50", "0.50", "0.10", "10/22/2023")};
     EXPECT_NE(new_item, nullptr);
 
     active_inventory->addItem(new_item);
 
     std::shared_ptr<PerishableItem> newer_item{
-        new PerishableItem("Tangerine", "Perishable", "None", "10", "1", "1.50", "0.50", "0.10", "10/22/2023")};
+        new PerishableItem("Tangerine", "Perishable", "None", "10", "0", "1", "1.50", "0.50", "0.10", "10/22/2023")};
     EXPECT_NE(newer_item, nullptr);
 
     active_inventory->addItem(newer_item);
@@ -64,7 +64,7 @@ TEST(ActiveInventory, RemoveItem) {
 
     /* Create, add, and remove an item. */
     std::shared_ptr<PerishableItem> new_item{
-        new PerishableItem("Apple", "Perishable", "None", "10", "0", "1.50", "0.50", "0.10", "10/22/2023")};
+        new PerishableItem("Apple", "Perishable", "None", "10", "0", "0", "1.50", "0.50", "0.10", "10/22/2023")};
     EXPECT_NE(new_item, nullptr);
 
     EXPECT_EQ(active_inventory->addItem(new_item), 1);
