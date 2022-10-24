@@ -1,12 +1,13 @@
 #include "Item.hpp"
 
 Item::Item(const std::string &nm, const std::string &cat, const std::string &sub_cat, const std::string &qty,
-           const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
+           const std::string &back, const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
     /* Validate input */
     setValue("name", nm);
     setValue("category", cat);
     setValue("sub_category", sub_cat);
     setValue("quantity", qty);
+    setValue("backorder", back);
     setValue("id", idd);
     setValue("sale_price", price);
     setValue("buy_cost", cost);
@@ -28,6 +29,8 @@ void Item::setValue(std::string key, const std::string &value) {
             sub_category = value;
         } else if (key == "quantity") {
             quantity = toUnsignedLong(value);
+        } else if (key == "backorder") {
+            backorder = toUnsignedLong(value); 
         } else if (key == "id") {
             id = toUnsignedLong(value);
         } else if (key == "sale_price") {

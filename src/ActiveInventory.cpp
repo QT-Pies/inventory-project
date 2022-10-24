@@ -179,8 +179,8 @@ void ActiveInventory::printItems(std::string value) {
 
 void ActiveInventory::printHead() {
     std::cout << std::left << std::setw(7) << "ID" << std::left << std::setw(40) << "ITEM" << std::left << std::setw(17)
-              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(15) << "PURCHASE_COST"
-              << std::left << std::setw(15) << "SALE-PRICE" << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left
-              << std::setw(15) << "TOTAL-PRICE" << std::left << std::setw(10) << "PROFIT" << std::left << std::setw(10)
-              << "EXPIRATION" << std::endl;
+              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(10) << "BACKORDER" 
+              << std::left << std::setw(15) << "PURCHASE_COST" << std::left << std::setw(15) << "SALE-PRICE" 
+              << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left << std::setw(15) << "TOTAL-PRICE"
+              << std::left << std::setw(10) << "PROFIT" << std::left << std::setw(10) << "EXPIRATION" << std::endl;
 }

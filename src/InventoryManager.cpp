@@ -19,8 +19,8 @@ InventoryManager::~InventoryManager() { /* using smart pointer for active invent
 
 int InventoryManager::userInput() {
     char argument;
-    std::string name, category, sub_category, expiration, value, date, buyer, seller;
-    std::string id, quantity;
+    std::string name, category, sub_category, expiration, value;
+    std::string id, backorder, quantity, buyer, seller, date;
     std::string sale_price, buy_price, tax;
     bool valid_transaction;
     std::shared_ptr<Item> new_item;
@@ -55,6 +55,8 @@ int InventoryManager::userInput() {
             std::cin >> sub_category;
             std::cout << "Enter item quantity: ";
             std::cin >> quantity;
+            std::cout << "Enter backorder (set to zero unless there is negative stock): ";
+            std::cin >> backorder;
             std::cout << "Enter item id: ";
             std::cin >> id;
             std::cout << "Enter sale price: (format xx.xx) $";
@@ -69,11 +71,11 @@ int InventoryManager::userInput() {
             lowerCaseString(category);
             try {
                 if (category == "perishable") {
-                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, id,
-                                                                sale_price, buy_price, tax, expiration);
+                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder, 
+                                                                id, sale_price, buy_price, tax, expiration);
                 } else if (category == "nonperishable") {
-                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, id,
-                                                                   sale_price, buy_price, tax);
+                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, backorder,
+                                                                   id, sale_price, buy_price, tax);
                 } else {
                     fprintf(stderr, "Invalid category\n");
                     break;
@@ -196,7 +198,7 @@ int InventoryManager::userInput() {
 
 /*uses ActiveInventory functions to create items from a csv file*/
 void InventoryManager::readCSVFile() {
-    std::string name, str_id, cat, sub_cat, qty, sale_price;
+    std::string name, str_id, cat, sub_cat, qty, back, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;
     std::shared_ptr<Item> new_item;
     unsigned long lines_read, lines_successful, errors;
@@ -224,6 +226,7 @@ void InventoryManager::readCSVFile() {
         getline(csv_file, cat, ',');
         getline(csv_file, sub_cat, ',');
         getline(csv_file, qty, ',');
+        getline(csv_file, back, ',');
         getline(csv_file, sale_price, ',');
         getline(csv_file, tax, ',');
         getline(csv_file, total_price, ',');
@@ -235,10 +238,10 @@ void InventoryManager::readCSVFile() {
             /* Create the Item to be added. */
             if (cat == "Perishable") {
                 new_item =
-                    std::make_shared<PerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax, exp);
+                    std::make_shared<PerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost, tax, exp);
             } else if (cat == "NonPerishable") {
                 new_item =
-                    std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, str_id, sale_price, buy_cost, tax);
+                    std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost, tax);
             } else {
                 fprintf(stderr, "Invalid category.\n");
             }
@@ -284,7 +287,7 @@ int InventoryManager::fileOutput() {
         return -1;
     }
 
-    file << "Name,ID,Category,Sub-Category,Quantity,Sale Price,Tax,Total "
+    file << "Name,ID,Category,Sub-Category,Quantity,Backorder,Sale Price,Tax,Total "
             "Price,Buy Cost,Profit,Expiration Date"
          << std::endl;
 
