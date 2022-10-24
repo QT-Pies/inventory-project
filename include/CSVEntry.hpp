@@ -23,6 +23,7 @@ class CSVEntry {
     std::string category;
     std::string sub_category;
     int quantity;
+    int backorder;
     int id;
     double sale_price;
     double buy_cost;

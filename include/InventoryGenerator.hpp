@@ -71,14 +71,14 @@ class InventoryGenerator {
 
     /* Expected columns */
     const std::vector<std::string> columns = {"Name",           "ID",  "Category",    "Sub-Category", "Quantity",
-                                              "Sale Price",     "Tax", "Total Price", "Buy Cost",     "Profit",
-                                              "Expiration Date"};
+                                              "Back Order", "Sale Price",     "Tax", "Total Price", "Buy Cost",
+                                              "Profit", "Expiration Date"};
 
     /* Chars for random name generation */
     const std::string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     std::set<std::string> bad_keys;
-    unsigned int id_count;
+    unsigned long id_count;
     int factor;
     bool random;
     bool bad;

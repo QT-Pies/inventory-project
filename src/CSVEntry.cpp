@@ -8,6 +8,7 @@ void CSVEntry::printEntry(std::ostream &out) {
     out << category << ',';
     out << sub_category << ',';
     out << quantity << ',';
+    out << backorder << ',';
     out << sale_price << ',';
     out << tax << ',';
     out << total_price << ',';

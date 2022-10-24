@@ -78,6 +78,17 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
     else if (!random && isBadKey("quantity"))
         entry->quantity *= -1;
 
+    /*  > 0 quantities *can* have backorder, but for the sake of our testing files, we don't want that. */
+    if (entry->quantity == 0)
+        entry->backorder = distrib_int(gen);
+    else
+        entry->backorder = 0;
+
+    if (random && isBadKey("backorder") && distrib_keys(gen) == 0)
+        entry->backorder *= -1;
+    else if (!random && isBadKey("backorder"))
+        entry->backorder *= -1;
+
     entry->id = id_count;
     if (random && isBadKey("id") && distrib_keys(gen) != 0)
         id_count++;
