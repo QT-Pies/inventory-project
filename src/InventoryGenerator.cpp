@@ -81,7 +81,8 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
 
     /* Generate values; potentially make them bad */
 
-    /* This allows for *some* bad name generation, but not enough.  I'm gonna rewrite this program the next time I'm bored, probably. */
+    /* This allows for *some* bad name generation, but not enough.  I'm gonna rewrite this program the next time I'm
+     * bored, probably. */
     if (random && isBadKey("name") && distrib_keys(gen) == 0)
         entry->name = *used_names.begin();
     else if (!random && isBadKey("name"))
