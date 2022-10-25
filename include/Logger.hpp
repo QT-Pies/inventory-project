@@ -61,6 +61,7 @@ public:
 
         /* Try to read in config from file */
         try {
+            if (config_file == NULL) throw std::runtime_error("Failed to open config file -- creating new one.");
             fscanf(config_file, "CLIDisplay=%s", buffer);
             updateLevel("cli", stringToLogLevel(buffer));
             fscanf(config_file, "FileDisplay=%s", buffer);
