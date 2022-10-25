@@ -77,6 +77,7 @@ class InventoryGenerator {
     /* Chars for random name generation */
     const std::string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+    std::set<std::string> used_names;
     std::set<std::string> bad_keys;
     unsigned long id_count;
     int factor;

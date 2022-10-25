@@ -56,14 +56,23 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
     std::uniform_int_distribution<int> distrib_keys(0, bad_keys.size() * factor);
     std::uniform_real_distribution<double> distrib_double(0.25, 10000);
     std::shared_ptr<CSVEntry> entry;
-
+    int name_length;
+    std::string tmp_name;
     entry = std::make_shared<CSVEntry>();
 
     /* Generate a random length string and push back that many random chars */
-    int name_length = distrib_size(gen);
-    for (int i = 0; i < name_length; ++i) {
-        entry->name.push_back(chars[distrib_index(gen)]);
-    }
+    do {
+        name_length = distrib_size(gen);
+        for (int i = 0; i < name_length; ++i) {
+            tmp_name.push_back(chars[distrib_index(gen)]);
+        }
+
+        if (used_names.find(tmp_name) == used_names.end()) {
+            used_names.insert(tmp_name);
+            entry->name = tmp_name;
+            break;
+        }
+    } while (1);
 
     /* Set category to undefined, it's not perishable or non-perishable. */
     entry->category = "-1";
@@ -71,6 +80,12 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
     entry->expiration_date = "-1";
 
     /* Generate values; potentially make them bad */
+
+    /* This allows for *some* bad name generation, but not enough.  I'm gonna rewrite this program the next time I'm bored, probably. */
+    if (random && isBadKey("name") && distrib_keys(gen) == 0)
+        entry->name = *used_names.begin();
+    else if (!random && isBadKey("name"))
+        entry->name = *used_names.begin();
 
     entry->quantity = distrib_int(gen);
     if (random && isBadKey("quantity") && distrib_keys(gen) == 0)
