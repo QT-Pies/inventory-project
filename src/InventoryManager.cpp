@@ -247,11 +247,7 @@ void InventoryManager::readCSVFile() {
             }
         } catch (std::exception& e) {
             ++errors;
-            if (errors < ERROR_PRINT_LIMIT) {
-                std::cerr << e.what() << std::endl;
-            } else if (errors == ERROR_PRINT_LIMIT) {
-                std::cerr << "Overwhelming amount of failures -- ceasing output of error messages." << std::endl;
-            }
+            logger.logInfo(e.what());
             continue;
         }
 
@@ -269,10 +265,7 @@ void InventoryManager::readCSVFile() {
     }
 
     if (lines_read != lines_successful) {
-        fprintf(stderr,
-                "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into "
-                "the inventory and will be lost on file save.\n",
-                lines_read, lines_successful, lines_read - lines_successful);
+        logger.logError("Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into the inventory and will be lost on program exit.", lines_read, lines_successful, lines_read - lines_successful);
     }
 }
 

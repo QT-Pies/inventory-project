@@ -2,6 +2,7 @@
 #define INVENTORY_MANAGER_HPP
 
 #include "ActiveInventory.hpp"
+#include "Logger.hpp"
 #include "Login.hpp"
 #include "Sales.hpp"
 
@@ -42,8 +43,7 @@ class InventoryManager {
     bool userLogin();
 
    private:
-    const unsigned long ERROR_PRINT_LIMIT = 5;
-
+    Logger logger;
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};

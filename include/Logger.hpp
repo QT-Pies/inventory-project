@@ -9,7 +9,7 @@
 
 enum class LogLevel {TRACE, DEBUG, INFO, WARN, ERROR, FATAL};
 
-std::string logLevelToString(LogLevel level) {
+static std::string logLevelToString(LogLevel level) {
     switch (level) {
         case LogLevel::TRACE:
             return "TRACE";
@@ -28,7 +28,7 @@ std::string logLevelToString(LogLevel level) {
     }
 }
 
-LogLevel stringToLogLevel(std::string str) {
+static LogLevel stringToLogLevel(std::string str) {
     if (str == "TRACE") {
         return LogLevel::TRACE;
     } else if (str == "DEBUG") {
