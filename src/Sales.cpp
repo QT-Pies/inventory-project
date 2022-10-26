@@ -1,7 +1,5 @@
 #include "Sales.hpp"
 
-#include <cstring>
-
 Sale::Sale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp)
     : sale_id(sid), item_id(iid), num_sold(ns), sale_price(sp) {}
 
@@ -21,7 +19,7 @@ Transaction::~Transaction() {}
 bool Transaction::addSale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp) {
     // making sure items are sold in the sale, if not the sale is considered invalid
     if (ns == 0) {
-        std::cerr << "Invalid input. Make sure Amount sold are greater than 0. Continuing to read\n";
+        Logger::logError("Invalid input -- verify amount sold is > 0.  Continuing to read.");
         return false;
     }
     auto new_sale = std::make_shared<Sale>(sid, iid, ns, sp);
@@ -102,23 +100,26 @@ bool SaleList::loadSales(const std::string file) {
 
     p_fin.open(parent_file.c_str());
     if (!p_fin.is_open()) {
-        std::cout << "Unable to open Sales Parent File\n";
+        Logger::logWarn("Unable to open Sales parent file '%s'.", parent_file.c_str());
         return false;
     }
     c_fin.open(child_file.c_str());
     if (!c_fin.is_open()) {
-        std::cout << "Unable to open Sales Child File\n";
+        Logger::logWarn("Unable to open Sales child file '%s'.", child_file.c_str());
         return false;
     }
 
     getline(p_fin, p_line);
     getline(c_fin, c_line);
     if (p_line != "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller") {
-        std::cerr << "Invalid Parent Sales file. Continuing without loading Sales.\n";
+        Logger::logTrace("Expected: %s\nReceived: %s", "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller",
+                         p_line.c_str());
+        Logger::logWarn("Invalid Sales parent file -- Continuing without loading Sales.");
         return false;
     }
     if (c_line != "Sale_ID, Item_ID, Quantity_Sold, Sale_Price") {
-        std::cerr << "Invalid Child Sales file.  Continuing without loading Sales.\n";
+        Logger::logTrace("Expected: %s\nReceived:%s", "Sale_ID, Item_ID, Quantity_Sold, Sale_Price", c_line.c_str());
+        Logger::logWarn("Invalid Sales child file -- Continuing without loading Sales.");
         return false;
     }
 
@@ -163,18 +164,18 @@ bool SaleList::save() {
 
     p_fout.open(parent_file.c_str());
     if (!p_fout.is_open()) {
-        std::cerr << "Unable to save to Parent Sales File. Sales Save aborted. Still Quiting.\n";
+        Logger::logFatal("Unable to save Sales parent file -- Sales save is aborted, and sales will be lost.");
         return false;
     }
     c_fout.open(child_file.c_str());
     if (!c_fout.is_open()) {
-        std::cerr << "Unable to save to Child Sales File. Sales Save aborted. Still Quiting.\n";
+        Logger::logFatal("Unable to save Sales child file -- Sales save is aborted, and sales will be lost.");
         return false;
     }
     p_fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
     c_fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
-    if(transaction_by_order.empty() != true) {
+    if (transaction_by_order.empty() != true) {
         for (i = 0; i <= curr_transaction; i++) {
             p_fout << transaction_by_order[i]->sale_id << ',' << transaction_by_order[i]->date << ','
                    << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
@@ -193,8 +194,8 @@ bool SaleList::save() {
     p_fout.close();
     c_fout.close();
 
-    std::cout << "Parent Sales File writen to " << parent_file << std::endl;
-    std::cout << "Child Sales File writen to " << child_file << std::endl;
+    Logger::logInfo("Sales parent file written to '%s'.", parent_file.c_str());
+    Logger::logInfo("Sales child file written to '%s'.", child_file.c_str());
 
     return true;
 }
@@ -202,7 +203,7 @@ bool SaleList::save() {
 void SaleList::print() {
     unsigned int i, j;
 
-    if(transaction_by_order.empty() != true) {
+    if (transaction_by_order.empty() != true) {
         for (i = 0; i <= curr_transaction; i++) {
             std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date
                       << " | "

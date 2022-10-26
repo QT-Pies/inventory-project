@@ -1,13 +1,5 @@
 #include "InventoryManager.hpp"
 
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <string>
-
-#include "NonPerishableItem.hpp"
-#include "PerishableItem.hpp"
-
 InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
@@ -26,7 +18,7 @@ int InventoryManager::userInput() {
     std::shared_ptr<Item> new_item;
 
     if (command_line == false) {
-        fprintf(stderr, "Command line is currently set to false\n");
+        Logger::logError("Command line is set to false.  Exiting userInput().");
         return -1;
     }
 
@@ -42,8 +34,8 @@ int InventoryManager::userInput() {
             std::cin.ignore(10000, '\n');
 
             if (current_user->permission < 3) {
-                fprintf(stderr, "User %s does not have the required permissions to add an item\n",
-                        current_user->name.c_str());
+                Logger::logWarn("User %s does not have the required permissions to add an Item.",
+                                current_user->name.c_str());
                 break;
             }
 
@@ -71,25 +63,26 @@ int InventoryManager::userInput() {
             lowerCaseString(category);
             try {
                 if (category == "perishable") {
-                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder, 
+                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder,
                                                                 id, sale_price, buy_price, tax, expiration);
                 } else if (category == "nonperishable") {
-                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, backorder,
-                                                                   id, sale_price, buy_price, tax);
+                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity,
+                                                                   backorder, id, sale_price, buy_price, tax);
                 } else {
-                    fprintf(stderr, "Invalid category\n");
+                    throw std::runtime_error("Invalid category.");
                     break;
                 }
             } catch (std::exception& e) {
                 /* Catch exception, print out its message, but continue to run as normal. */
-                std::cerr << e.what() << std::endl;
-                std::cerr << "Your item has not been added to the inventory. Please correct the input and try again."
-                          << std::endl;
+                Logger::logError(e.what());
+                Logger::logWarn("Item %s has not been added to the inventory. Please correct the input and try again.",
+                                name.c_str());
                 break;
             }
 
             if (active_inventory->addItem(new_item) != -1) {
                 std::cout << "Added " << name << " of type " << category << std::endl;
+                Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
             }
             break;
 
@@ -99,8 +92,8 @@ int InventoryManager::userInput() {
             std::cin.ignore(10000, '\n');
 
             if (current_user->permission < 3) {
-                fprintf(stderr, "User %s does not have the required permissions to remove an item\n",
-                        current_user->name.c_str());
+                Logger::logWarn("User %s does not have the required permissions to remove an Item.",
+                                current_user->name.c_str());
                 break;
             }
 
@@ -109,6 +102,7 @@ int InventoryManager::userInput() {
 
             if (active_inventory->removeItem(name) != -1) {
                 std::cout << "Removed " << name << std::endl;
+                Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
             }
             break;
 
@@ -118,8 +112,8 @@ int InventoryManager::userInput() {
             std::cin.ignore(10000, '\n');
 
             if (current_user->permission < 3) {
-                fprintf(stderr, "User %s does not have the required permissions to update an item\n",
-                        current_user->name.c_str());
+                Logger::logWarn("User %s does not have the required permissions to update an Item.",
+                                current_user->name.c_str());
                 break;
             }
 
@@ -132,6 +126,8 @@ int InventoryManager::userInput() {
 
             if (active_inventory->updateItem(name, category, value) != -1) {
                 std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
+                                 name.c_str(), value.c_str());
             }
             break;
 
@@ -144,6 +140,7 @@ int InventoryManager::userInput() {
             std::cout << "All | Perishable | NonPerishable | Item Name : ";
             std::cin >> category;
             active_inventory->printItems(category);
+            Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
             break;
         case 'S':
         case 's':
@@ -155,35 +152,46 @@ int InventoryManager::userInput() {
             std::cout << "Buyer | Seller\n";
             std::cin >> buyer >> seller;
             std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
+
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+
             while (true) {
                 std::cout << "Item Name: ";
                 std::cin >> name;
+
                 if (name == "Q" || name == "q") break;
+
                 std::cout << "Quantity Sold: ";
                 std::cin >> quantity;
+
                 if (quantity == "0") break;
+
                 auto item_ptr = active_inventory->searchByName(name);
+
                 if (item_ptr != NULL) {
                     sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
                         sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
-                    // item_ptr->quantity -= quantity;
                     valid_transaction = true;
                 } else
-                    std::cerr << "Invalid Item. Continuing to read\n";
+                    Logger::logWarn("Invalid item -- continuing to read.");
             }
+
             /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added
              * this will be changed */
             if (valid_transaction == false) {
-                std::cerr << "Invalid Transaction. No valid sales where input. Continuing to read\n";
+                Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
                 sale_list->transaction_by_order.pop_back();
                 sale_list->curr_transaction--;
-            } else
+            } else {
                 sale_list->curr_sale_id++;
+                Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+            }
+
             break;
         case 'Q':
         case 'q':
-            printf("Quitting\n");
+            printf("Exiting InventoryManager.\n");
+            Logger::logTrace("User %s exited the program.", current_user->name.c_str());
             return -1;
         default:
             std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (Q)uit>" << std::endl;
@@ -196,7 +204,6 @@ int InventoryManager::userInput() {
     return 0;
 }
 
-/*uses ActiveInventory functions to create items from a csv file*/
 void InventoryManager::readCSVFile() {
     std::string name, str_id, cat, sub_cat, qty, back, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;
@@ -205,7 +212,10 @@ void InventoryManager::readCSVFile() {
 
     std::ifstream csv_file(file_name);
 
-    if (!csv_file.is_open()) std::cout << "ERROR: unable to open file" << '\n';
+    if (!csv_file.is_open()) {
+        Logger::logError("Failed to open file '%s'.  No inventory will be loaded.", file_name.c_str());
+        return;
+    }
 
     /* This skips the first line for you. */
     std::getline(csv_file, tmp_line);
@@ -237,21 +247,17 @@ void InventoryManager::readCSVFile() {
         try {
             /* Create the Item to be added. */
             if (cat == "Perishable") {
-                new_item =
-                    std::make_shared<PerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost, tax, exp);
+                new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost,
+                                                            tax, exp);
             } else if (cat == "NonPerishable") {
-                new_item =
-                    std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost, tax);
+                new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price,
+                                                               buy_cost, tax);
             } else {
-                fprintf(stderr, "Invalid category.\n");
+                throw std::runtime_error("Bad category for Item.");
             }
         } catch (std::exception& e) {
             ++errors;
-            if (errors < ERROR_PRINT_LIMIT) {
-                std::cerr << e.what() << std::endl;
-            } else if (errors == ERROR_PRINT_LIMIT) {
-                std::cerr << "Overwhelming amount of failures -- ceasing output of error messages." << std::endl;
-            }
+            Logger::logInfo(e.what());
             continue;
         }
 
@@ -262,17 +268,17 @@ void InventoryManager::readCSVFile() {
         auto item_ptr = active_inventory->searchByName(name);
 
         if (item_ptr == NULL) {
-            fprintf(stderr, "Failed to read new item %s.\n", name.c_str());
+            Logger::logError("Failed to read new Item '%s", name.c_str());
         }
 
         ++lines_successful;
     }
 
     if (lines_read != lines_successful) {
-        fprintf(stderr,
-                "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into "
-                "the inventory and will be lost on file save.\n",
-                lines_read, lines_successful, lines_read - lines_successful);
+        Logger::logError(
+            "Attempted to read %lu lines, but only successfully read %lu.  These %lu lines will not be stored into the "
+            "inventory and will be lost on program exit.",
+            lines_read, lines_successful, lines_read - lines_successful);
     }
 }
 
@@ -283,7 +289,7 @@ int InventoryManager::fileOutput() {
     file.open(file_name);
 
     if (!file.is_open()) {
-        fprintf(stderr, "File %s is unable to open", file_name.c_str());
+        Logger::logFatal("Unable to open file '%s' -- inventory WILL BE LOST!", file_name.c_str());
         return -1;
     }
 
@@ -298,7 +304,7 @@ int InventoryManager::fileOutput() {
 
     file.close();
 
-    std::cout << "Inventory written to " << file_name << std::endl;
+    Logger::logInfo("Inventory written to '%s'.", file_name.c_str());
 
     sale_list->save();
 
@@ -311,6 +317,8 @@ bool InventoryManager::userLogin() {
     login->outputCSV();
 
     if (current_user == NULL) return false;
+
+    Logger::logTrace("User %s logged in.", current_user->name.c_str());
 
     return true;
 }

@@ -1,8 +1,8 @@
 #ifndef SALES_HPP
 #define SALES_HPP
 
-#include <stdio.h>
-
+#include <cstdio>
+#include <cstring>
 #include <ctime>
 #include <fstream>
 #include <iostream>
@@ -13,7 +13,7 @@
 
 #include "Date.hpp"
 #include "Item.hpp"
-
+#include "Logger.hpp"
 class Sale {
    public:
     /*

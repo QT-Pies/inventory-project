@@ -6,9 +6,12 @@ Login::Login() { /* does nothing */
 Login::~Login() { /* no deletion required*/
 }
 
-bool Login::createUser(const std::string name, const std::string password, const std::string account) {
+bool Login::createUser(const std::string name, const std::string password, std::string account) {
+    /* Ignore casing on account type */
+    lowerCaseString(account);
+
     if (account != "manager" && account != "owner" && account != "employee") {
-        fprintf(stderr, "Invalid account type\n");
+        Logger::logError("Invalid account type '%s'", account.c_str());
         return false;
     }
 
@@ -16,7 +19,7 @@ bool Login::createUser(const std::string name, const std::string password, const
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
     } else {
-        fprintf(stderr, "User %s already exists\n", name.c_str());
+        Logger::logError("User '%s' already exists.", name.c_str());
         return false;
     }
 
@@ -46,7 +49,10 @@ std::shared_ptr<User> Login::userInput() {
                 if (user != NULL) {
                     return user;
                 } else {
-                    fprintf(stderr, "Invalid username or password\n");
+                    // I didn't replace this because I think it makes sense to give the user normal feedback here, so it
+                    // should to stdout instead of stderr.
+                    printf("Invalid username or password\n");
+                    Logger::logTrace("Failed login to User '%s'.", name.c_str());
                     break;
                 }
                 break;
@@ -81,7 +87,7 @@ bool Login::readCSV() {
     std::ifstream user_file(file_name);
 
     if (!user_file.is_open()) {
-        fprintf(stderr, "Unable to open %s\n", file_name.c_str());
+        Logger::logWarn("Unable to open '%s'.", file_name.c_str());
         return false;
     }
 
@@ -94,7 +100,7 @@ bool Login::readCSV() {
         created = createUser(name, password, account);
 
         if (!created) {
-            fprintf(stderr, "Unable to add user %s\n", name.c_str());
+            Logger::logError("Unable to add user '%s'.", name.c_str());
         }
     }
 
@@ -109,7 +115,7 @@ bool Login::outputCSV() {
     file.open(file_name);
 
     if (!file.is_open()) {
-        fprintf(stderr, "File %s is unable to open", file_name.c_str());
+        Logger::logFatal("Unable to open file '%s'.  User accounts will be lost!", file_name.c_str());
         return false;
     }
 

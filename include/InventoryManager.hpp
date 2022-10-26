@@ -1,8 +1,16 @@
 #ifndef INVENTORY_MANAGER_HPP
 #define INVENTORY_MANAGER_HPP
 
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <string>
+
 #include "ActiveInventory.hpp"
+#include "Logger.hpp"
 #include "Login.hpp"
+#include "NonPerishableItem.hpp"
+#include "PerishableItem.hpp"
 #include "Sales.hpp"
 
 class InventoryManager {
@@ -42,8 +50,6 @@ class InventoryManager {
     bool userLogin();
 
    private:
-    const unsigned long ERROR_PRINT_LIMIT = 5;
-
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};

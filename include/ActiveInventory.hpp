@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Item.hpp"
+#include "Logger.hpp"
 
 class ActiveInventory {
    public:
