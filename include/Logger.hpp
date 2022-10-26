@@ -79,7 +79,6 @@ class LogConfiguration {
             updateLevel("file", stringToLogLevel(buffer));
         } catch (std::exception& e) {
             std::cerr << e.what() << std::endl;
-            fclose(config_file);
             config_file = NULL;
         }
         /* Failed to find configuration; create it. */
