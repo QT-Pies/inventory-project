@@ -184,13 +184,14 @@ int InventoryManager::userInput() {
                 sale_list->curr_transaction--;
             } else {
                 sale_list->curr_sale_id++;
-                Logger::logTrace("User %s entered a transaction.");
+                Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
             }
 
             break;
         case 'Q':
         case 'q':
-            printf("Quitting\n");
+            printf("Exiting InventoryManager.");
+            Logger::logTrace("User %s exited the program.", current_user->name.c_str());
             return -1;
         default:
             std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (Q)uit>" << std::endl;
@@ -317,6 +318,8 @@ bool InventoryManager::userLogin() {
     login->outputCSV();
 
     if (current_user == NULL) return false;
+
+    Logger::logTrace("User %s logged in.", current_user->name.c_str());
 
     return true;
 }
