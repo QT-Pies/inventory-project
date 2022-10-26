@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class InventoryGenerator;
 
@@ -11,6 +12,12 @@ class CSVEntry {
 
    public:
     CSVEntry();
+
+    /*
+     * @brief Construct a CSVEntry from a line from CSV file.
+     * @param std::string Line to parse
+    */
+    CSVEntry(std::string);
 
     /*
      * @brief Prints the entry out to an ostream in CSV format
