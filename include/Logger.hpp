@@ -9,6 +9,11 @@
 
 enum class LogLevel {TRACE, DEBUG, INFO, WARN, ERROR, FATAL};
 
+/*
+ * @brief Converts a LogLevel to its corresponding string form
+ * @param LogLevel Level to convert to string
+ * @return std::string Level in string form
+*/
 static std::string logLevelToString(LogLevel level) {
     switch (level) {
         case LogLevel::TRACE:
@@ -24,10 +29,15 @@ static std::string logLevelToString(LogLevel level) {
         case LogLevel::FATAL:
             return "FATAL";
         default:
-            throw std::invalid_argument("This is unreachable.");
+            throw std::invalid_argument("Bad LogLevel value.");
     }
 }
 
+/*
+ * @brief Converts a string to its corresponding LogLevel form
+ * @param std::string String to convert to LogLevel
+ * @return LogLevel String in LogLevel form
+*/
 static LogLevel stringToLogLevel(std::string str) {
     if (str == "TRACE") {
         return LogLevel::TRACE;
@@ -135,36 +145,72 @@ public:
     */
    Logger() = default;
 
+    /*
+     * @brief Logs a message with LogLevel::TRACE
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logTrace(const std::string& str, Args... args) {
         log(LogLevel::TRACE, str, args...);
     }
 
+    /*
+     * @brief Logs a message with LogLevel::DEBUG
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logDebug(const std::string& str, Args... args) {
         log(LogLevel::DEBUG, str, args...);
     }
 
+    /*
+     * @brief Logs a message with LogLevel::INFO
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logInfo(const std::string& str, Args... args) {
         log(LogLevel::INFO, str, args...);
     }
 
+    /*
+     * @brief Logs a message with LogLevel::WARN
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logWarn(const std::string& str, Args... args) {
         log(LogLevel::WARN, str, args...);
     }
 
+    /*
+     * @brief Logs a message with LogLevel::ERROR
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logError(const std::string& str, Args... args) {
         log(LogLevel::ERROR, str, args...);
     }
 
+    /*
+     * @brief Logs a message with LogLevel::FATAL
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string
+    */
     template<typename... Args>
     static void logFatal(const std::string& str, Args... args) {
         log(LogLevel::FATAL, str, args...);
     }
 
+    /*
+     * @brief Log a message
+     * @param LogLevel Level of the message
+     * @param std::string String to log
+     * @param Args... Additional arguments for formatted string 
+    */
     template<typename... Args>
     static void log(LogLevel level, const std::string& str, Args... args) {
         std::string tmp;
@@ -172,11 +218,13 @@ public:
         struct tm *local_time;
         char buffer[128];
 
+        /* Get time in format we want and store into buffer*/
         time(&unix_time);
         local_time = localtime(&unix_time);
-
         strftime(buffer, 128, "%D %r", local_time);
 
+        /* This is mostly here because I wanted to use lambdas to flex.  Aren't I so cool and smart? */
+        /* Log the message to the given FILE* stream. */
         auto logMessage = [&](FILE* output) {
             if (output == NULL) throw std::invalid_argument("Null FILE*");
             fprintf(output, "[ %-5s @ %s ] ", logLevelToString(level).c_str(), buffer);
