@@ -7,6 +7,8 @@
 #include <memory>
 #include <string>
 
+#include "HelperFunctions.hpp"
+#include "Logger.hpp"
 #include "User.hpp"
 
 class Login {
@@ -25,7 +27,7 @@ class Login {
      * @param std::string account_type
      * @return returns true if user created and fasle if not
      */
-    bool createUser(const std::string, const std::string, const std::string);
+    bool createUser(const std::string, const std::string, std::string);
 
     /*
      * @brief user will be able to login or create a new user
