@@ -6,6 +6,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <random>
 
 #include "CSVEntry.hpp"
 
@@ -20,6 +21,11 @@ public:
     * @return true if nothing went wrong, false if error encountered
     */
     bool readInventory();
+
+    /* 
+     * @brief Returns a random item from the inventory to add to the transaction.
+    */
+    std::shared_ptr<CSVEntry> grabRandomItem();
 
 protected:
     std::string original_name;

@@ -60,7 +60,7 @@ obj/User.o: src/User.cpp
 obj/SalesGenerator.o: src/SalesGenerator.cpp
 	$(CC) $(CFLAGS) -c src/SalesGenerator.cpp -o obj/SalesGenerator.o
 
-bin/gen-sales: obj/SalesGenerator.o obj/CSVEntry.o
+bin/gen-sales: src/SalesGenerator.cpp obj/SalesGenerator.o obj/CSVEntry.o
 	$(CC) $(CFLAGS) -o bin/gen-sales src/SalesGeneratorDriver.cpp obj/SalesGenerator.o obj/CSVEntry.o
 
 bin/unit_tests:

@@ -6,10 +6,11 @@
 #include <sstream>
 
 class InventoryGenerator;
+class SalesGenerator;
 
 class CSVEntry {
     friend class InventoryGenerator;
-
+    friend class SalesGenerator;
    public:
     CSVEntry();
 
