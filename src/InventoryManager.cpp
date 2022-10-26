@@ -194,8 +194,8 @@ int InventoryManager::userInput() {
             current_user = NULL;
 
             /* I was going to wrap this in a while,
-            * since it can return false.
-            * However, no such check is done over in main, so it should be fine here, too. */
+             * since it can return false.
+             * However, no such check is done over in main, so it should be fine here, too. */
             userLogin();
             break;
 
