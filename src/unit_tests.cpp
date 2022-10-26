@@ -4,6 +4,7 @@
 #include "../tests/Date_unit_tests.cpp"
 #include "../tests/HelperFunctions_unit_tests.cpp"
 #include "../tests/InventoryManager_unit_tests.cpp"
+#include "../tests/Logger_unit_tests.cpp"
 #include "../tests/Login_unit_tests.cpp"
 #include "../tests/NonPerishableItem_unit_tests.cpp"
 #include "../tests/PerishableItem_unit_tests.cpp"
