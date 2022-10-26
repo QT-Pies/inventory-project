@@ -190,7 +190,7 @@ int InventoryManager::userInput() {
             break;
         case 'Q':
         case 'q':
-            printf("Exiting InventoryManager.");
+            printf("Exiting InventoryManager.\n");
             Logger::logTrace("User %s exited the program.", current_user->name.c_str());
             return -1;
         default:
@@ -204,7 +204,6 @@ int InventoryManager::userInput() {
     return 0;
 }
 
-/*uses ActiveInventory functions to create items from a csv file*/
 void InventoryManager::readCSVFile() {
     std::string name, str_id, cat, sub_cat, qty, back, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;
