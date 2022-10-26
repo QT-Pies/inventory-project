@@ -49,7 +49,8 @@ std::shared_ptr<User> Login::userInput() {
                 if (user != NULL) {
                     return user;
                 } else {
-                    // I didn't replace this because I think it makes sense to give the user normal feedback here, so it should to stdout instead of stderr.
+                    // I didn't replace this because I think it makes sense to give the user normal feedback here, so it
+                    // should to stdout instead of stderr.
                     printf("Invalid username or password\n");
                     Logger::logTrace("Failed login to User '%s'.", name.c_str());
                     break;

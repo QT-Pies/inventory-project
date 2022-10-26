@@ -7,13 +7,13 @@
 #include <stdexcept>
 #include <string>
 
-enum class LogLevel {TRACE, DEBUG, INFO, WARN, ERROR, FATAL};
+enum class LogLevel { TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
 
 /*
  * @brief Converts a LogLevel to its corresponding string form
  * @param LogLevel Level to convert to string
  * @return std::string Level in string form
-*/
+ */
 static std::string logLevelToString(LogLevel level) {
     switch (level) {
         case LogLevel::TRACE:
@@ -37,7 +37,7 @@ static std::string logLevelToString(LogLevel level) {
  * @brief Converts a string to its corresponding LogLevel form
  * @param std::string String to convert to LogLevel
  * @return LogLevel String in LogLevel form
-*/
+ */
 static LogLevel stringToLogLevel(std::string str) {
     if (str == "TRACE") {
         return LogLevel::TRACE;
@@ -57,12 +57,12 @@ static LogLevel stringToLogLevel(std::string str) {
 }
 
 class LogConfiguration {
-public:
-    /* 
+   public:
+    /*
      * @brief LogConfiguration constructor -- reads in logging configuration file if it exists, otherwise sets defaults.
-    */
+     */
     LogConfiguration() {
-        FILE *config_file;
+        FILE* config_file;
         char buffer[128];
         config_file = NULL;
 
@@ -99,7 +99,7 @@ public:
      * @brief Logs >= LogLevel will now be written to this display.
      * @param std::string Log area to update (cli | file).
      * @param LogLevel New LogLevel.
-    */
+     */
     void updateLevel(std::string display, LogLevel level) {
         if (display == "cli") {
             cli_display = level;
@@ -113,7 +113,7 @@ public:
 
     /*
      * @brief Write the config to disk
-    */
+     */
     void writeConfigToFile() {
         std::ofstream config_file;
 
@@ -123,8 +123,7 @@ public:
         config_file.open(config_filepath);
 
         /* Throw exception if we failed to open the file for saving. */
-        if (!config_file.is_open())
-            throw std::runtime_error("Failed to open configuration file for saving.");
+        if (!config_file.is_open()) throw std::runtime_error("Failed to open configuration file for saving.");
 
         /* Too lazy to support a proper config format like JSON, so we're making up our own! */
         config_file << "CLIDisplay=" << logLevelToString(cli_display) << std::endl;
@@ -139,18 +138,18 @@ public:
 };
 
 class Logger {
-public:
+   public:
     /*
      * @brief Construct a Logger object to handle logging.
-    */
-   Logger() = default;
+     */
+    Logger() = default;
 
     /*
      * @brief Logs a message with LogLevel::TRACE
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logTrace(const std::string& str, Args... args) {
         log(LogLevel::TRACE, str, args...);
     }
@@ -159,8 +158,8 @@ public:
      * @brief Logs a message with LogLevel::DEBUG
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logDebug(const std::string& str, Args... args) {
         log(LogLevel::DEBUG, str, args...);
     }
@@ -169,8 +168,8 @@ public:
      * @brief Logs a message with LogLevel::INFO
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logInfo(const std::string& str, Args... args) {
         log(LogLevel::INFO, str, args...);
     }
@@ -179,8 +178,8 @@ public:
      * @brief Logs a message with LogLevel::WARN
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logWarn(const std::string& str, Args... args) {
         log(LogLevel::WARN, str, args...);
     }
@@ -189,8 +188,8 @@ public:
      * @brief Logs a message with LogLevel::ERROR
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logError(const std::string& str, Args... args) {
         log(LogLevel::ERROR, str, args...);
     }
@@ -199,8 +198,8 @@ public:
      * @brief Logs a message with LogLevel::FATAL
      * @param std::string String to log
      * @param Args... Additional arguments for formatted string
-    */
-    template<typename... Args>
+     */
+    template <typename... Args>
     static void logFatal(const std::string& str, Args... args) {
         log(LogLevel::FATAL, str, args...);
     }
@@ -209,13 +208,13 @@ public:
      * @brief Log a message
      * @param LogLevel Level of the message
      * @param std::string String to log
-     * @param Args... Additional arguments for formatted string 
-    */
-    template<typename... Args>
+     * @param Args... Additional arguments for formatted string
+     */
+    template <typename... Args>
     static void log(LogLevel level, const std::string& str, Args... args) {
         std::string tmp;
         time_t unix_time;
-        struct tm *local_time;
+        struct tm* local_time;
         char buffer[128];
 
         /* Get time in format we want and store into buffer*/

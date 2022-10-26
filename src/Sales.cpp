@@ -112,7 +112,8 @@ bool SaleList::loadSales(const std::string file) {
     getline(p_fin, p_line);
     getline(c_fin, c_line);
     if (p_line != "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller") {
-        Logger::logTrace("Expected: %s\nReceived: %s", "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller", p_line.c_str());
+        Logger::logTrace("Expected: %s\nReceived: %s", "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller",
+                         p_line.c_str());
         Logger::logWarn("Invalid Sales parent file -- Continuing without loading Sales.");
         return false;
     }
@@ -174,7 +175,7 @@ bool SaleList::save() {
     p_fout << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
     c_fout << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
-    if(transaction_by_order.empty() != true) {
+    if (transaction_by_order.empty() != true) {
         for (i = 0; i <= curr_transaction; i++) {
             p_fout << transaction_by_order[i]->sale_id << ',' << transaction_by_order[i]->date << ','
                    << transaction_by_order[i]->total_price << ',' << transaction_by_order[i]->num_sales << ','
@@ -202,7 +203,7 @@ bool SaleList::save() {
 void SaleList::print() {
     unsigned int i, j;
 
-    if(transaction_by_order.empty() != true) {
+    if (transaction_by_order.empty() != true) {
         for (i = 0; i <= curr_transaction; i++) {
             std::cout << "Transaction #" << transaction_by_order[i]->sale_id << " | " << transaction_by_order[i]->date
                       << " | "

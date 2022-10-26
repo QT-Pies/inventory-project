@@ -1,10 +1,9 @@
 #ifndef SALES_HPP
 #define SALES_HPP
 
-
-#include <ctime>
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <map>
