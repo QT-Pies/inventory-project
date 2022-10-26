@@ -136,37 +136,37 @@ public:
    Logger() = default;
 
     template<typename... Args>
-    void logTrace(const std::string& str, Args... args) {
+    static void logTrace(const std::string& str, Args... args) {
         log(LogLevel::TRACE, str, args...);
     }
 
     template<typename... Args>
-    void logDebug(const std::string& str, Args... args) {
+    static void logDebug(const std::string& str, Args... args) {
         log(LogLevel::DEBUG, str, args...);
     }
 
     template<typename... Args>
-    void logInfo(const std::string& str, Args... args) {
+    static void logInfo(const std::string& str, Args... args) {
         log(LogLevel::INFO, str, args...);
     }
 
     template<typename... Args>
-    void logWarn(const std::string& str, Args... args) {
+    static void logWarn(const std::string& str, Args... args) {
         log(LogLevel::WARN, str, args...);
     }
 
     template<typename... Args>
-    void logError(const std::string& str, Args... args) {
+    static void logError(const std::string& str, Args... args) {
         log(LogLevel::ERROR, str, args...);
     }
 
     template<typename... Args>
-    void logFatal(const std::string& str, Args... args) {
+    static void logFatal(const std::string& str, Args... args) {
         log(LogLevel::FATAL, str, args...);
     }
 
     template<typename... Args>
-    void log(LogLevel level, const std::string& str, Args... args) {
+    static void log(LogLevel level, const std::string& str, Args... args) {
         std::string tmp;
         time_t unix_time;
         struct tm *local_time;

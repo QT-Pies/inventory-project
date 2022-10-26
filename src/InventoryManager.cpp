@@ -12,6 +12,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
     sale_list->loadSales(file);
+    Logger::logDebug("This is a test by %s", "Noah Shoap");
 }
 
 InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
