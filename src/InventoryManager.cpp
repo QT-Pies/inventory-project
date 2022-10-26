@@ -80,10 +80,8 @@ int InventoryManager::userInput() {
 
             if (active_inventory->addItem(new_item) != -1) {
                 std::cout << "Added " << name << " of type " << category << std::endl;
+                Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
             }
-
-            Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
-
             break;
 
         case 'R':
@@ -101,10 +99,9 @@ int InventoryManager::userInput() {
 
             if (active_inventory->removeItem(name) != -1) {
                 std::cout << "Removed " << name << std::endl;
+                Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
             }
             break;
-
-            Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
 
         case 'U':
         case 'u':
@@ -125,10 +122,8 @@ int InventoryManager::userInput() {
 
             if (active_inventory->updateItem(name, category, value) != -1) {
                 std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(), name.c_str(), value.c_str());
             }
-
-            Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(), name.c_str(), value.c_str());
-
             break;
 
         case 'P':
@@ -140,6 +135,7 @@ int InventoryManager::userInput() {
             std::cout << "All | Perishable | NonPerishable | Item Name : ";
             std::cin >> category;
             active_inventory->printItems(category);
+            Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
             break;
         case 'S':
         case 's':
@@ -151,31 +147,41 @@ int InventoryManager::userInput() {
             std::cout << "Buyer | Seller\n";
             std::cin >> buyer >> seller;
             std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
+
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+
             while (true) {
                 std::cout << "Item Name: ";
                 std::cin >> name;
+
                 if (name == "Q" || name == "q") break;
+
                 std::cout << "Quantity Sold: ";
                 std::cin >> quantity;
+
                 if (quantity == "0") break;
+
                 auto item_ptr = active_inventory->searchByName(name);
+
                 if (item_ptr != NULL) {
                     sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
                         sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
-                    // item_ptr->quantity -= quantity;
                     valid_transaction = true;
                 } else
                     Logger::logWarn("Invalid item -- continuing to read.");
             }
+
             /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added
              * this will be changed */
             if (valid_transaction == false) {
                 Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
                 sale_list->transaction_by_order.pop_back();
                 sale_list->curr_transaction--;
-            } else
+            } else {
                 sale_list->curr_sale_id++;
+                Logger::logTrace("User %s entered a transaction.");
+            }
+            
             break;
         case 'Q':
         case 'q':
