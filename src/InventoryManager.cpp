@@ -22,7 +22,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (P)rint, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (P)rint, (L)ogout, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -188,13 +188,24 @@ int InventoryManager::userInput() {
             }
 
             break;
+        case 'L':
+        case 'l':
+            Logger::logTrace("User %s logged out.", current_user->name.c_str());
+            current_user = NULL;
+
+            /* I was going to wrap this in a while,
+            * since it can return false.
+            * However, no such check is done over in main, so it should be fine here, too. */
+            userLogin();
+            break;
+
         case 'Q':
         case 'q':
             printf("Exiting InventoryManager.\n");
             Logger::logTrace("User %s exited the program.", current_user->name.c_str());
             return -1;
         default:
-            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (Q)uit>" << std::endl;
+            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (L)ogout | (Q)uit>" << std::endl;
             break;
     }
 
@@ -312,7 +323,6 @@ int InventoryManager::fileOutput() {
 }
 
 bool InventoryManager::userLogin() {
-    login->readCSV();
     current_user = login->userInput();
     login->outputCSV();
 
