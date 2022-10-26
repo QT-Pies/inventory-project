@@ -64,6 +64,7 @@ class LogConfiguration {
     LogConfiguration() {
         FILE* config_file;
         char buffer[128];
+        int i;
         config_file = NULL;
 
         /* Attempt to open file */
@@ -72,9 +73,9 @@ class LogConfiguration {
         /* Try to read in config from file */
         try {
             if (config_file == NULL) throw std::runtime_error("Failed to open config file -- creating new one.");
-            auto i = fscanf(config_file, "CLIDisplay=%s\n", buffer);
+            i = fscanf(config_file, "CLIDisplay=%s\n", buffer);
             updateLevel("cli", stringToLogLevel(buffer));
-            i = fscanf(config_file, "FileDisplay=%s\n", buffer);
+            i += fscanf(config_file, "FileDisplay=%s\n", buffer);
             updateLevel("file", stringToLogLevel(buffer));
         } catch (std::exception& e) {
             std::cerr << e.what() << std::endl;
