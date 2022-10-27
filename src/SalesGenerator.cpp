@@ -63,11 +63,11 @@ void SalesGenerator::generateTransactions(unsigned long max) {
 
     transactions = 1;
 
-    for (auto i = 0; i < max; ++i) {
+    for (unsigned long i = 0; i < max; ++i) {
         auto transaction = newTransaction();
         auto num_sales = distrib_sales(gen);
 
-        for (auto j = 0; j < num_sales; ++j) {
+        for (unsigned long j = 0; j < num_sales; ++j) {
             auto sale = transaction->addSale(grabRandomItem());
             sale->print(c_file);
         }
