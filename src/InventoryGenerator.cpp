@@ -54,7 +54,7 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
     std::uniform_int_distribution<int> distrib_index(0, 51);
     std::uniform_int_distribution<int> distrib_int(0, 1000);
     std::uniform_int_distribution<int> distrib_keys(0, bad_keys.size() * factor);
-    std::uniform_real_distribution<double> distrib_double(0.25, 2000);
+    std::uniform_real_distribution<double> distrib_double(0.25, 500);
     std::shared_ptr<CSVEntry> entry;
     int name_length;
     std::string tmp_name;
