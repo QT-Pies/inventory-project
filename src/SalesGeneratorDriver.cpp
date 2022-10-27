@@ -1,10 +1,6 @@
 #include "SalesGenerator.hpp"
 
 static void printUsage(std::ostream &out) {
-    out << "usage: ./gen-inventory output_file.csv #undefined #non-perishable "
-           "#perishable --flags"
-        << std::endl;
-
     out << "usage: ./gen-sales inventory.csv MM/DD/YYYY #of transactions" << std::endl;
 }
 
