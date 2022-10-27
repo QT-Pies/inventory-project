@@ -1,6 +1,6 @@
 #include "SalesGenerator.hpp"
 
-SalesGenerator::SalesGenerator(const std::string& name) : transactions(0), original_name(name) {
+SalesGenerator::SalesGenerator(const std::string& name, const std::string& start) : transactions(0), original_name(name), last_date(start) {
     readInventory();
     parent_name = name.substr(0, name.size() - 4) + "_parent_sales.csv";
     child_name = name.substr(0, name.size() - 4) + "_child_sales.csv";
@@ -27,13 +27,14 @@ bool SalesGenerator::readInventory() {
         inventory.push_back(entry);
     }
 
+    inventory_file.close();
     return true;
 }
 
 std::shared_ptr<CSVEntry> SalesGenerator::grabRandomItem() {
     std::random_device rand;
     std::mt19937 gen(rand());
-    std::uniform_int_distribution<size_t> distrib_size(0, inventory.size());
+    std::uniform_int_distribution<size_t> distrib_size(0, inventory.size() - 1);
     std::shared_ptr<CSVEntry> rv;
 
     /* Grab an item we can sell, i.e, it's quantity > 0.*/
@@ -69,9 +70,31 @@ void SalesGenerator::generateTransactions(unsigned long max) {
             sale->print(c_file);
         }
 
+        transaction->date = last_date;
         transaction->print(p_file);
-
+        nextDate();
     }
+
+    p_file.close();
+    c_file.close();
+}
+
+void SalesGenerator::nextDate() {
+    Date tmp(last_date);
+
+    tmp.day++;
+
+    /* Move month */
+    if (tmp.day > 28) {
+        tmp.month++;
+        tmp.day = 1;
+        if (tmp.month > 12) {
+            tmp.year++;
+            tmp.month = 1;
+        }
+    }
+
+    last_date = tmp;
 }
 
 MockTransaction::MockTransaction(unsigned long idd) : id(idd), total_price(0), quantity_of_items(0) {
@@ -96,7 +119,7 @@ std::string MockTransaction::getRandomName() {
     "Jen-Jen", "Joe-Joe", "Jim-Plank", "Michael"};
     std::random_device rand;
     std::mt19937 gen(rand());
-    std::uniform_int_distribution<size_t> distrib_size(0, names.size());
+    std::uniform_int_distribution<size_t> distrib_size(0, names.size() - 1);
 
     return names.at(distrib_size(gen));
 }

@@ -70,7 +70,7 @@ public:
 
 class SalesGenerator {
 public:
-    SalesGenerator(const std::string&);
+    SalesGenerator(const std::string&, const std::string&);
     
     /* 
     * @brief Reads the inventory file in.
@@ -95,6 +95,12 @@ public:
      * @param unsigned-long Number of transactions.
     */
     void generateTransactions(unsigned long);
+
+    /*
+    * @brief Generates a new Date and stores it in last_date.
+    */
+    void nextDate();
+
 
 protected:
     const unsigned long MAX_SALES_PER_TRANSACTION = 10;
