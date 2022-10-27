@@ -1,6 +1,6 @@
 #include "SalesGenerator.hpp"
 
-SalesGenerator::SalesGenerator(const std::string& name) : original_name(name) {
+SalesGenerator::SalesGenerator(const std::string& name) : original_name(name), transactions(0) {
     readInventory();
     parent_name = name.substr(0, name.size() - 4) + "_parent_sales.csv";
     child_name = name.substr(0, name.size() - 4) + "_child_sales.csv";
@@ -42,4 +42,82 @@ std::shared_ptr<CSVEntry> SalesGenerator::grabRandomItem() {
     } while (rv->quantity == 0);
 
     return rv;
+}
+
+std::shared_ptr<MockTransaction> SalesGenerator::newTransaction() {
+    auto rv = std::make_shared<MockTransaction>(transactions);
+}
+
+void SalesGenerator::generateTransactions(unsigned long max) {
+    std::random_device rand;
+    std::mt19937 gen(rand());
+    std::uniform_int_distribution<unsigned long> distrib_sales(1, MAX_SALES_PER_TRANSACTION);
+    std::ofstream p_file(parent_name);
+    std::ofstream c_file(child_name);
+
+    p_file << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
+    c_file << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
+
+    for (auto i = 0; i < max; ++i) {
+        transactions = i;
+        auto transaction = newTransaction();
+        auto num_sales = distrib_sales(gen);
+
+        for (auto j = 0; j < num_sales; ++j) {
+            auto sale = transaction->addSale(grabRandomItem());
+            sale->print(c_file);
+        }
+
+        transaction->print(p_file);
+
+    }
+}
+
+MockTransaction::MockTransaction(unsigned long idd) : id(idd), total_price(0), quantity_of_items(0) {
+    buyer = getRandomName();
+    seller = getRandomName();
+}
+
+void MockTransaction::addSale(std::shared_ptr<CSVEntry> item) {
+    auto sale = std::make_shared<MockSale>(item, id);
+
+    sale->setNumSold();
+
+    quantity_of_items++;
+    total_price += (sale->sale_price * num_sold);
+}
+
+std::string MockTransaction::getRandomName() {
+    std::vector<std::string> names = {"Noah", "Jon", "Jen", "Vincent", "Joseph", "Bob", "David", "Alan",
+    "Dave", "Davey", "Dave-Dog", "Jim", "James", "Stephen", "Greg", "Gregg", "Joe", "Vinny", "Jon-Jon",
+    "Jen-Jen", "Joe-Joe", "Jim-Plank", "Michael"};
+    std::random_device rand;
+    std::mt19937 gen(rand());
+    std::uniform_int_distribution<size_t> distrib_size(0, names.size());
+
+    return names.at(distrib_size(gen));
+}
+
+void MockTransaction::print(std::ostream& out) {
+    
+}
+
+MockSale::MockSale(std::shared_ptr<CSVEntry> c_item, unsigned long idd) : item(c_item), id(idd) {
+    item_id = item->id;
+    sale_price = item->sale_price;
+}
+
+void MockSale::setNumSold() {
+    std::random_device rand;
+    std::mt19937 gen(rand());
+    std::uniform_int_distribution<unsigned long> distrib_sold(1, item->quantity / 2);
+
+    num_sold = distrib_sold(gen);
+
+    /* We don't use items with quantity == 0, and the range is 1->quantity, so no fear of < 0. */
+    item->quantity -= num_sold;
+}
+
+void MockSale::print(std::ostream& out) {
+    out << id << ',' << item_id << ',' << num_sold << ',' << sale_price << std::endl;
 }

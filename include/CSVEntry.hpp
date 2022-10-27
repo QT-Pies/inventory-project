@@ -7,10 +7,15 @@
 
 class InventoryGenerator;
 class SalesGenerator;
+class MockSale;
+class MockTransaction;
+
 
 class CSVEntry {
     friend class InventoryGenerator;
     friend class SalesGenerator;
+    friend class MockSale;
+    friend class MockTransaction; 
    public:
     CSVEntry();
 
