@@ -62,8 +62,9 @@ class Login {
      * @param std::string username
      * @param std::string account
      * @param int permission
+     * @return true is successful and false if not
      */
-    bool changePermission(std::string, std::string, int);
+    bool changePermission(std::string, std::string, int permission);
 
    private:
     std::string file_name = "accounts.csv";

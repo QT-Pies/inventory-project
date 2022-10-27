@@ -15,8 +15,9 @@ class User {
      /*
      * @brief takes in a username and password and account to create a new user
      * @param std::string for account_type
+     * @return return true if able to update
      */
-    void updateAccount(const std::string);
+    bool updateAccount(const std::string);
    
    private:
     friend class Login;

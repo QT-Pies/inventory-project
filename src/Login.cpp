@@ -28,7 +28,7 @@ std::shared_ptr<User> Login::userInput() {
     std::string category, name, password;
 
     while (true) {
-        std::cout << "\n(L)ogin or (C)reate User: ";
+        std::cout << "\n(L)ogin, (C)reate User: ";
         std::cin >> argument;
 
         switch (argument) {
@@ -139,12 +139,23 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
     return NULL;
 }
 
-bool changePermission(std::string username, std::string account, int permission) {
+bool Login::changePermission(std::string username, std::string account, int permission) {
+    int p;
 
-    /**
-     * will find the user and if it exists and the current user permissions are 
-     * greater than the user it is updating permissions it will call updateAccount
-     * 
-     */
+    if(account == "employee") p = 1;
+    if(account == "manager") p = 3;
+    if(account == "owner") p = 5;
 
+    auto it = users.find(username);
+    if(it != users.end()) {
+        /* if the current_user's permissions are greater than or equal to the account it is updating too and 
+           the current_user's permissions are greater then the user account is is updating then update
+           */
+        if(permission >= p && permission > it->second->permission) {
+            it->second->updateAccount(account);
+            return true;
+        }
+    } 
+
+    return false;
 }

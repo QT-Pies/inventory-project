@@ -12,15 +12,15 @@ User::User(const std::string username, const std::string pswd, const std::string
     
 }
 
-void User::updateAccount(const std::string account) {
+bool User::updateAccount(const std::string account) {
 
-    if (account != "owner" && account != "employee" && account != "manager") {
-        return;
-    }
+    if (account != "owner" && account != "employee" && account != "manager") return false;
 
     account_type = account;
 
     if(account == "employee") permission = 1;
     if(account == "manager") permission = 3;
     if(account == "owner") permission = 5; 
+
+    return true;
 }
