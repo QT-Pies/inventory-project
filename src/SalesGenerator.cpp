@@ -1,6 +1,7 @@
 #include "SalesGenerator.hpp"
 
-SalesGenerator::SalesGenerator(const std::string& name, const std::string& start) : transactions(0), original_name(name), last_date(start) {
+SalesGenerator::SalesGenerator(const std::string& name, const std::string& start)
+    : transactions(0), original_name(name), last_date(start) {
     readInventory();
     parent_name = name.substr(0, name.size() - 4) + "_parent_sales.csv";
     child_name = name.substr(0, name.size() - 4) + "_child_sales.csv";
@@ -83,7 +84,7 @@ void SalesGenerator::generateTransactions(unsigned long max) {
 void SalesGenerator::nextDate() {
     std::random_device rand;
     std::mt19937 gen(rand());
-    std::uniform_int_distribution<int> distrib_date(0,1);
+    std::uniform_int_distribution<int> distrib_date(0, 1);
     Date tmp(last_date);
 
     /* If we randomly generated a 1, keep the current date, increment transactions. */
@@ -127,9 +128,9 @@ std::shared_ptr<MockSale> MockTransaction::addSale(std::shared_ptr<CSVEntry> ite
 }
 
 std::string MockTransaction::getRandomName() {
-    std::vector<std::string> names = {"Noah", "Jon", "Jen", "Vincent", "Joseph", "Bob", "David", "Alan",
-    "Dave", "Davey", "Dave-Dog", "Jim", "James", "Stephen", "Greg", "Gregg", "Joe", "Vinny", "Jon-Jon",
-    "Jen-Jen", "Joe-Joe", "Jim-Plank", "Michael"};
+    std::vector<std::string> names = {"Noah", "Jon",   "Jen",      "Vincent", "Joseph",  "Bob",       "David",  "Alan",
+                                      "Dave", "Davey", "Dave-Dog", "Jim",     "James",   "Stephen",   "Greg",   "Gregg",
+                                      "Joe",  "Vinny", "Jon-Jon",  "Jen-Jen", "Joe-Joe", "Jim-Plank", "Michael"};
     std::random_device rand;
     std::mt19937 gen(rand());
     std::uniform_int_distribution<size_t> distrib_size(0, names.size() - 1);
@@ -142,7 +143,6 @@ void MockTransaction::print(std::ostream& out) {
     out << date.year << '/' << date.month << '/' << date.day << ',';
     out << total_price << ',' << quantity_of_items << ',';
     out << buyer << ',' << seller << std::endl;
-
 }
 
 MockSale::MockSale(std::shared_ptr<CSVEntry> c_item, unsigned long idd) : item(c_item), id(idd) {

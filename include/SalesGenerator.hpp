@@ -4,31 +4,31 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
 #include "CSVEntry.hpp"
 #include "Date.hpp"
 
 class MockSale {
-public:
-    /* 
-    * @brief Constructs a MockSale from the given Item
-    * @param std::shared_ptr<CSVEntry> Item
-    * @param unsigned-long ID of transaction
-    */
+   public:
+    /*
+     * @brief Constructs a MockSale from the given Item
+     * @param std::shared_ptr<CSVEntry> Item
+     * @param unsigned-long ID of transaction
+     */
     MockSale(std::shared_ptr<CSVEntry>, unsigned long);
 
-    /* 
-    * @brief Randomizes num_sold, and decrements the Item's quantity.
-    */
+    /*
+     * @brief Randomizes num_sold, and decrements the Item's quantity.
+     */
     void setNumSold();
 
     /*
      * @brief Prints the MockSale to an ostream.
      * @param std::ostream& Output stream
-    */
+     */
     void print(std::ostream&);
 
     std::shared_ptr<CSVEntry> item;
@@ -39,25 +39,25 @@ public:
 };
 
 class MockTransaction {
-public:
+   public:
     MockTransaction(unsigned long);
 
     /*
      * @brief Adds a new Sale to the Transaction.
      * @param std::shared_ptr<CSVEntry> Item to add to transaction.
-    */
+     */
     std::shared_ptr<MockSale> addSale(std::shared_ptr<CSVEntry>);
 
     /*
      * @brief Gets a random name for a buyer or seller.
      * @return std::string Name
-    */
+     */
     std::string getRandomName();
 
     /*
      * @brief Prints the MockTransaction to an ostream.
      * @param std::ostream& Output stream
-    */
+     */
     void print(std::ostream&);
 
     unsigned long id;
@@ -69,40 +69,39 @@ public:
 };
 
 class SalesGenerator {
-public:
+   public:
     SalesGenerator(const std::string&, const std::string&);
-    
-    /* 
-    * @brief Reads the inventory file in.
-    * @brief Does not error check inventory -- pass a valid file.
-    * @param std::string Name of file to open
-    * @return true if nothing went wrong, false if error encountered
-    */
+
+    /*
+     * @brief Reads the inventory file in.
+     * @brief Does not error check inventory -- pass a valid file.
+     * @param std::string Name of file to open
+     * @return true if nothing went wrong, false if error encountered
+     */
     bool readInventory();
 
-    /* 
+    /*
      * @brief Returns a random item from the inventory to add to the transaction.
-    */
+     */
     std::shared_ptr<CSVEntry> grabRandomItem();
 
     /*
-    * @brief Generates a new transaction.
-    */
+     * @brief Generates a new transaction.
+     */
     std::shared_ptr<MockTransaction> newTransaction();
 
     /*
      * @brief Generates # of transactions.
      * @param unsigned-long Number of transactions.
-    */
+     */
     void generateTransactions(unsigned long);
 
     /*
-    * @brief Generates a new Date and stores it in last_date.
-    */
+     * @brief Generates a new Date and stores it in last_date.
+     */
     void nextDate();
 
-
-protected:
+   protected:
     const unsigned long MAX_SALES_PER_TRANSACTION = 10;
 
     unsigned long transactions;

@@ -3,27 +3,27 @@
 
 #include <iomanip>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 class InventoryGenerator;
 class SalesGenerator;
 class MockSale;
 class MockTransaction;
 
-
 class CSVEntry {
     friend class InventoryGenerator;
     friend class SalesGenerator;
     friend class MockSale;
-    friend class MockTransaction; 
+    friend class MockTransaction;
+
    public:
     CSVEntry();
 
     /*
      * @brief Construct a CSVEntry from a line from CSV file.
      * @param std::string Line to parse
-    */
+     */
     CSVEntry(std::string);
 
     /*

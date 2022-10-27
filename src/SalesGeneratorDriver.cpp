@@ -1,11 +1,10 @@
 #include "SalesGenerator.hpp"
 
-static void printUsage(std::ostream &out) {
+static void printUsage(std::ostream& out) {
     out << "usage: ./gen-sales inventory.csv MM/DD/YYYY #of transactions" << std::endl;
 }
 
 int main(int argc, char** argv) {
-
     /* Print usage if not correct amount of args. */
     if (argc != 4) {
         printUsage(std::cerr);
