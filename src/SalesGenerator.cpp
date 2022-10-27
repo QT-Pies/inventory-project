@@ -60,8 +60,9 @@ void SalesGenerator::generateTransactions(unsigned long max) {
     p_file << "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller\n";
     c_file << "Sale_ID, Item_ID, Quantity_Sold, Sale_Price\n";
 
+    transactions = 1;
+
     for (auto i = 0; i < max; ++i) {
-        transactions = i;
         auto transaction = newTransaction();
         auto num_sales = distrib_sales(gen);
 
@@ -80,7 +81,18 @@ void SalesGenerator::generateTransactions(unsigned long max) {
 }
 
 void SalesGenerator::nextDate() {
+    std::random_device rand;
+    std::mt19937 gen(rand());
+    std::uniform_int_distribution<int> distrib_date(0,1);
     Date tmp(last_date);
+
+    /* If we randomly generated a 1, keep the current date, increment transactions. */
+    if (distrib_date(gen)) {
+        transactions++;
+        return;
+    }
+
+    /* Otherwise, move the date and reset the transaction counter to 1. */
 
     tmp.day++;
 
@@ -94,6 +106,7 @@ void SalesGenerator::nextDate() {
         }
     }
 
+    transactions = 1;
     last_date = tmp;
 }
 
