@@ -1,7 +1,6 @@
 #include "Login.hpp"
 
-Login::Login() { /* does nothing */
-}
+Login::Login() { readCSV(); }
 
 Login::~Login() { /* no deletion required*/
 }
