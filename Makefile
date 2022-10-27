@@ -67,7 +67,7 @@ bin/unit_tests:
 	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lpthread obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
 
 clean: 
-	rm $(EXECUTABLES) obj/*.o 
+	rm -rf bin/* obj/*.o 
 
 better:
 	clang-format -i src/* include/* tests/*
