@@ -1,6 +1,6 @@
 #include "SalesGenerator.hpp"
 
-SalesGenerator::SalesGenerator(const std::string& name) : original_name(name), transactions(0) {
+SalesGenerator::SalesGenerator(const std::string& name) : transactions(0), original_name(name) {
     readInventory();
     parent_name = name.substr(0, name.size() - 4) + "_parent_sales.csv";
     child_name = name.substr(0, name.size() - 4) + "_child_sales.csv";
@@ -46,6 +46,7 @@ std::shared_ptr<CSVEntry> SalesGenerator::grabRandomItem() {
 
 std::shared_ptr<MockTransaction> SalesGenerator::newTransaction() {
     auto rv = std::make_shared<MockTransaction>(transactions);
+    return rv;
 }
 
 void SalesGenerator::generateTransactions(unsigned long max) {
@@ -78,13 +79,15 @@ MockTransaction::MockTransaction(unsigned long idd) : id(idd), total_price(0), q
     seller = getRandomName();
 }
 
-void MockTransaction::addSale(std::shared_ptr<CSVEntry> item) {
+std::shared_ptr<MockSale> MockTransaction::addSale(std::shared_ptr<CSVEntry> item) {
     auto sale = std::make_shared<MockSale>(item, id);
 
     sale->setNumSold();
 
     quantity_of_items++;
-    total_price += (sale->sale_price * num_sold);
+    total_price += (sale->sale_price * sale->num_sold);
+
+    return sale;
 }
 
 std::string MockTransaction::getRandomName() {
@@ -99,7 +102,11 @@ std::string MockTransaction::getRandomName() {
 }
 
 void MockTransaction::print(std::ostream& out) {
-    
+    out << id << ',';
+    out << date.year << '/' << date.month << '/' << date.day << ',';
+    out << total_price << ',' << quantity_of_items << ',';
+    out << buyer << ',' << seller << std::endl;
+
 }
 
 MockSale::MockSale(std::shared_ptr<CSVEntry> c_item, unsigned long idd) : item(c_item), id(idd) {
