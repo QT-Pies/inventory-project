@@ -6,14 +6,12 @@ Login::~Login() { /* no deletion required*/
 }
 
 bool Login::createUser(const std::string name, const std::string password, std::string account) {
-    /* Ignore casing on account type */
     lowerCaseString(account);
 
     if (account != "manager" && account != "owner" && account != "employee") {
         Logger::logError("Invalid account type '%s'", account.c_str());
         return false;
     }
-
     if (users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
@@ -27,7 +25,7 @@ bool Login::createUser(const std::string name, const std::string password, std::
 
 std::shared_ptr<User> Login::userInput() {
     char argument;
-    std::string category, name, password, account;
+    std::string category, name, password;
 
     while (true) {
         std::cout << "\n(L)ogin or (C)reate User: ";
@@ -65,9 +63,7 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin >> name;
                 std::cout << "Password: ";
                 std::cin >> password;
-                std::cout << "Account Type: ";
-                std::cin >> account;
-                createUser(name, password, account);
+                createUser(name, password);
                 break;
             }
             default:
@@ -141,4 +137,14 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
     }
 
     return NULL;
+}
+
+bool changePermission(std::string username, std::string account, int permission) {
+
+    /**
+     * will find the user and if it exists and the current user permissions are 
+     * greater than the user it is updating permissions it will call updateAccount
+     * 
+     */
+
 }

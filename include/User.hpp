@@ -9,10 +9,15 @@ class User {
      * @brief takes in a username and password and account to create a new user
      * @param std::string for username
      * @param std::string for password
-     * @param std::string account_type
      */
     User(const std::string, const std::string, const std::string);
 
+     /*
+     * @brief takes in a username and password and account to create a new user
+     * @param std::string for account_type
+     */
+    void updateAccount(const std::string);
+   
    private:
     friend class Login;
     friend class InventoryManager;

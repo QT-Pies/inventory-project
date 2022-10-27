@@ -24,10 +24,10 @@ class Login {
      * @brief takes in a username and password and account_type to create a new user
      * @param std::string for username
      * @param std::string for password
-     * @param std::string account_type
+     * @param std::string for account_type which defaults to employee
      * @return returns true if user created and fasle if not
      */
-    bool createUser(const std::string, const std::string, std::string);
+    bool createUser(const std::string, const std::string, std::string = "employee");
 
     /*
      * @brief user will be able to login or create a new user
@@ -56,6 +56,14 @@ class Login {
      * @return shared_ptr to user
      */
     std::shared_ptr<User> verifyUser(const std::string, const std::string);
+
+     /*
+     * @brief outputs users map to file
+     * @param std::string username
+     * @param std::string account
+     * @param int permission
+     */
+    bool changePermission(std::string, std::string, int);
 
    private:
     std::string file_name = "accounts.csv";
