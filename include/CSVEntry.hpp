@@ -1,6 +1,7 @@
 #ifndef CSVENTRY_HPP
 #define CSVENTRY_HPP
 
+#include <iomanip>
 #include <iostream>
 #include <string>
 #include <sstream>

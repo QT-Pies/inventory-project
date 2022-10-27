@@ -39,7 +39,7 @@ void CSVEntry::printEntry(std::ostream &out) {
     out << sub_category << ',';
     out << quantity << ',';
     out << backorder << ',';
-    out << sale_price << ',';
+    out << std::setprecision(2) << std::fixed << std::showpoint << sale_price << ',';
     out << tax << ',';
     out << total_price << ',';
     out << buy_cost << ',';
