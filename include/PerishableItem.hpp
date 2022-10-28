@@ -12,7 +12,7 @@ class PerishableItem : public Item {
      * @param std::string Category
      * @param std::string Sub-Category
      * @param std::string Quantity
-     * @param std::string Backorder 
+     * @param std::string Backorder
      * @param std::string ID
      * @param std::string Price
      * @param std::string Cost for store to purchase
