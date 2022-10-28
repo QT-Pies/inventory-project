@@ -216,6 +216,7 @@ int InventoryManager::userInput() {
         case 'q':
             printf("Exiting InventoryManager.\n");
             Logger::logTrace("User %s exited the program.", current_user->name.c_str());
+            login->outputCSV();
             return -1;
         default:
             std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>" << std::endl;
@@ -347,7 +348,6 @@ bool InventoryManager::userLogin() {
 
 bool InventoryManager::updatePermission(std::string name, std::string account) {
     if(login->changePermission(name, account, current_user->permission) == true) {
-        Logger::logTrace("User %s updated '%s' to '%s'.", current_user->name.c_str(), name.c_str(), account.c_str());
         std::cout << name << " updated to " << account << std::endl;
         return true;
     } 
