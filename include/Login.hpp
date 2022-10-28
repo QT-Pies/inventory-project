@@ -57,7 +57,7 @@ class Login {
      */
     std::shared_ptr<User> verifyUser(const std::string, const std::string);
 
-     /*
+    /*
      * @brief outputs users map to file
      * @param std::string username
      * @param std::string account

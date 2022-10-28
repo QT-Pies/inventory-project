@@ -142,20 +142,20 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
 bool Login::changePermission(std::string username, std::string account, int permission) {
     int p;
 
-    if(account == "employee") p = 1;
-    if(account == "manager") p = 3;
-    if(account == "owner") p = 5;
+    if (account == "employee") p = 1;
+    if (account == "manager") p = 3;
+    if (account == "owner") p = 5;
 
     auto it = users.find(username);
-    if(it != users.end()) {
-        /* if the current_user's permissions are greater than or equal to the account it is updating too and 
+    if (it != users.end()) {
+        /* if the current_user's permissions are greater than or equal to the account it is updating too and
            the current_user's permissions are greater then the user account is is updating then update
            */
-        if(permission >= p && permission > it->second->permission) {
+        if (permission >= p && permission > it->second->permission) {
             it->second->updateAccount(account);
             return true;
         }
-    } 
+    }
 
     return false;
 }

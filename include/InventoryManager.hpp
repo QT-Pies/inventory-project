@@ -49,7 +49,7 @@ class InventoryManager {
      */
     bool userLogin();
 
-     /*
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
