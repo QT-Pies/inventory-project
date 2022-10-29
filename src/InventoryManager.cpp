@@ -137,7 +137,7 @@ int InventoryManager::userInput() {
 
             std::cout << "Account name: ";
             std::cin >> name;
-            std::cout << "New account tpye: ";
+            std::cout << "New account type: ";
             std::cin >> category;
 
             if (updatePermission(name, category)) {
@@ -350,12 +350,12 @@ bool InventoryManager::userLogin() {
 }
 
 bool InventoryManager::updatePermission(std::string name, std::string account) {
-    if (login->changePermission(name, account, current_user->permission) == true) {
+    if (login->changePermission(name, account, current_user) == true) {
         std::cout << name << " updated to " << account << std::endl;
         return true;
     }
 
-    fprintf(stderr, "Unable to update %s to %s\n", name.c_str(), account.c_str());
+    Logger::logError("Unable to update user '%s' to account type '%s'.", name.c_str(), account.c_str());
 
     return false;
 }

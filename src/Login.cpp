@@ -139,21 +139,27 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
     return NULL;
 }
 
-bool Login::changePermission(std::string username, std::string account, int permission) {
+bool Login::changePermission(std::string username, std::string account, std::shared_ptr<User> current_user) {
     int p;
 
-    if (account == "employee") p = 1;
-    if (account == "manager") p = 3;
-    if (account == "owner") p = 5;
+    p = current_user->getPermissionLevel(account);
+
+    if (p == -1) return false;
 
     auto it = users.find(username);
     if (it != users.end()) {
         /* if the current_user's permissions are greater than or equal to the account it is updating too and
            the current_user's permissions are greater then the user account is is updating then update
            */
-        if (permission >= p && permission > it->second->permission) {
-            it->second->updateAccount(account);
-            return true;
+        if (current_user->permission >= p && current_user->permission > it->second->permission) {
+            if (it->second->updateAccount(account)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Logger::logWarn("User %s does not have the required permissions to change permissions of user '%s'.",
+                            current_user->name.c_str(), username.c_str());
         }
     }
 

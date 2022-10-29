@@ -1,23 +1,42 @@
 #include "User.hpp"
 
 User::User(const std::string username, const std::string pswd, const std::string acc_type) {
-    if (acc_type == "employee") permission = 1;
-    if (acc_type == "manager") permission = 3;
-    if (acc_type == "owner") permission = 5;
+    int perm_level = getPermissionLevel(acc_type);
+
+    if (perm_level == -1) return;
 
     name = username;
     password = pswd;
     account_type = acc_type;
+    permission = perm_level;
 }
 
 bool User::updateAccount(const std::string account) {
-    if (account != "owner" && account != "employee" && account != "manager") return false;
+    int perm_level;
 
+    perm_level = getPermissionLevel(account);
+
+    if (perm_level == -1) return false;
+
+    permission = perm_level;
     account_type = account;
 
-    if (account == "employee") permission = 1;
-    if (account == "manager") permission = 3;
-    if (account == "owner") permission = 5;
-
     return true;
+}
+
+int User::getPermissionLevel(std::string account) {
+    int p;
+
+    if (account == "employee") {
+        p = 1;
+    } else if (account == "manager") {
+        p = 3;
+    } else if (account == "owner") {
+        p = 5;
+    } else {
+        Logger::logError("No such account type '%s'.", account.c_str());
+        p = -1;
+    }
+
+    return p;
 }

@@ -61,10 +61,10 @@ class Login {
      * @brief outputs users map to file
      * @param std::string username
      * @param std::string account
-     * @param int permission
+     * @param std::shared_ptr<User>
      * @return true is successful and false if not
      */
-    bool changePermission(std::string, std::string, int permission);
+    bool changePermission(std::string, std::string, std::shared_ptr<User>);
 
    private:
     std::string file_name = "accounts.csv";
