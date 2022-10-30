@@ -1,4 +1,6 @@
 #include <iostream>
+#include <QApplication>
+#include <QPushButton>
 
 #include "InventoryManager.hpp"
 

@@ -9,12 +9,30 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Output executables to bin, .o files to obj/
 set(EXECUTABLE_OUTPUT_PATH "bin")
 
-# Ignore Qt for now -- get normal program compiling correctly.
-#find_package(Qt6 REQUIRED COMPONENTS Widgets)
-#qt_standard_project_setup()
-
 # Include our .hpp files
 include_directories("./include")
+
+# It looks like we can run with these flags on g++ and MINGW g++, so add them.
+string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
+
+# If macOS / Ubuntu build agent, run with these flags
+if (UNIX)
+  message("I'm running on an Unix based system!")
+endif()
+
+# Additional build settings for Noah
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+  message ("I'm running on macOS")
+
+  # This is a hardcoded User install path, but I don't care since I'm the only one running macOS.
+  set(CMAKE_PREFIX_PATH "/Users/noah/Qt/6.4.0/macos")
+endif()
+
+# If Windows, 
+
+# Find Qt packages.
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+qt_standard_project_setup()
 
 # Add source files for bin/main
 add_executable(main
@@ -27,9 +45,23 @@ add_executable(main
   src/main.cpp
 )
 
+# Actually link Qt to our main executable.
+target_link_libraries(main
+  Qt6::Widgets
+)
+
 # Add source files for bin/gen-inventory
 add_executable(gen-inventory
   src/CSVEntry.cpp
   src/InventoryGenerator.cpp
   src/InventoryGeneratorDriver.cpp
 )
+
+# Add source files for bin/gen-sales
+add_executable(gen-sales
+  src/CSVEntry.cpp
+  src/Date.cpp
+  src/SalesGenerator.cpp
+  src/SalesGeneratorDriver.cpp
+)
+
