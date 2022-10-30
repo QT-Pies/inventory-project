@@ -12,11 +12,9 @@ set(EXECUTABLE_OUTPUT_PATH "bin")
 # Include our .hpp files
 include_directories("./include")
 
-# It looks like we can run with these flags on g++ and MINGW g++, so add them.
-string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
-
 # If macOS / Ubuntu build agent, run with these flags
 if (UNIX)
+  string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
   message("I'm running on an Unix based system!")
 endif()
 
@@ -28,7 +26,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   set(CMAKE_PREFIX_PATH "/Users/noah/Qt/6.4.0/macos")
 endif()
 
-# If Windows, 
+# If Windows, configure path for Windows Qt install.
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+  string(APPEND CMAKE_CXX_FLAGS "-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458")
+  set(CMAKE_PREFIX_PATH "C:/Qt/6.4.0/mingw_64")
+  set(Qt6_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6")
+  set(Qt6Core_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6Core")
+  set(QT_QMAKE_EXECUTABLE "C:/Qt/6.4.0/mingw_64/bin/qmake.exe")
+endif()
 
 # Find Qt packages.
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
@@ -47,6 +52,8 @@ add_executable(main
 
 # Actually link Qt to our main executable.
 target_link_libraries(main
+  Qt6::Core
+  Qt6::Gui
   Qt6::Widgets
 )
 
