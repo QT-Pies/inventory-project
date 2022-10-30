@@ -28,7 +28,7 @@ endif()
 
 # If Windows, configure path for Windows Qt install.
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-  string(APPEND CMAKE_CXX_FLAGS "-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458")
+ # string(APPEND CMAKE_CXX_FLAGS "-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458")
   set(CMAKE_PREFIX_PATH "C:/Qt/6.4.0/mingw_64")
   set(Qt6_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6")
   set(Qt6Core_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6Core")
