@@ -22,7 +22,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (P)rint, (L)ogout, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (P)rint, (L)ogout, or (Q)uit: ";
     std::cin >> argument;
 
     /* switch on argument specified from user and then prompt them accordingly for
@@ -130,7 +130,21 @@ int InventoryManager::userInput() {
                                  name.c_str(), value.c_str());
             }
             break;
+        case 'c':
+        case 'C':
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
 
+            std::cout << "Account name: ";
+            std::cin >> name;
+            std::cout << "New account type: ";
+            std::cin >> category;
+
+            if (updatePermission(name, category)) {
+                Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
+                                 category.c_str());
+            }
+            break;
         case 'P':
         case 'p':
             std::cin.clear();
@@ -203,9 +217,12 @@ int InventoryManager::userInput() {
         case 'q':
             printf("Exiting InventoryManager.\n");
             Logger::logTrace("User %s exited the program.", current_user->name.c_str());
+            login->outputCSV();
             return -1;
         default:
-            std::cout << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (P)rint | (L)ogout | (Q)uit>" << std::endl;
+            std::cout
+                << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
+                << std::endl;
             break;
     }
 
@@ -314,7 +331,6 @@ int InventoryManager::fileOutput() {
     }
 
     file.close();
-
     Logger::logInfo("Inventory written to '%s'.", file_name.c_str());
 
     sale_list->save();
@@ -331,4 +347,15 @@ bool InventoryManager::userLogin() {
     Logger::logTrace("User %s logged in.", current_user->name.c_str());
 
     return true;
+}
+
+bool InventoryManager::updatePermission(std::string name, std::string account) {
+    if (login->changePermission(name, account, current_user) == true) {
+        std::cout << name << " updated to " << account << std::endl;
+        return true;
+    }
+
+    Logger::logError("Unable to update user '%s' to account type '%s'.", name.c_str(), account.c_str());
+
+    return false;
 }

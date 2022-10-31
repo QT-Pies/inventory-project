@@ -31,6 +31,7 @@ TEST(Logger, stringToLogLevel) {
     }
 }
 
-/* This feels like enough testing, the Logger class doesn't return any values, so we'd just have to check for exceptions which should never get thrown. */
+/* This feels like enough testing, the Logger class doesn't return any values, so we'd just have to check for exceptions
+ * which should never get thrown. */
 
-}
+}  // namespace
