@@ -12,23 +12,28 @@ set(EXECUTABLE_OUTPUT_PATH "bin")
 # Include our .hpp files
 include_directories("./include")
 
-# If macOS / Ubuntu build agent, run with these flags
+# If macOS / Ubuntu, run with these g++ flags.
 if (UNIX)
   string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
-  message("I'm running on an Unix based system!")
 endif()
 
-# Additional build settings for Noah
-if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  message ("I'm running on macOS")
+# Linux Qt Path
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/gcc_64")
+endif()
 
+# macOS Qt Path
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   # This is a hardcoded User install path, but I don't care since I'm the only one running macOS.
-  set(CMAKE_PREFIX_PATH "/Users/noah/Qt/6.4.0/macos")
+  set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/macos")
 endif()
 
 # If Windows, configure path for Windows Qt install.
+# We're gonna drop support for Windows, but this was enough to get it working *sometimes*,
+# so why not keep it.
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
- # string(APPEND CMAKE_CXX_FLAGS "-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -permissive- -Zc:__cplusplus -Zc:externConstexpr -utf-8 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458")
+  # add a warning message for whoever tries to compile natively on windows
+  message("You're compiling on Windows, but development is on UNIX systems, may not work as expected.")
   set(CMAKE_PREFIX_PATH "C:/Qt/6.4.0/mingw_64")
   set(Qt6_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6")
   set(Qt6Core_DIR "C:/Qt/6.4.0/mingw_64/lib/cmake/Qt6Core")
