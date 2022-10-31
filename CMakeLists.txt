@@ -24,7 +24,6 @@ endif()
 
 # macOS Qt Path
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  # This is a hardcoded User install path, but I don't care since I'm the only one running macOS.
   set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/macos")
 endif()
 
