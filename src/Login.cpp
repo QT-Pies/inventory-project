@@ -1,21 +1,22 @@
 #include "Login.hpp"
 
-Login::Login() { /* does nothing */
+Login::Login() { readCSV(); }
+
+Login::~Login() { /* no deletion required*/
 }
 
-Login::~Login() { /* no deletion required*/ }
+bool Login::createUser(const std::string name, const std::string password, std::string account) {
+    lowerCaseString(account);
 
-bool Login::createUser(const std::string name, const std::string password, const std::string account) {
     if (account != "manager" && account != "owner" && account != "employee") {
-        fprintf(stderr, "Invalid account type\n");
+        Logger::logError("Invalid account type '%s'", account.c_str());
         return false;
     }
-
     if (users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
     } else {
-        fprintf(stderr, "User %s already exists\n", name.c_str());
+        Logger::logError("User '%s' already exists.", name.c_str());
         return false;
     }
 
@@ -24,10 +25,10 @@ bool Login::createUser(const std::string name, const std::string password, const
 
 std::shared_ptr<User> Login::userInput() {
     char argument;
-    std::string category, name, password, account;
+    std::string category, name, password;
 
     while (true) {
-        std::cout << "\n(L)ogin or (C)reate User: ";
+        std::cout << "\n(L)ogin, (C)reate User: ";
         std::cin >> argument;
 
         switch (argument) {
@@ -45,7 +46,10 @@ std::shared_ptr<User> Login::userInput() {
                 if (user != NULL) {
                     return user;
                 } else {
-                    fprintf(stderr, "Invalid username or password\n");
+                    // I didn't replace this because I think it makes sense to give the user normal feedback here, so it
+                    // should to stdout instead of stderr.
+                    printf("Invalid username or password\n");
+                    Logger::logTrace("Failed login to User '%s'.", name.c_str());
                     break;
                 }
                 break;
@@ -59,9 +63,7 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin >> name;
                 std::cout << "Password: ";
                 std::cin >> password;
-                std::cout << "Account Type: ";
-                std::cin >> account;
-                createUser(name, password, account);
+                createUser(name, password);
                 break;
             }
             default:
@@ -80,7 +82,7 @@ bool Login::readCSV() {
     std::ifstream user_file(file_name);
 
     if (!user_file.is_open()) {
-        fprintf(stderr, "Unable to open %s\n", file_name.c_str());
+        Logger::logWarn("Unable to open '%s'.", file_name.c_str());
         return false;
     }
 
@@ -93,7 +95,7 @@ bool Login::readCSV() {
         created = createUser(name, password, account);
 
         if (!created) {
-            fprintf(stderr, "Unable to add user %s\n", name.c_str());
+            Logger::logError("Unable to add user '%s'.", name.c_str());
         }
     }
 
@@ -108,7 +110,7 @@ bool Login::outputCSV() {
     file.open(file_name);
 
     if (!file.is_open()) {
-        fprintf(stderr, "File %s is unable to open", file_name.c_str());
+        Logger::logFatal("Unable to open file '%s'.  User accounts will be lost!", file_name.c_str());
         return false;
     }
 
@@ -135,4 +137,31 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
     }
 
     return NULL;
+}
+
+bool Login::changePermission(std::string username, std::string account, std::shared_ptr<User> current_user) {
+    int p;
+
+    p = current_user->getPermissionLevel(account);
+
+    if (p == -1) return false;
+
+    auto it = users.find(username);
+    if (it != users.end()) {
+        /* if the current_user's permissions are greater than or equal to the account it is updating too and
+           the current_user's permissions are greater then the user account is is updating then update
+           */
+        if (current_user->permission >= p && current_user->permission > it->second->permission) {
+            if (it->second->updateAccount(account)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Logger::logWarn("User %s does not have the required permissions to change permissions of user '%s'.",
+                            current_user->name.c_str(), username.c_str());
+        }
+    }
+
+    return false;
 }

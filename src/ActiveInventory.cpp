@@ -20,10 +20,10 @@ ActiveInventory::~ActiveInventory(){
 int ActiveInventory::addItem(std::shared_ptr<Item> new_item) {
     if (inv_by_name.find(new_item->name) != inv_by_name.end())  // Check if item is already in the inventory.
     {
-        fprintf(stderr, "%s is already in the inventory.\n", new_item->name.c_str());
+        Logger::logError("Item '%s' is already in the inventory.", new_item->name.c_str());
         return -1;
     } else if (inv_by_id.find(new_item->id) != inv_by_id.end()) {
-        fprintf(stderr, "%lu is already an id for another Item\n", new_item->id);
+        Logger::logError("ID '%lu' is already an ID for another Item.", new_item->id);
         return -1;
     } else {
         inv_by_name[new_item->name] = new_item;
@@ -49,7 +49,7 @@ int ActiveInventory::removeItem(std::string name) {
         }
         return 1;
     } else {
-        fprintf(stderr, "%s is not in current inventory.\n", name.c_str());
+        Logger::logError("Item '%s' was not found in the inventory.", name.c_str());
         return -1;
     }
 
@@ -103,7 +103,7 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             item->setValue(field, value);
         }
     } catch (std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        Logger::logError(e.what());
         return -1;
     }
 
@@ -142,7 +142,7 @@ void ActiveInventory::printItems(std::string value) {
     if (value == "All") {
         /* if map is empty print error message and return*/
         if (inv_by_id.size() == 0) {
-            fprintf(stderr, "Inventory is currently empty\n");
+            Logger::logWarn("Inventory is currently empty");
             return;
         }
         printHead();
@@ -155,7 +155,7 @@ void ActiveInventory::printItems(std::string value) {
 
         /*if category is empty print error message and return*/
         if (cat_it == inv_by_category.end()) {
-            fprintf(stderr, "%s category is currently empty\n", value.c_str());
+            Logger::logWarn("Category '%s' is currently empty.", value.c_str());
             return;
         }
         printHead();
@@ -168,7 +168,7 @@ void ActiveInventory::printItems(std::string value) {
 
         /* if item does not exist then print error message and return */
         if (item == NULL) {
-            fprintf(stderr, "Item %s is not in the current inventory\n", value.c_str());
+            Logger::logWarn("Item '%s' is not in the inventory.", value.c_str());
             return;
         }
         printHead();
@@ -179,8 +179,8 @@ void ActiveInventory::printItems(std::string value) {
 
 void ActiveInventory::printHead() {
     std::cout << std::left << std::setw(7) << "ID" << std::left << std::setw(40) << "ITEM" << std::left << std::setw(17)
-              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(15) << "PURCHASE_COST"
-              << std::left << std::setw(15) << "SALE-PRICE" << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left
-              << std::setw(15) << "TOTAL-PRICE" << std::left << std::setw(10) << "PROFIT" << std::left << std::setw(10)
-              << "EXPIRATION" << std::endl;
+              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(10) << "BACKORDER"
+              << std::left << std::setw(15) << "PURCHASE_COST" << std::left << std::setw(15) << "SALE-PRICE"
+              << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left << std::setw(15) << "TOTAL-PRICE" << std::left
+              << std::setw(10) << "PROFIT" << std::left << std::setw(10) << "EXPIRATION" << std::endl;
 }

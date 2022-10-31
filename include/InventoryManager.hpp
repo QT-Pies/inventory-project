@@ -1,8 +1,17 @@
 #ifndef INVENTORY_MANAGER_HPP
 #define INVENTORY_MANAGER_HPP
 
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <string>
+
 #include "ActiveInventory.hpp"
+#include "Logger.hpp"
 #include "Login.hpp"
+#include "NonPerishableItem.hpp"
+#include "PerishableItem.hpp"
+#include "Sales.hpp"
 
 class InventoryManager {
    public:
@@ -40,13 +49,20 @@ class InventoryManager {
      */
     bool userLogin();
 
-   private:
-    const unsigned long ERROR_PRINT_LIMIT = 5;
+    /*
+     * @brief call updateUser in User class
+     * @return return true if successful and false if not
+     * @param std::string username
+     * @param std::string account_type
+     */
+    bool updatePermission(std::string, std::string);
 
+   private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
+    std::shared_ptr<SaleList> sale_list{new SaleList};
     std::string file_name;
 };
 
