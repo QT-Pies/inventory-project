@@ -12,7 +12,7 @@ set(EXECUTABLE_OUTPUT_PATH "bin")
 # Include our .hpp files
 include_directories("./include")
 
-# If macOS / Ubuntu, run with these g++ flags.
+# If macOS / Ubuntu, run with these g++ flags -- not supported by MSVC.
 if (UNIX)
   string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
 endif()
@@ -27,9 +27,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
   set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/macos")
 endif()
 
-# If Windows, configure path for Windows Qt install.
-# We're gonna drop support for Windows, but this was enough to get it working *sometimes*,
-# so why not keep it.
+# Semi-functional Windows support.
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
   # add a warning message for whoever tries to compile natively on windows
   message("You're compiling on Windows, but development is on UNIX systems, may not work as expected.")
@@ -76,34 +74,30 @@ add_executable(gen-sales
   src/SalesGeneratorDriver.cpp
 )
 
-# Gonna limit tests to Ubuntu rather than trying to support my Mac.  May change in the future.
-if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+# Unit test section
 
-  include(FetchContent)
+include(FetchContent)
 
-  # Fetch GTest
-  FetchContent_Declare(
-    googletest
-    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-  )
+# Fetch GTest
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+)
 
-  enable_testing()
+enable_testing()
 
-  FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(googletest)
 
-  # Add source files for bin/unit_tests
-  add_executable(unit_tests
-    src/HelperFunctions.cpp
-    src/ActiveInventory.cpp
-    src/User.cpp
-    src/Login.cpp
-    src/Sales.cpp
-    src/InventoryManager.cpp
-    src/unit_tests.cpp
-  )
+# Add source files for bin/unit_tests
+add_executable(unit_tests
+  src/HelperFunctions.cpp
+  src/ActiveInventory.cpp
+  src/User.cpp
+  src/Login.cpp
+  src/Sales.cpp
+  src/InventoryManager.cpp
+  src/unit_tests.cpp
+)
 
-  # Link GTest
-  target_link_libraries(unit_tests GTest::gtest)
-
-  # There is a CMake way of doing this that's more modular and better, but we can just use the way we're currently doing.
-endif()
+# Link GTest
+target_link_libraries(unit_tests GTest::gtest)
