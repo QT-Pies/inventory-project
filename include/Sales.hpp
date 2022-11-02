@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "ActiveInventory.hpp"
 #include "Date.hpp"
 #include "Item.hpp"
 #include "Logger.hpp"
@@ -74,6 +75,12 @@ class Transaction {
      * @return true if removed, false if sale was not found
      */
     bool removeSale(const unsigned long, const unsigned long, const unsigned long, const double);
+
+    /*
+     * @brief updates information of items in active inventory once they have been sold
+     * @param std::shared_ptr<ActiveInventory>
+     */
+    void processTransaction(std::shared_ptr<ActiveInventory>);
 
    private:
     friend class SaleList;

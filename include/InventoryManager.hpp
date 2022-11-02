@@ -57,6 +57,11 @@ class InventoryManager {
      */
     bool updatePermission(std::string, std::string);
 
+    /*
+     * @brief calls process transaction function in Transaction
+     */
+    void makeTransaction();
+
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};

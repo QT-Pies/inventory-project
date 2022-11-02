@@ -46,6 +46,29 @@ bool Transaction::removeSale(const unsigned long sid, const unsigned long iid, c
     return false;
 }
 
+void Transaction::processTransaction(std::shared_ptr<ActiveInventory> active_inv) {
+    unsigned int i;
+    unsigned long amount;
+
+    for (i = 0; i < sales.size(); i++) {
+        auto s = sales[i];
+        auto item = active_inv->searchById(s->item_id);
+
+        if (item == NULL) {
+            Logger::logError("Invalid item id. Continuing to read.");
+        } else {
+            if (item->quantity < s->num_sold) {
+                amount = s->num_sold - item->quantity;
+                item->quantity = 0;
+                item->backorder += amount;
+
+            } else {
+                item->quantity -= s->num_sold;
+            }
+        }
+    }
+}
+
 SaleList::SaleList() {
     std::make_unique<
         std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(
