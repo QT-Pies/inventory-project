@@ -76,3 +76,34 @@ add_executable(gen-sales
   src/SalesGeneratorDriver.cpp
 )
 
+# Gonna limit tests to Ubuntu rather than trying to support my Mac.  May change in the future.
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+  include(FetchContent)
+
+  # Fetch GTest
+  FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+  )
+
+  enable_testing()
+
+  FetchContent_MakeAvailable(googletest)
+
+  # Add source files for bin/unit_tests
+  add_executable(unit_tests
+    src/HelperFunctions.cpp
+    src/ActiveInventory.cpp
+    src/User.cpp
+    src/Login.cpp
+    src/Sales.cpp
+    src/InventoryManager.cpp
+    src/unit_tests.cpp
+  )
+
+  # Link GTest
+  target_link_libraries(unit_tests GTest::gtest)
+
+  # There is a CMake way of doing this that's more modular and better, but we can just use the way we're currently doing.
+endif()
