@@ -111,7 +111,7 @@ Firstly, some commands for us to start with:
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install cmake qt6-base-dev libg11-mesa-dev qtcreator
+sudo apt install cmake qt6-base-dev libgl1-mesa-dev qtcreator
 ```
 
 This should all the dependencies needed for us to actually install Qt, but we still have to run their installer to actually install it.
