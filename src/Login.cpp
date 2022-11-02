@@ -28,7 +28,7 @@ std::shared_ptr<User> Login::userInput() {
     std::string category, name, password;
 
     while (true) {
-        std::cout << "\n(L)ogin, (C)reate User: ";
+        std::cout << "\n(L)ogin, (C)reate User, (Q)uit: ";
         std::cin >> argument;
 
         switch (argument) {
@@ -65,6 +65,10 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin >> password;
                 createUser(name, password);
                 break;
+            }
+            case 'q':
+            case 'Q': {
+                return NULL;
             }
             default:
                 break;
