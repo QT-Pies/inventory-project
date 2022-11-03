@@ -15,7 +15,7 @@ class SalesComparison {
      *   will parse the sales data into total sales by year and by month.
      * @param SaleList - the current sales list that is being used by the inventory manager.
      */
-    SalesComparison(std::shared_ptr<SaleList>);
+    void setup(std::shared_ptr<SaleList>);
 
     /*
      * @brief This will call the comparison function given and print it's return in an organized way.

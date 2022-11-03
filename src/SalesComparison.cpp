@@ -1,8 +1,8 @@
-#include "../include/SalesComparison.hpp"
+#include "SalesComparison.hpp"
 
 SalesComparison::SalesComparison() {}
 
-SalesComparison::SalesComparison(std::shared_ptr<SaleList> sale_list) {
+void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     std::map<unsigned int,
              std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >::iterator
         yit;

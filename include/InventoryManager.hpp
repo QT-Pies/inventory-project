@@ -12,6 +12,7 @@
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
+#include "SalesComparison.hpp"
 
 class InventoryManager {
    public:
@@ -68,6 +69,7 @@ class InventoryManager {
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
+    std::shared_ptr<SalesComparison> sales_comp{new SalesComparison};
     std::string file_name;
 };
 

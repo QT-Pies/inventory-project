@@ -6,7 +6,7 @@ namespace {
 
 TEST(InventoryManager, create) {
     /* Test creation of IM. */
-    EXPECT_NE(std::make_shared<InventoryManager>(InventoryManager(1, "CSVInput/big_file.csv")), nullptr);
+    EXPECT_NE(std::make_shared<InventoryManager>(InventoryManager(1, "CSVInput/Jon_Test.csv")), nullptr);
 }
 
 /*TEST(InventoryManager, read_write) {

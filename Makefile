@@ -13,7 +13,7 @@ obj/main.o: src/main.cpp obj/InventoryManager.o
 	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
 
 bin/main: obj/main.o obj/InventoryManager.o obj/HelperFunctions.o
-	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
+	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o obj/SalesComparison.o
 
 obj/CSVEntry.o: src/CSVEntry.cpp
 	$(CC) $(CFLAGS) -c src/CSVEntry.cpp -o obj/CSVEntry.o

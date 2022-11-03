@@ -4,6 +4,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
     sale_list->loadSales(file);
+    sales_comp->setup(sale_list);
 }
 
 InventoryManager::~InventoryManager() {
@@ -18,19 +19,21 @@ int InventoryManager::userInput() {
     std::string sale_price, buy_price, tax;
     bool valid_transaction;
     std::shared_ptr<Item> new_item;
+    int x;
 
     if (command_line == false) {
         Logger::logError("Command line is set to false.  Exiting userInput().");
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (P)rint, (L)ogout, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (P)rint, (L)ogout, or "
+                 "(Q)uit: ";
     std::cin >> argument;
     lowerCaseString(argument);
 
     /* switch on argument specified from user and then prompt them accordingly for
      * further input */
-    if (argument == "a" || argument == "add"){
+    if (argument == "a" || argument == "add") {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -64,11 +67,11 @@ int InventoryManager::userInput() {
         lowerCaseString(category);
         try {
             if (category == "perishable") {
-                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder,
-                                                            id, sale_price, buy_price, tax, expiration);
+                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder, id,
+                                                            sale_price, buy_price, tax, expiration);
             } else if (category == "nonperishable") {
-                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity,
-                                                                backorder, id, sale_price, buy_price, tax);
+                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, backorder,
+                                                               id, sale_price, buy_price, tax);
             } else {
                 throw std::runtime_error("Invalid category.");
                 return 0;
@@ -86,7 +89,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "r" || argument == "remove") {
-
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -104,7 +106,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "u" || argument == "update") {
-
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -124,11 +125,10 @@ int InventoryManager::userInput() {
         if (active_inventory->updateItem(name, category, value) != -1) {
             std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
             Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
-                            name.c_str(), value.c_str());
+                             name.c_str(), value.c_str());
         }
 
     } else if (argument == "c" || argument == "change") {
-
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -139,10 +139,36 @@ int InventoryManager::userInput() {
 
         if (updatePermission(name, category)) {
             Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
-                            category.c_str());
+                             category.c_str());
         }
+    } else if (argument == "cs" || argument == "compare") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "\nPlease select a range to compare against.\n";
+        std::cout << "(Input your choice as the exact string below as you see it.)\n";
+        std::cout << "All_By_Year | All_By_Month | X_Years | Last_Month | Last_7_days | Yesterday | Full\n";
+        std::cin >> category;
+
+        if (category == "Full") {
+            sales_comp->printAllComparisons();
+        } else if (category == "All_By_Year") {
+            sales_comp->printComparison("ByYear", 0);
+        } else if (category == "All_By_Month") {
+            sales_comp->printComparison("ByMonth", 0);
+        } else if (category == "X_Years") {
+            std::cout << "Number of years to compare : ";
+            std::cin >> x;
+            sales_comp->printComparison("LastXYears", x);
+        } else if (category == "Last_Month") {
+            sales_comp->printComparison("LastMonth", 0);
+        } else if (category == "Last_7_days") {
+            sales_comp->printComparison("Last7Days", 0);
+        } else if (category == "Yesterday") {
+            sales_comp->printComparison("Yesterday", 0);
+        }
+
     } else if (argument == "p" || argument == "print") {
-        
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -152,7 +178,6 @@ int InventoryManager::userInput() {
         active_inventory->printItems(category);
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
     } else if (argument == "s" || argument == "sales") {
-
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -185,8 +210,8 @@ int InventoryManager::userInput() {
                 Logger::logWarn("Invalid item -- continuing to read.");
         }
 
-            /* if no valid sales are added to the transaction, then it is deleted, once proper delete feture is added
-             * this will be changed */
+        /* if no valid sales are added to the transaction, then it is deleted, once proper delete feture is added
+         * this will be changed */
         if (valid_transaction == false) {
             Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
             sale_list->transaction_by_order.pop_back();
@@ -203,14 +228,14 @@ int InventoryManager::userInput() {
         return userLogin() ? 0 : -1;
 
     } else if (argument == "q" || argument == "quit") {
-            printf("Exiting InventoryManager.\n");
-            Logger::logTrace("User %s exited the program.", current_user->name.c_str());
-            login->outputCSV();
-            return -1;
+        printf("Exiting InventoryManager.\n");
+        Logger::logTrace("User %s exited the program.", current_user->name.c_str());
+        login->outputCSV();
+        return -1;
     } else {
         std::cout
-        << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
-        << std::endl;
+            << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
+            << std::endl;
     }
 
     std::cin.clear();
