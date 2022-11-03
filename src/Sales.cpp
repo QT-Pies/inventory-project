@@ -55,7 +55,7 @@ void Transaction::processTransaction(std::shared_ptr<ActiveInventory> active_inv
         auto item = active_inv->searchById(s->item_id);
 
         if (item == NULL) {
-            Logger::logError("Invalid item id. Continuing to read.");
+            Logger::logError("Invalid item id %lu. Continuing to process.", s->item_id);
         } else {
             if (item->quantity < s->num_sold) {
                 amount = s->num_sold - item->quantity;
