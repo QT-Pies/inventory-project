@@ -6,7 +6,9 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     sale_list->loadSales(file);
 }
 
-InventoryManager::~InventoryManager() { /* using smart pointer for active inventory so no deletion neccessary */
+InventoryManager::~InventoryManager() {
+    fileOutput();
+    login->outputCSV();
 }
 
 int InventoryManager::userInput() {
@@ -207,10 +209,7 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s logged out.", current_user->name.c_str());
             current_user = NULL;
 
-            /* I was going to wrap this in a while,
-             * since it can return false.
-             * However, no such check is done over in main, so it should be fine here, too. */
-            userLogin();
+            return userLogin() ? 0 : -1;
             break;
 
         case 'Q':
