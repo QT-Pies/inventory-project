@@ -67,7 +67,7 @@ bin/gen-sales: src/SalesGenerator.cpp obj/SalesGenerator.o obj/CSVEntry.o obj/Da
 	$(CC) $(CFLAGS) -o bin/gen-sales src/SalesGeneratorDriver.cpp obj/SalesGenerator.o obj/CSVEntry.o obj/Date.o
 
 bin/unit_tests:
-	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lpthread obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
+	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lpthread obj/SalesComparison.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
 
 clean: 
 	rm -rf bin/* obj/*.o 
