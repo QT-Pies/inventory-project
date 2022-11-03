@@ -11,7 +11,7 @@ A project for COSC340; our aim is to create a program to help business owners ma
 
 ## Language / Tools Used
 - We'll be using C++.
-- Currently, the plan is for us to use [Qt](https://www.qt.io/) for the user interface.  Documentation can be found [here](https://doc.qt.io/).
+- Currently, the plan is for us to use [Qt](https://www.qt.io/) for the user interface.  Documentation can be found [here](https://doc.qt.io/).  Installation instructions at the bottom of this README.
 
 ## Project Usage
 ### Inventory Manager
@@ -92,3 +92,73 @@ output_file.csv is the name of the of the file you want to generate -- straightf
 1. Seg-fault if used improperly; i.e, running ```./bin/gen-inventory``` with no arguments results in a seg fault.
 2. Names are unrealistic.
 3. Sub-categories are not generated.
+
+## Qt Installation
+### Before you start
+Firstly, all Qt development for this project is going to be done on UNIX systems.  
+
+If you're on Windows 11 build 22000 or higher, you can run GUI programs through WSL natively.
+
+Otherwise, if you are on Windows 10, I believe there are ways to do it anyways, but not officially supported.
+
+I recommend installing [Ubuntu Desktop](https://ubuntu.com/download/desktop) and dual-booting it alongside your Windows install.
+[Here's a random tutorial](https://www.youtube.com/watch?v=GXxTxBPKecQ).
+
+### Install
+This portion assumes you are on a Ubuntu install of some form.
+
+Firstly, some commands for us to start with:
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install cmake qt6-base-dev libgl1-mesa-dev qtcreator
+```
+
+This should all the dependencies needed for us to actually install Qt, but we still have to run their installer to actually install it.
+
+#### Grabbing a Qt Installer
+1. Head over to [this link](https://login.qt.io/register) and create a Qt account.
+2. Grab the ```.run``` installer for Linux from [here](https://www.qt.io/download-thank-you?os=linux&hsLang=en).
+
+##### WSL Special Stuff (Skip if using native Ubuntu install)
+- We need to copy over the install file you just downloaded, and run it from WSL.
+- Check where your file is on your Windows file system, then open up a WSL window and copy the file.
+
+###### Example
+Let's say my download is at ```C:\Users\Noah\Downloads\qt-unified-linux-x64-4.4.2-online.run```
+
+If I wanted to run this on my Ubuntu WSL install, I'd copy it over (probably not needed to copy) to that filesystem and run it, like so:
+```
+cp /mnt/c/Users/Noah/Downloads/qt-unified-linux-x64-4.4.2-online.run .
+./qt-unified-linux-x64-4.4.2-online.run
+```
+
+If your WSL GUI programs are working properly, this should open up a window, continue with the next section.
+
+
+#### Using Qt Installer
+Once you've ran the ```qt-unified-linux-x64-4.4.2-online.run``` file, a window will pop up.
+
+It will ask for your Qt credentials that you created -- login with that account.
+
+Follow along with it like you would any installer, but on the ```Installation Folder``` stage, check ```Qt 6.4 for desktop development```.
+
+Continue along with the installation, and once it's finished, Qt should be installed on your Linux machine.
+
+#### Testing Qt
+For now, the Qt stuff I've been working on is on a separate branch.
+
+So, on your Linux machine, here's the steps to test that it compiles for you as expected.
+
+```
+git clone git@github.com:QT-Pies/inventory-project.git
+cd inventory-project
+git fetch origin # start from here if you already have the repo cloned
+git checkout 90-migrate-program-to-qt-qmake-build
+cmake CMakeLists.txt
+cmake --build .
+```
+
+If it compiles successfully, run ```./bin/main 0 CSVInput/medium_file.csv``` and a little window saying "Hello, World!" should pop up for you.
+
+
