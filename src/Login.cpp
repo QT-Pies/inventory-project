@@ -68,7 +68,7 @@ std::shared_ptr<User> Login::userInput() {
             }
             case 'q':
             case 'Q': {
-                printf("Exiting JimventoryManager.\n");
+                printf("Exiting InventoryManager.\n");
                 return NULL;
             }
             default:
