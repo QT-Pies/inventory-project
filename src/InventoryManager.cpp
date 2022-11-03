@@ -12,7 +12,7 @@ InventoryManager::~InventoryManager() {
 }
 
 int InventoryManager::userInput() {
-    char argument;
+    std::string argument;
     std::string name, category, sub_category, expiration, value;
     std::string id, backorder, quantity, buyer, seller, date;
     std::string sale_price, buy_price, tax;
@@ -26,203 +26,190 @@ int InventoryManager::userInput() {
 
     std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (P)rint, (L)ogout, or (Q)uit: ";
     std::cin >> argument;
+    lowerCaseString(argument);
 
     /* switch on argument specified from user and then prompt them accordingly for
      * further input */
-    switch (argument) {
-        case 'A':
-        case 'a':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
+    if (argument == "a" || argument == "add"){
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
 
-            if (current_user->permission < 3) {
-                Logger::logWarn("User %s does not have the required permissions to add an Item.",
-                                current_user->name.c_str());
-                break;
-            }
+        if (current_user->permission < 3) {
+            Logger::logWarn("User %s does not have the required permissions to add an Item.",
+                            current_user->name.c_str());
+            return -1;
+        }
 
-            std::cout << "Enter item name: ";
-            std::cin >> name;
-            std::cout << "Enter item category (Perishable or NonPerishable): ";
-            std::cin >> category;
-            std::cout << "Enter item sub-category: ";
-            std::cin >> sub_category;
-            std::cout << "Enter item quantity: ";
-            std::cin >> quantity;
-            std::cout << "Enter backorder (set to zero unless there is negative stock): ";
-            std::cin >> backorder;
-            std::cout << "Enter item id: ";
-            std::cin >> id;
-            std::cout << "Enter sale price: (format xx.xx) $";
-            std::cin >> sale_price;
-            std::cout << "Enter purchase cost: (format xx.xx) $";
-            std::cin >> buy_price;
-            std::cout << "Enter item tax as a decimal value: ";
-            std::cin >> tax;
-            std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
-            std::cin >> expiration;
+        std::cout << "Enter item name: ";
+        std::cin >> name;
+        std::cout << "Enter item category (Perishable or NonPerishable): ";
+        std::cin >> category;
+        std::cout << "Enter item sub-category: ";
+        std::cin >> sub_category;
+        std::cout << "Enter item quantity: ";
+        std::cin >> quantity;
+        std::cout << "Enter backorder (set to zero unless there is negative stock): ";
+        std::cin >> backorder;
+        std::cout << "Enter item id: ";
+        std::cin >> id;
+        std::cout << "Enter sale price: (format xx.xx) $";
+        std::cin >> sale_price;
+        std::cout << "Enter purchase cost: (format xx.xx) $";
+        std::cin >> buy_price;
+        std::cout << "Enter item tax as a decimal value: ";
+        std::cin >> tax;
+        std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
+        std::cin >> expiration;
 
-            lowerCaseString(category);
-            try {
-                if (category == "perishable") {
-                    new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder,
-                                                                id, sale_price, buy_price, tax, expiration);
-                } else if (category == "nonperishable") {
-                    new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity,
-                                                                   backorder, id, sale_price, buy_price, tax);
-                } else {
-                    throw std::runtime_error("Invalid category.");
-                    break;
-                }
-            } catch (std::exception& e) {
-                /* Catch exception, print out its message, but continue to run as normal. */
-                Logger::logError(e.what());
-                Logger::logWarn("Item %s has not been added to the inventory. Please correct the input and try again.",
-                                name.c_str());
-                break;
-            }
-
-            if (active_inventory->addItem(new_item) != -1) {
-                std::cout << "Added " << name << " of type " << category << std::endl;
-                Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
-            }
-            break;
-
-        case 'R':
-        case 'r':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            if (current_user->permission < 3) {
-                Logger::logWarn("User %s does not have the required permissions to remove an Item.",
-                                current_user->name.c_str());
-                break;
-            }
-
-            std::cout << "Name: ";
-            std::cin >> name;
-
-            if (active_inventory->removeItem(name) != -1) {
-                std::cout << "Removed " << name << std::endl;
-                Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
-            }
-            break;
-
-        case 'U':
-        case 'u':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            if (current_user->permission < 3) {
-                Logger::logWarn("User %s does not have the required permissions to update an Item.",
-                                current_user->name.c_str());
-                break;
-            }
-
-            std::cout << "Enter name of item to update: ";
-            std::cin >> name;
-            std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
-            std::cin >> category;
-            std::cout << "Enter new value for " << category << ": ";
-            std::cin >> value;
-
-            if (active_inventory->updateItem(name, category, value) != -1) {
-                std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
-                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
-                                 name.c_str(), value.c_str());
-            }
-            break;
-        case 'c':
-        case 'C':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            std::cout << "Account name: ";
-            std::cin >> name;
-            std::cout << "New account type: ";
-            std::cin >> category;
-
-            if (updatePermission(name, category)) {
-                Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
-                                 category.c_str());
-            }
-            break;
-        case 'P':
-        case 'p':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            std::cout << "\nPlease select a category to print or enter an item name.\n";
-            std::cout << "All | Perishable | NonPerishable | Item Name : ";
-            std::cin >> category;
-            active_inventory->printItems(category);
-            Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
-            break;
-        case 'S':
-        case 's':
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-
-            valid_transaction = false;
-
-            std::cout << "Buyer | Seller\n";
-            std::cin >> buyer >> seller;
-            std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
-
-            sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
-
-            while (true) {
-                std::cout << "Item Name: ";
-                std::cin >> name;
-
-                if (name == "Q" || name == "q") break;
-
-                std::cout << "Quantity Sold: ";
-                std::cin >> quantity;
-
-                if (quantity == "0") break;
-
-                auto item_ptr = active_inventory->searchByName(name);
-
-                if (item_ptr != NULL) {
-                    sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
-                        sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
-                    valid_transaction = true;
-                } else
-                    Logger::logWarn("Invalid item -- continuing to read.");
-            }
-
-            /* if no valid sales are added to the transaction, then it is deleted, once propper delete feture is added
-             * this will be changed */
-            if (valid_transaction == false) {
-                Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
-                sale_list->transaction_by_order.pop_back();
-                sale_list->curr_transaction--;
+        lowerCaseString(category);
+        try {
+            if (category == "perishable") {
+                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder,
+                                                            id, sale_price, buy_price, tax, expiration);
+            } else if (category == "nonperishable") {
+                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity,
+                                                                backorder, id, sale_price, buy_price, tax);
             } else {
-                sale_list->curr_sale_id++;
-                Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+                throw std::runtime_error("Invalid category.");
+                return -1;
             }
+        } catch (std::exception& e) {
+            /* Catch exception, print out its message, but continue to run as normal. */
+            Logger::logError(e.what());
+            Logger::logWarn("Item %s has not been added to the inventory. Please correct the input and try again.",
+                            name.c_str());
+            return -1;
+        }
 
-            break;
-        case 'L':
-        case 'l':
-            Logger::logTrace("User %s logged out.", current_user->name.c_str());
-            current_user = NULL;
+        if (active_inventory->addItem(new_item) != -1) {
+            std::cout << "Added " << name << " of type " << category << std::endl;
+            Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
+        }
+    } else if (argument == "r" || argument == "remove") {
 
-            return userLogin() ? 0 : -1;
-            break;
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
 
-        case 'Q':
-        case 'q':
+        if (current_user->permission < 3) {
+            Logger::logWarn("User %s does not have the required permissions to remove an Item.",
+                            current_user->name.c_str());
+            return -1;
+        }
+
+        std::cout << "Name: ";
+        std::cin >> name;
+
+        if (active_inventory->removeItem(name) != -1) {
+            std::cout << "Removed " << name << std::endl;
+            Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
+        }
+    } else if (argument == "u" || argument == "update") {
+
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        if (current_user->permission < 3) {
+            Logger::logWarn("User %s does not have the required permissions to update an Item.",
+                            current_user->name.c_str());
+            return -1;
+        }
+
+        std::cout << "Enter name of item to update: ";
+        std::cin >> name;
+        std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
+        std::cin >> category;
+        std::cout << "Enter new value for " << category << ": ";
+        std::cin >> value;
+
+        if (active_inventory->updateItem(name, category, value) != -1) {
+            std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+            Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
+                            name.c_str(), value.c_str());
+        }
+
+    } else if (argument == "c" || argument == "change") {
+
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "Account name: ";
+        std::cin >> name;
+        std::cout << "New account type: ";
+        std::cin >> category;
+
+        if (updatePermission(name, category)) {
+            Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
+                            category.c_str());
+        }
+    } else if (argument == "p" || argument == "print") {
+        
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "\nPlease select a category to print or enter an item name.\n";
+        std::cout << "All | Perishable | NonPerishable | Item Name : ";
+        std::cin >> category;
+        active_inventory->printItems(category);
+        Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
+    } else if (argument == "s" || argument == "sales") {
+
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        valid_transaction = false;
+
+        std::cout << "Buyer | Seller\n";
+        std::cin >> buyer >> seller;
+        std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
+
+        sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+
+        while (true) {
+            std::cout << "Item Name: ";
+            std::cin >> name;
+
+            if (name == "Q" || name == "q") break;
+
+            std::cout << "Quantity Sold: ";
+            std::cin >> quantity;
+
+            if (quantity == "0") break;
+
+            auto item_ptr = active_inventory->searchByName(name);
+
+            if (item_ptr != NULL) {
+                sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
+                    sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
+                valid_transaction = true;
+            } else
+                Logger::logWarn("Invalid item -- continuing to read.");
+        }
+
+            /* if no valid sales are added to the transaction, then it is deleted, once proper delete feture is added
+             * this will be changed */
+        if (valid_transaction == false) {
+            Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
+            sale_list->transaction_by_order.pop_back();
+            sale_list->curr_transaction--;
+        } else {
+            sale_list->curr_sale_id++;
+            Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+        }
+    } else if (argument == "l" || argument == "logout") {
+        Logger::logTrace("User %s logged out.", current_user->name.c_str());
+        current_user = NULL;
+
+        return userLogin() ? 0 : -1;
+
+    } else if (argument == "q" || argument == "quit") {
             printf("Exiting InventoryManager.\n");
             Logger::logTrace("User %s exited the program.", current_user->name.c_str());
             login->outputCSV();
             return -1;
-        default:
-            std::cout
-                << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
-                << std::endl;
-            break;
+    } else {
+        std::cout
+        << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
+        << std::endl;
     }
 
     std::cin.clear();
