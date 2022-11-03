@@ -21,16 +21,13 @@ int main(int argc, char** argv) {
     /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
     try {
         im.readCSVFile();
+
         if (im.userLogin()) {
             while (true) {
                 if (im.userInput() == -1) break;
             }
         }
-        while (true) {
-            if (im.userInput() == -1) break;
-        }
 
-        im.fileOutput();
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
 

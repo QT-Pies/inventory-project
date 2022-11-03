@@ -209,9 +209,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s logged out.", current_user->name.c_str());
             current_user = NULL;
 
-            /* I was going to wrap this in a while,
-             * since it can return false.
-             * However, no such check is done over in main, so it should be fine here, too. */
             return userLogin() ? 0 : -1;
             break;
 
