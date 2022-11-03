@@ -4,8 +4,8 @@ CFLAGS = -g -Wall -Werror -Wno-format-security -std=c++17 $(INCLUDES) -O3
 
 EXECUTABLES = bin/main bin/gen-inventory bin/unit_tests bin/gen-sales
 
-SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp
-OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o obj/SalesGenerator.o
+SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp src/SalesComparison.cpp
+OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o obj/SalesGenerator.o obj/SalesComparison.o
 
 all: $(OBJECT) $(EXECUTABLES)
 

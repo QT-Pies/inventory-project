@@ -13,38 +13,7 @@ Transaction::Transaction(const unsigned long sid, const std::string b, const std
     date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
     unique_transaction_id = std::to_string(sid) + std::to_string(y) + std::to_string(m) + std::to_string(d);
 }
-bool compareStrings(std::string left, std::string right) {
-    bool good;
-    printf("String 1: %s\n Length: %lu\n C-String length: %lu\n", left.c_str(), left.size(), strlen(left.c_str()));
-    printf("String 2: %s\n Length: %lu\n C-String length: %lu\n", right.c_str(), right.size(), strlen(right.c_str()));
 
-    auto l_size = left.size();
-    size_t i;
-
-    good = true;
-
-    if (left.size() == right.size()) {
-        printf("Comparing strings char by char\n");
-
-        for (i = 0; i < l_size; ++i) {
-            printf("Comparing %c against %c : ", left[i], right[i]);
-
-            if (left[i] == right[i])
-                printf("TRUE\n");
-            else {
-                good = false;
-                printf("FALSE\n");
-            }
-        }
-    } else {
-        good = false;
-        printf("The sizes do not match -- can't compare char by char.\n");
-        printf("Last char of String 1: %c\n", left.back());
-        printf("Last char of String 2: %c\n", right.back());
-    }
-
-    return good;
-}
 Transaction::~Transaction() {}
 
 bool Transaction::addSale(const unsigned long sid, const unsigned long iid, const unsigned long ns, const double sp) {
@@ -165,7 +134,6 @@ bool SaleList::loadSales(const std::string file) {
 
     getline(p_fin, p_line);
     getline(c_fin, c_line);
-    // compareStrings(p_line, "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller");
     if (p_line != "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller") {
         Logger::logTrace("Expected: %s\nReceived: %s", "Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller",
                          p_line.c_str());
