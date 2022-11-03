@@ -193,6 +193,7 @@ int InventoryManager::userInput() {
             sale_list->curr_transaction--;
         } else {
             sale_list->curr_sale_id++;
+            makeTransaction();
             Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
         }
     } else if (argument == "l" || argument == "logout") {
@@ -344,4 +345,8 @@ bool InventoryManager::updatePermission(std::string name, std::string account) {
     Logger::logError("Unable to update user '%s' to account type '%s'.", name.c_str(), account.c_str());
 
     return false;
+}
+
+void InventoryManager::makeTransaction() {
+    sale_list->transaction_by_order[sale_list->curr_transaction]->processTransaction(active_inventory);
 }
