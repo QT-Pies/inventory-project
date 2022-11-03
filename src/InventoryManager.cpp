@@ -37,7 +37,7 @@ int InventoryManager::userInput() {
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to add an Item.",
                             current_user->name.c_str());
-            return -1;
+            return 0;
         }
 
         std::cout << "Enter item name: ";
@@ -71,14 +71,14 @@ int InventoryManager::userInput() {
                                                                 backorder, id, sale_price, buy_price, tax);
             } else {
                 throw std::runtime_error("Invalid category.");
-                return -1;
+                return 0;
             }
         } catch (std::exception& e) {
             /* Catch exception, print out its message, but continue to run as normal. */
             Logger::logError(e.what());
             Logger::logWarn("Item %s has not been added to the inventory. Please correct the input and try again.",
                             name.c_str());
-            return -1;
+            return 0;
         }
 
         if (active_inventory->addItem(new_item) != -1) {
@@ -93,7 +93,7 @@ int InventoryManager::userInput() {
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to remove an Item.",
                             current_user->name.c_str());
-            return -1;
+            return 0;
         }
 
         std::cout << "Name: ";
@@ -111,7 +111,7 @@ int InventoryManager::userInput() {
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to update an Item.",
                             current_user->name.c_str());
-            return -1;
+            return 0;
         }
 
         std::cout << "Enter name of item to update: ";
