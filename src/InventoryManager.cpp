@@ -1,6 +1,8 @@
 #include "InventoryManager.hpp"
+#include "mainwindow.hpp"
 
 InventoryManager::InventoryManager(const bool cli, const std::string file) {
+    w.show();
     command_line = cli;
     file_name = file;
     sale_list->loadSales(file);

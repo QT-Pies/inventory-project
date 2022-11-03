@@ -24,7 +24,8 @@ HEADERS += include/PerishableItem.hpp
 HEADERS += include/Sales.hpp
 HEADERS += include/User.hpp
 HEADERS += include/mainwindow.hpp
-FORMS += mainwindow.ui
+FORMS += mainwindow.ui \
+    mainwindow.ui
 QMAKE_CXXFLAGS +=  -g -Wno-format-security -std=c++17 -I./include -O3
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

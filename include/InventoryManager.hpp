@@ -12,6 +12,7 @@
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
+#include "mainwindow.hpp"
 
 class InventoryManager {
    public:
@@ -57,6 +58,8 @@ class InventoryManager {
      */
     bool updatePermission(std::string, std::string);
 
+    void readCSVFile_GUI();
+
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
@@ -64,6 +67,7 @@ class InventoryManager {
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
     std::string file_name;
+    MainWindow w;
 };
 
 #endif
