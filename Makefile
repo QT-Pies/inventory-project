@@ -45,7 +45,7 @@ obj/PerishableItem.o: src/PerishableItem.cpp
 obj/ActiveInventory.o: src/ActiveInventory.cpp
 	$(CC) $(CFLAGS) -c src/ActiveInventory.cpp -o obj/ActiveInventory.o
 
-obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o obj/User.o obj/Sales.o
+obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o obj/User.o obj/Sales.o obj/SalesComparison.o
 	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
 
 obj/Sales.o: src/Sales.cpp
@@ -56,6 +56,9 @@ obj/Login.o: src/Login.cpp
 
 obj/User.o: src/User.cpp
 	$(CC) $(CFLAGS) -c src/User.cpp -o obj/User.o
+
+obj/SalesComparison.o: src/SalesComparison.cpp
+	$(CC) $(CFLAGS) -c src/SalesComparison.cpp -o obj/SalesComparison.o
 
 obj/SalesGenerator.o: src/SalesGenerator.cpp
 	$(CC) $(CFLAGS) -c src/SalesGenerator.cpp -o obj/SalesGenerator.o

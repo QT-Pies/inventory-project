@@ -47,8 +47,8 @@ bool Transaction::removeSale(const unsigned long sid, const unsigned long iid, c
 }
 
 SaleList::SaleList() {
-    std::make_unique<
-        std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(
+    std::make_unique<std::map<
+        unsigned int, std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > > >(
         transaction_by_date);
     std::make_unique<std::vector<std::shared_ptr<Transaction> > >(transaction_by_order);
     curr_sale_id = 1;
@@ -73,7 +73,7 @@ void SaleList::newTransaction(const unsigned long sid, const std::string b, cons
                               const unsigned int m, const unsigned int d) {
     auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
     transaction_by_order.push_back(new_transaction);
-    transaction_by_date[y][m][d] = new_transaction;
+    transaction_by_date[y][m][d].push_back(new_transaction);
     curr_transaction = transaction_by_order.size() - 1;
 }
 
