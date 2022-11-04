@@ -3,13 +3,12 @@
 SalesComparison::SalesComparison() {}
 
 void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
-    std::map<unsigned int,
-             std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >::iterator
-        yit;
+    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int,
+            std::vector<std::shared_ptr<Transaction> > > > >::iterator yit;
     std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator mit;
     std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator dit;
     std::map<int, double>::iterator ait;
-    int numYears, totalYears;
+    double numYears, totalYears;
     unsigned int month, day;
     time_t current_date;
 
@@ -31,11 +30,15 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
             month++;
             day = 1;
             for (dit = mit->second.begin(); dit != mit->second.end(); dit++) {
-                if (yit->first == curr_y) {
+                if (yit->first == curr_y && month <= curr_m) {
                     for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        currentYearSales += dit->second[i]->total_price;
+                        if (month < curr_m || day <= curr_d) {
+                            currentYearSales += dit->second[i]->total_price;
+                        } else {
+                            salesByYear[dit->second[i]->year] += dit->second[i]->total_price;
+                        }
                     }
-                    if (month == curr_m) {
+                    if (month == curr_m && day <= curr_d) {
                         for (long unsigned int i = 0; i < dit->second.size(); i++) {
                             currentMonthSales += dit->second[i]->total_price;
                         }
@@ -72,100 +75,100 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     switch (curr_m) {
         case 1:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (31 - curr_d + 335) / 366;
+                daysLeftYear = (31 - curr_d + 335) / 366.0;
             } else {
-                daysLeftYear = (31 - curr_d + 334) / 365;
+                daysLeftYear = (31 - curr_d + 334) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 2:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (60 - curr_d + 306) / 366;
-                daysLeftMonth = (29 - curr_d) / 29;
+                daysLeftYear = (60 - curr_d + 306) / 366.0;
+                daysLeftMonth = (29 - curr_d) / 29.0;
             } else {
-                daysLeftYear = (59 - curr_d + 306) / 365;
-                daysLeftMonth = (28 - curr_d) / 28;
+                daysLeftYear = (59 - curr_d + 306) / 365.0;
+                daysLeftMonth = (28 - curr_d) / 28.0;
             }
             break;
         case 3:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (91 - curr_d + 275) / 366;
+                daysLeftYear = (91 - curr_d + 275) / 366.0;
             } else {
-                daysLeftYear = (90 - curr_d + 275) / 365;
+                daysLeftYear = (90 - curr_d + 275) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 4:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (121 - curr_d + 245) / 366;
+                daysLeftYear = (121 - curr_d + 245) / 366.0;
             } else {
-                daysLeftYear = (120 - curr_d + 245) / 365;
+                daysLeftYear = (120 - curr_d + 245) / 365.0;
             }
-            daysLeftMonth = (30 - curr_d) / 30;
+            daysLeftMonth = (30 - curr_d) / 30.0;
             break;
         case 5:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (152 - curr_d + 214) / 366;
+                daysLeftYear = (152 - curr_d + 214) / 366.0;
             } else {
-                daysLeftYear = (151 - curr_d + 214) / 365;
+                daysLeftYear = (151 - curr_d + 214) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 6:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (182 - curr_d + 184) / 366;
+                daysLeftYear = (182 - curr_d + 184) / 366.0;
             } else {
-                daysLeftYear = (181 - curr_d + 184) / 365;
+                daysLeftYear = (181 - curr_d + 184) / 365.0;
             }
-            daysLeftMonth = (30 - curr_d) / 30;
+            daysLeftMonth = (30 - curr_d) / 30.0;
             break;
         case 7:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (213 - curr_d + 153) / 366;
+                daysLeftYear = (213 - curr_d + 153) / 366.0;
             } else {
-                daysLeftYear = (212 - curr_d + 153) / 365;
+                daysLeftYear = (212 - curr_d + 153) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 8:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (244 - curr_d + 122) / 366;
+                daysLeftYear = (244 - curr_d + 122) / 366.0;
             } else {
-                daysLeftYear = (243 - curr_d + 122) / 365;
+                daysLeftYear = (243 - curr_d + 122) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 9:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (274 - curr_d + 92) / 366;
+                daysLeftYear = (274 - curr_d + 92) / 366.0;
             } else {
-                daysLeftYear = (273 - curr_d + 92) / 365;
+                daysLeftYear = (273 - curr_d + 92) / 365.0;
             }
-            daysLeftMonth = (30 - curr_d) / 30;
+            daysLeftMonth = (30 - curr_d) / 30.0;
             break;
         case 10:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (305 - curr_d + 61) / 366;
+                daysLeftYear = (305 - curr_d + 61) / 366.0;
             } else {
-                daysLeftYear = (304 - curr_d + 61) / 365;
+                daysLeftYear = (304 - curr_d + 61) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
         case 11:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (335 - curr_d + 31) / 366;
+                daysLeftYear = (335 - curr_d + 31) / 366.0;
             } else {
-                daysLeftYear = (334 - curr_d + 31) / 365;
+                daysLeftYear = (334 - curr_d + 31) / 365.0;
             }
-            daysLeftMonth = (30 - curr_d) / 30;
+            daysLeftMonth = (30 - curr_d) / 30.0;
             break;
         case 12:
             if (curr_y % 4 == 0) {
-                daysLeftYear = (366 - curr_d) / 366;
+                daysLeftYear = (366 - curr_d) / 366.0;
             } else {
-                daysLeftYear = (365 - curr_d) / 365;
+                daysLeftYear = (365 - curr_d) / 365.0;
             }
-            daysLeftMonth = (31 - curr_d) / 31;
+            daysLeftMonth = (31 - curr_d) / 31.0;
             break;
     }
 
@@ -182,30 +185,37 @@ void SalesComparison::printComparison(std::string function, int x) {
 
     if (function == "ByYear") {
         result = compareByYear();
-        fprintf(stdout, "Average sales per year : %.2f\nSales so far this year : %.2f\n%% Difference : %.2f\n",
+        fprintf(stdout, "Average sales per year : %.2f\n"
+                        "Sales so far this year : %.2f\n"
+                        "Gain this year vs avg  : %%%.2f\n\n",
                 avgByYear, currentYearSales, result);
     } else if (function == "ByMonth") {
         result = compareByMonth();
-        fprintf(stdout, "Average sales per month %d : %.2f\nSales so far this year : %.2f\n%% Difference : %.2f\n",
-                curr_m, avgByMonth[curr_m], currentMonthSales, result);
+        fprintf(stdout, "Average sales per month %d : %.2f\n"
+                        "Sales so far this month    : %.2f\n"
+                        "Gain this month vs avg     : %%%.2f\n\n",
+                curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result);
     } else if (function == "LastXYears") {
         result = compareLastXYears(x);
-        fprintf(stdout, "Sales so far this year compared to the average over the past 10 years : %.2f\n", result);
+        fprintf(stdout, "Sales so far this year compared to the average over the past %d years : %%%.2f\n",
+                x, result);
     } else if (function == "LastMonth") {
         result = compareLastMonth();
-        fprintf(stdout, "Sales so far this month compared to last month so far : %.2f\n", result);
+        fprintf(stdout, "Sales so far this month compared to last month so far : %%%.2f\n", result);
     } else if (function == "Last7Days") {
         result = compareLast7Days();
         fprintf(stdout,
-                "Sales over the past 7 days compared to today : %.2f\nThis number will be lower"
-                " earlier in the day and only shows an accurate comparison at the end of the day.\n",
-                result);
+                "Sales over the past 7 days compared to today : %%%.2f\n"
+                "***This number will be lower earlier in the day and only\n"
+                " shows an accurate comparison at the end of the day.***\n",
+                result - 100);
     } else if (function == "Yesterday") {
         result = compareYesterday();
         fprintf(stdout,
-                "Yesterdays sales compared to today : %.2f\nThis number will be lower"
-                " earlier in the day and only shows an accurate comparison at the end of the day.\n",
-                result);
+                "Yesterdays sales compared to today : %%%.2f\n"
+                "***This number will be lower earlier in the day and only\n"
+                " shows an accurate comparison at the end of the day.***\n",
+                result - 100);
     } else {
         fprintf(stderr, "Invalid function %s passed to SalesComparison::printComparison(std::string)\n",
                 function.c_str());
@@ -217,37 +227,43 @@ void SalesComparison::printAllComparisons() {
     double result;
 
     result = compareByYear();
-    fprintf(stdout, "Average sales per year : %.2f\nSales so far this year : %.2f\n%% Difference : %.2f\n", avgByYear,
-            currentYearSales, result);
+    fprintf(stdout, "Average sales per year : %.2f\n"
+                    "Sales so far this year : %.2f\n"
+                    "Gain this year vs avg  : %%%.2f\n\n",
+            avgByYear, currentYearSales, result - 100);
 
     result = compareByMonth();
-    fprintf(stdout, "Average sales per month %d : %.2f\nSales so far this year : %.2f\n%% Difference : %.2f\n", curr_m,
-            avgByMonth[curr_m], currentMonthSales, result);
+    fprintf(stdout, "Average sales per month %d : %.2f\n"
+                    "Sales so far this month    : %.2f\n"
+                    "Gain this month vs avg     : %%%.2f\n\n",
+            curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result - 100);
 
     result = compareLastMonth();
-    fprintf(stdout, "Sales so far this month compared to last month so far : %.2f\n", result);
+    fprintf(stdout, "Sales so far this month compared to last month so far : %%%.2f\n\n", result - 100);
 
     result = compareLast7Days();
     fprintf(stdout,
-            "Sales over the past 7 days compared to today : %.2f\nThis number will be lower"
-            " earlier in the day and only shows an accurate comparison at the end of the day.\n",
-            result);
+            "Sales over the past 7 days compared to today : %%%.2f\n"
+            "***This number will be lower earlier in the day and only\n"
+            " shows an accurate comparison at the end of the day.***\n\n",
+            result - 100);
 
     result = compareYesterday();
     fprintf(stdout,
-            "Yesterdays sales compared to today : %.2f\nThis number will be lower"
-            " earlier in the day and only shows an accurate comparison at the end of the day.\n",
-            result);
+            "Yesterdays sales compared to today : %%%.2f\n"
+            "***This number will be lower earlier in the day and only\n"
+            " shows an accurate comparison at the end of the day.***\n\n",
+            result - 100);
 }
 
 double SalesComparison::compareByYear() {
     /* Compare the sales from the current year to the past years up to this point in the year. */
-    return currentYearSales / (avgByYear * (1 - daysLeftYear));
+    return 100.0 * (currentYearSales / (avgByYear * daysLeftYear));
 }
 
 double SalesComparison::compareByMonth() {
     /* Compare the sales from the current month to the past months up to this point in the month. */
-    return currentMonthSales / (avgByMonth[curr_m] * (1 - daysLeftMonth));
+    return 100.0 * (currentMonthSales / (avgByMonth[curr_m] * (1 - daysLeftMonth)));
 }
 
 double SalesComparison::compareLastXYears(int x) {
@@ -261,24 +277,31 @@ double SalesComparison::compareLastXYears(int x) {
     /* This function will compare up to 10 years in the past, however if there are not 10 years to compare it will
      *  tell you how many years are being compared. */
     num_years = 0;
-    for (yit = salesList->transaction_by_date.end(); num_years < x || yit != salesList->transaction_by_date.begin();
-         yit--) {
+    for (yit = salesList->transaction_by_date.end(); yit->first != curr_y - 1; yit--);
+    std::cout << yit->first << std::endl;
+    for (yit = yit; yit != salesList->transaction_by_date.begin(); yit--) {
+        std::cout << yit->first << std::endl;
         num_years++;
+        if (num_years == x) break;
     }
+    std::cout <<"Anything\n" << std::endl;
     // if (num_years != x) num_years++;
     first_year = yit->first;
+    std::cout << first_year << std::endl;
 
     if (num_years < x) {
         fprintf(stdout, "Only %d years to compare with.\n", num_years);
     }
 
     total = 0;
-    for (mit = salesByYear.begin(); mit->first != first_year; mit++)
-        ;
+    for (mit = salesByYear.begin(); mit->first <= first_year; mit++) {
+       std::cout << mit->first << std::endl;
+    }
+    std::cout << mit->first << std::endl;
     for (mit = mit; mit != salesByYear.end(); mit++) {
         total += mit->second;
     }
-    return currentYearSales / ((total / num_years) * (1 - daysLeftYear));
+    return 100.0 * (currentYearSales / ((total / num_years) * daysLeftYear));
 }
 
 double SalesComparison::compareLastMonth() {
@@ -295,7 +318,7 @@ double SalesComparison::compareLastMonth() {
                         last_month += dit->second[i]->total_price;
                     }
                 }
-                return currentMonthSales / (last_month * (1 - daysLeftMonth));
+                return 100.0 * (currentMonthSales / (last_month * (1 - daysLeftMonth)));
             }
         }
         fprintf(stderr, "No sales made in the last month to compare to.\n");
@@ -310,7 +333,7 @@ double SalesComparison::compareLastMonth() {
                         last_month += dit->second[i]->total_price;
                     }
                 }
-                return currentMonthSales / (last_month * (1 - daysLeftMonth));
+                return 100.0 * (currentMonthSales / (last_month * daysLeftMonth));
             }
         }
         fprintf(stderr, "No sales made in the last month to compare to.\n");
@@ -339,7 +362,7 @@ double SalesComparison::compareLast7Days() {
                         }
                         days++;
                     }
-                    return currentDaySales / ((last_week + currentMonthSales - currentDaySales) / 7);
+                    return 100.0 * (currentDaySales / ((last_week + currentMonthSales - currentDaySales) / 7));
                 }
             }
             fprintf(stderr, "No sales made in the last week to compare to.\n");
@@ -357,7 +380,7 @@ double SalesComparison::compareLast7Days() {
                         }
                         days++;
                     }
-                    return currentDaySales / ((last_week + currentMonthSales - currentDaySales) / 7);
+                    return 100.0 * (currentDaySales / ((last_week + currentMonthSales - currentDaySales) / 7));
                 }
             }
             fprintf(stderr, "No sales made in the last week to compare to.\n");
@@ -373,7 +396,7 @@ double SalesComparison::compareLast7Days() {
                         last_week += dit->second[i]->total_price;
                     }
                 }
-                return currentDaySales / (last_week / 7);
+                return 100.0 * (currentDaySales / (last_week / 7));
             }
         }
         fprintf(stderr, "No sales made in the last week to compare to.\n");
@@ -395,7 +418,7 @@ double SalesComparison::compareYesterday() {
                              i++) {
                             yesterday_sales += salesList->transaction_by_date[curr_y - 1][12][31][i]->total_price;
                         }
-                        return currentDaySales / yesterday_sales;
+                        return 100.0 * (currentDaySales / yesterday_sales);
                     }
                 }
             }
@@ -414,7 +437,7 @@ double SalesComparison::compareYesterday() {
                                 salesList->transaction_by_date[curr_y][curr_m - 1][daysInMonth[curr_m - 1]][i]
                                     ->total_price;
                         }
-                        return currentDaySales / yesterday_sales;
+                        return 100.0 * (currentDaySales / yesterday_sales);
                     }
                 }
             }
@@ -430,7 +453,7 @@ double SalesComparison::compareYesterday() {
                          i++) {
                         yesterday_sales += salesList->transaction_by_date[curr_y][curr_m][curr_d - 1][i]->total_price;
                     }
-                    return currentDaySales / yesterday_sales;
+                    return 100.0 * (currentDaySales / yesterday_sales);
                 }
             }
         }

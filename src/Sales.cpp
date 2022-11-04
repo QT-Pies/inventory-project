@@ -7,7 +7,7 @@ Sale::~Sale() {}
 
 Transaction::Transaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int y,
                          const unsigned int m, const unsigned int d)
-    : sale_id(sid), buyer(b), seller(s) {
+    : sale_id(sid), year(y), month(m), day(d), buyer(b), seller(s) {
     total_price = 0;
     num_sales = 0;
     date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
