@@ -278,25 +278,19 @@ double SalesComparison::compareLastXYears(int x) {
      *  tell you how many years are being compared. */
     num_years = 0;
     for (yit = salesList->transaction_by_date.end(); yit->first != curr_y - 1; yit--);
-    std::cout << yit->first << std::endl;
     for (yit = yit; yit != salesList->transaction_by_date.begin(); yit--) {
-        std::cout << yit->first << std::endl;
         num_years++;
         if (num_years == x) break;
     }
-    std::cout <<"Anything\n" << std::endl;
-    // if (num_years != x) num_years++;
+
     first_year = yit->first;
-    std::cout << first_year << std::endl;
 
     if (num_years < x) {
         fprintf(stdout, "Only %d years to compare with.\n", num_years);
     }
 
     total = 0;
-    for (mit = salesByYear.begin(); mit->first <= first_year; mit++) {
-       std::cout << mit->first << std::endl;
-    }
+    for (mit = salesByYear.begin(); mit->first <= first_year; mit++);
     std::cout << mit->first << std::endl;
     for (mit = mit; mit != salesByYear.end(); mit++) {
         total += mit->second;
