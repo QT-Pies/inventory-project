@@ -49,19 +49,6 @@ class InventoryManager {
      */
     bool userLogin();
 
-    /*
-     * @brief call updateUser in User class
-     * @return return true if successful and false if not
-     * @param std::string username
-     * @param std::string account_type
-     */
-    bool updatePermission(std::string, std::string);
-
-    /*
-     * @brief calls process transaction function in Transaction
-     */
-    void makeTransaction();
-
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
