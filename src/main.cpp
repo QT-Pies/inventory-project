@@ -1,4 +1,6 @@
 #include <iostream>
+#include <QApplication>
+#include <QPushButton>
 
 #include "InventoryManager.hpp"
 
@@ -14,6 +16,14 @@ int main(int argc, char** argv) {
     } else {
         fprintf(stderr, "Usage: bin/main command_line csv_file\n");
         return -1;
+    }
+
+    if (!command_line) {
+        QApplication app(argc, argv);
+        QPushButton HelloWorld("Hello, World!");
+        HelloWorld.resize(300,60);
+        HelloWorld.show();
+        return app.exec();
     }
 
     InventoryManager im(command_line, csv_file);
