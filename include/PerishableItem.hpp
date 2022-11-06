@@ -11,6 +11,7 @@ class PerishableItem : public Item {
      * @param std::string Name
      * @param std::string Category
      * @param std::string Sub-Category
+     * @param std::string Location
      * @param std::string Quantity
      * @param std::string Backorder
      * @param std::string ID
@@ -20,7 +21,8 @@ class PerishableItem : public Item {
      * @param std::string Expiration date
      */
     PerishableItem(const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
-                   const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
+                   const std::string&, const std::string&, const std::string&, const std::string&, const std::string&,
+                   const std::string&);
 
     /* @brief Destructor; does nothing */
     ~PerishableItem() override;

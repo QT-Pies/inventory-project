@@ -29,17 +29,19 @@ int ActiveInventory::addItem(std::shared_ptr<Item> new_item) {
         inv_by_name[new_item->name] = new_item;
         inv_by_category[new_item->category][new_item->name] = new_item;
         inv_by_id[new_item->id] = new_item;
+        inv_by_location[new_item->location][new_item->name] = new_item;
         return 1;
     }
     return -1;  // This shouldn't be reached.
 }
 
 int ActiveInventory::removeItem(std::string name) {
-    std::string cat;
+    std::string cat, loc;
     std::shared_ptr<Item> for_deletion;
     if (inv_by_name.find(name) != inv_by_name.end()) {
         for_deletion = inv_by_name.find(name)->second;
         cat = for_deletion->category;
+        loc = for_deletion->location;
         inv_by_name.erase(name);
         inv_by_id.erase(for_deletion->id);
         inv_by_category[cat].erase(inv_by_category.find(cat)->second.find(name));
@@ -47,6 +49,12 @@ int ActiveInventory::removeItem(std::string name) {
             inv_by_category.erase(cat);  // If the map keyed off the category is empty
                                          // we remove it from the map.
         }
+
+        inv_by_location[loc].erase(inv_by_location.find(loc)->second.find(name));
+        if (inv_by_location.find(loc)->second.size() <= 0) {
+            inv_by_location.erase(loc);
+        }
+
         return 1;
     } else {
         Logger::logError("Item '%s' was not found in the inventory.", name.c_str());
@@ -98,6 +106,8 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
             inv_by_id[item->id] = item;
         } else if (field == "category") {
             throw std::invalid_argument("You can only set category when creating an Item.");
+        } else if (field == "location") {
+            throw std::invalid_argument("You can only set location when creating an Item.");
         } /* Otherwise, all other fields shouldn't need any additional checks. */
         else {
             item->setValue(field, value);
@@ -136,51 +146,66 @@ std::shared_ptr<Item> ActiveInventory::searchById(unsigned long item_id) {
     }
 }
 
-void ActiveInventory::printItems(std::string value) {
+void ActiveInventory::printItems(std::string field, std::string value) {
     std::shared_ptr<Item> item;
 
-    if (value == "All") {
-        /* if map is empty print error message and return*/
-        if (inv_by_id.size() == 0) {
-            Logger::logWarn("Inventory is currently empty");
-            return;
-        }
-        printHead();
-        for (auto id_it = inv_by_id.begin(); id_it != inv_by_id.end(); id_it++) {
-            id_it->second->print();
-        }
-
-    } else if (value == "Perishable" || value == "NonPerishable") {
-        auto cat_it = inv_by_category.find(value);
-
-        /*if category is empty print error message and return*/
-        if (cat_it == inv_by_category.end()) {
-            Logger::logWarn("Category '%s' is currently empty.", value.c_str());
-            return;
-        }
-        printHead();
-        for (auto name_it = cat_it->second.begin(); name_it != cat_it->second.end(); name_it++) {
-            name_it->second->print();
+    if (field == "Location") {
+        auto it = inv_by_location.find(value);
+        if (it != inv_by_location.end()) {
+            printHead();
+            for (auto loc_it = it->second.begin(); loc_it != it->second.end(); loc_it++) {
+                loc_it->second->print();
+            }
+        } else {
+            Logger::logWarn("Location '%s' does not exist.", value.c_str());
         }
 
+        return;
     } else {
-        item = searchByName(value);
+        if (value == "All") {
+            /* if map is empty print error message and return*/
+            if (inv_by_id.size() == 0) {
+                Logger::logWarn("Inventory is currently empty");
+                return;
+            }
+            printHead();
+            for (auto id_it = inv_by_id.begin(); id_it != inv_by_id.end(); id_it++) {
+                id_it->second->print();
+            }
 
-        /* if item does not exist then print error message and return */
-        if (item == NULL) {
-            Logger::logWarn("Item '%s' is not in the inventory.", value.c_str());
-            return;
+        } else if (value == "Perishable" || value == "NonPerishable") {
+            auto cat_it = inv_by_category.find(value);
+
+            /*if category is empty print error message and return*/
+            if (cat_it == inv_by_category.end()) {
+                Logger::logWarn("Category '%s' is currently empty.", value.c_str());
+                return;
+            }
+            printHead();
+            for (auto name_it = cat_it->second.begin(); name_it != cat_it->second.end(); name_it++) {
+                name_it->second->print();
+            }
+
+        } else {
+            item = searchByName(value);
+
+            /* if item does not exist then print error message and return */
+            if (item == NULL) {
+                Logger::logWarn("Item '%s' is not in the inventory.", value.c_str());
+                return;
+            }
+            printHead();
+            item->print();
+            std::cout << std::endl;
         }
-        printHead();
-        item->print();
-        std::cout << std::endl;
     }
 }
 
 void ActiveInventory::printHead() {
     std::cout << std::left << std::setw(7) << "ID" << std::left << std::setw(40) << "ITEM" << std::left << std::setw(17)
-              << "CATEGORY" << std::left << std::setw(10) << "STOCK" << std::left << std::setw(10) << "BACKORDER"
-              << std::left << std::setw(15) << "PURCHASE_COST" << std::left << std::setw(15) << "SALE-PRICE"
-              << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left << std::setw(15) << "TOTAL-PRICE" << std::left
-              << std::setw(10) << "PROFIT" << std::left << std::setw(10) << "EXPIRATION" << std::endl;
+              << "CATEGORY" << std::left << std::setw(15) << "LOCATION" << std::left << std::setw(10) << "STOCK"
+              << std::left << std::setw(10) << "BACKORDER" << std::left << std::setw(15) << "PURCHASE_COST" << std::left
+              << std::setw(15) << "SALE-PRICE" << std::left << std::setw(15) << "TAX-ON-ITEM" << std::left
+              << std::setw(15) << "TOTAL-PRICE" << std::left << std::setw(10) << "PROFIT" << std::left << std::setw(10)
+              << "EXPIRATION" << std::endl;
 }
