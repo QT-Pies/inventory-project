@@ -4,6 +4,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     command_line = cli;
     file_name = file;
     sale_list->loadSales(file);
+    sales_comp->setup(sale_list);
 }
 
 InventoryManager::~InventoryManager() {
@@ -18,13 +19,15 @@ int InventoryManager::userInput() {
     std::string sale_price, buy_price, tax;
     bool valid_transaction;
     std::shared_ptr<Item> new_item;
+    int x;
 
     if (command_line == false) {
         Logger::logError("Command line is set to false.  Exiting userInput().");
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (P)rint, (L)ogout, or (Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (P)rint, (L)ogout, or "
+                 "(Q)uit: ";
     std::cin >> argument;
     lowerCaseString(argument);
 
@@ -140,6 +143,33 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
                              category.c_str());
         }
+    } else if (argument == "cs" || argument == "compare") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "\nPlease select a range to compare against.\n";
+        std::cout << "(Input your choice as the exact string below as you see it.)\n";
+        std::cout << "All_By_Year | All_By_Month | X_Years | Last_Month | Last_7_days | Yesterday | Full\n";
+        std::cin >> category;
+
+        if (category == "Full") {
+            sales_comp->printAllComparisons();
+        } else if (category == "All_By_Year") {
+            sales_comp->printComparison("ByYear", 0);
+        } else if (category == "All_By_Month") {
+            sales_comp->printComparison("ByMonth", 0);
+        } else if (category == "X_Years") {
+            std::cout << "Number of years to compare : ";
+            std::cin >> x;
+            sales_comp->printComparison("LastXYears", x);
+        } else if (category == "Last_Month") {
+            sales_comp->printComparison("LastMonth", 0);
+        } else if (category == "Last_7_days") {
+            sales_comp->printComparison("Last7Days", 0);
+        } else if (category == "Yesterday") {
+            sales_comp->printComparison("Yesterday", 0);
+        }
+
     } else if (argument == "p" || argument == "print") {
         std::cin.clear();
         std::cin.ignore(10000, '\n');

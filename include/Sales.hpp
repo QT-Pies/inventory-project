@@ -84,6 +84,7 @@ class Transaction {
 
    private:
     friend class SaleList;
+    friend class SalesComparison;
 
    protected:
     unsigned long sale_id, num_sales;
@@ -95,6 +96,7 @@ class Transaction {
 
 class SaleList {
     friend class InventoryManager;
+    friend class SalesComparison;
 
    public:
     SaleList();
@@ -143,7 +145,8 @@ class SaleList {
     void print();
 
    protected:
-    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > >
+    std::map<unsigned int,
+             std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >
         transaction_by_date;
     std::vector<std::shared_ptr<Transaction> > transaction_by_order;
     std::string parent_file, child_file;

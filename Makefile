@@ -4,8 +4,8 @@ CFLAGS = -g -Wall -Werror -Wno-format-security -std=c++17 $(INCLUDES) -O3
 
 EXECUTABLES = bin/main bin/gen-inventory bin/unit_tests bin/gen-sales
 
-SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp
-OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o obj/SalesGenerator.o
+SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp src/SalesComparison.cpp
+OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o obj/SalesGenerator.o obj/SalesComparison.o
 
 all: $(OBJECT) $(EXECUTABLES)
 
@@ -13,7 +13,7 @@ obj/main.o: src/main.cpp obj/InventoryManager.o
 	$(CC) $(CFLAGS) -c src/main.cpp -o obj/main.o
 
 bin/main: obj/main.o obj/InventoryManager.o obj/HelperFunctions.o
-	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
+	$(CC) $(CFLAGS) -o bin/main obj/main.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o obj/SalesComparison.o
 
 obj/CSVEntry.o: src/CSVEntry.cpp
 	$(CC) $(CFLAGS) -c src/CSVEntry.cpp -o obj/CSVEntry.o
@@ -45,7 +45,7 @@ obj/PerishableItem.o: src/PerishableItem.cpp
 obj/ActiveInventory.o: src/ActiveInventory.cpp
 	$(CC) $(CFLAGS) -c src/ActiveInventory.cpp -o obj/ActiveInventory.o
 
-obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o obj/User.o obj/Sales.o
+obj/InventoryManager.o: src/InventoryManager.cpp obj/ActiveInventory.o obj/Login.o obj/User.o obj/Sales.o obj/SalesComparison.o
 	$(CC) $(CFLAGS) -c src/InventoryManager.cpp -o obj/InventoryManager.o
 
 obj/Sales.o: src/Sales.cpp
@@ -57,6 +57,9 @@ obj/Login.o: src/Login.cpp
 obj/User.o: src/User.cpp
 	$(CC) $(CFLAGS) -c src/User.cpp -o obj/User.o
 
+obj/SalesComparison.o: src/SalesComparison.cpp
+	$(CC) $(CFLAGS) -c src/SalesComparison.cpp -o obj/SalesComparison.o
+
 obj/SalesGenerator.o: src/SalesGenerator.cpp
 	$(CC) $(CFLAGS) -c src/SalesGenerator.cpp -o obj/SalesGenerator.o
 
@@ -64,7 +67,7 @@ bin/gen-sales: src/SalesGenerator.cpp obj/SalesGenerator.o obj/CSVEntry.o obj/Da
 	$(CC) $(CFLAGS) -o bin/gen-sales src/SalesGeneratorDriver.cpp obj/SalesGenerator.o obj/CSVEntry.o obj/Date.o
 
 bin/unit_tests:
-	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lpthread obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
+	$(CC) $(CFLAGS) -o bin/unit_tests src/unit_tests.cpp -lgtest -lpthread obj/SalesComparison.o obj/InventoryManager.o obj/ActiveInventory.o obj/HelperFunctions.o obj/Login.o obj/User.o obj/Sales.o
 
 clean: 
 	rm -rf bin/* obj/*.o 
