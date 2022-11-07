@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.21.1)
 
 project(InventoryManager VERSION 1.0.0 LANGUAGES CXX)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
 # Specify C++17 (required by Qt, and our Logger) and make it required or else we exit.
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -49,6 +53,8 @@ add_executable(main
   src/Login.cpp
   src/User.cpp
   src/Sales.cpp
+#  src/loginscreen.cpp 
+#  src/loginscreen.ui
   src/main.cpp
 )
 

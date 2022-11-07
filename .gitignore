@@ -5,3 +5,4 @@ bin/*
 accounts.csv
 logging.cfg
 logs.txt
+*.cc
