@@ -35,6 +35,8 @@ class Login {
      */
     std::shared_ptr<User> userInput();
 
+    std::shared_ptr<User> guiInput(std::string, std::string);
+
     /*
      * @brief reads in the user file
      * @return true if file read successfully

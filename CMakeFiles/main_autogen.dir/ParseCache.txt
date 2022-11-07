@@ -7,4 +7,3 @@
 /home/vbroda/inventory-project/src/Sales.cpp
 /home/vbroda/inventory-project/src/User.cpp
 /home/vbroda/inventory-project/src/loginscreen.cpp
- uic:ui_loginscreen.h

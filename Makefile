@@ -760,6 +760,30 @@ src/User.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/User.cpp.s
 .PHONY : src/User.cpp.s
 
+src/loginscreen.o: src/loginscreen.cpp.o
+.PHONY : src/loginscreen.o
+
+# target to build an object file
+src/loginscreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.o
+.PHONY : src/loginscreen.cpp.o
+
+src/loginscreen.i: src/loginscreen.cpp.i
+.PHONY : src/loginscreen.i
+
+# target to preprocess a source file
+src/loginscreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.i
+.PHONY : src/loginscreen.cpp.i
+
+src/loginscreen.s: src/loginscreen.cpp.s
+.PHONY : src/loginscreen.s
+
+# target to generate assembly for a file
+src/loginscreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.s
+.PHONY : src/loginscreen.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -906,6 +930,9 @@ help:
 	@echo "... src/User.o"
 	@echo "... src/User.i"
 	@echo "... src/User.s"
+	@echo "... src/loginscreen.o"
+	@echo "... src/loginscreen.i"
+	@echo "... src/loginscreen.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -80,6 +80,14 @@ std::shared_ptr<User> Login::userInput() {
     return NULL;
 }
 
+std::shared_ptr<User> Login::guiInput(std::string name, std::string password) {
+    auto user = verifyUser(name, password);
+    if (user != NULL) {
+        return user;
+    }
+    return NULL;
+}
+
 bool Login::readCSV() {
     std::string head, name, password, account;
     bool created;

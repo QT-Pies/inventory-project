@@ -49,6 +49,8 @@ class InventoryManager {
      */
     bool userLogin();
 
+    bool guiLogin(std::string, std::string);
+
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};

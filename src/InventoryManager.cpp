@@ -332,3 +332,14 @@ bool InventoryManager::userLogin() {
 
     return true;
 }
+
+bool InventoryManager::guiLogin(std::string name, std::string password) {
+    current_user = login->guiInput(name, password);
+    login->outputCSV();
+
+    if (current_user == NULL) return false;
+
+    Logger::logTrace("User %s logged in.", current_user->name.c_str());
+
+    return true;
+}

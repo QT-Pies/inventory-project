@@ -1,22 +1,36 @@
 #ifndef LOGINSCREEN_HPP
 #define LOGINSCREEN_HPP
 
-#include <QDialog>
+#include <QWidget>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
 
-namespace Ui {
-class LoginScreen;
-}
+#include <string>
 
-class LoginScreen : public QDialog
-{
-    Q_OBJECT
+#include "InventoryManager.hpp"
 
-public:
-    explicit LoginScreen(QWidget *parent = nullptr);
+
+class LoginScreen : public QWidget{
+    //Q_OBJECT
+   public:
+    LoginScreen(QWidget *parent = 0);
     ~LoginScreen();
+    void openWindow(std::string);
 
-private:
-    Ui::LoginScreen *ui;
+   private slots:
+    void loginApp();
+    void quitApp();
+
+   private:
+    QWidget *w;
+    QLineEdit *userLineEdit;
+    QLineEdit *passwordLineEdit ;
+
+    std::shared_ptr<InventoryManager> im;
 };
 
 #endif // LOGINSCREEN_HPP

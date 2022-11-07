@@ -2,8 +2,8 @@ CMakeFiles/main.dir/src/loginscreen.cpp.o: \
  /home/vbroda/inventory-project/src/loginscreen.cpp \
  /usr/include/stdc-predef.h \
  /home/vbroda/inventory-project/./include/loginscreen.hpp \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtguiglobal.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qglobal.h \
@@ -138,7 +138,6 @@ CMakeFiles/main.dir/src/loginscreen.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtguiexports.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtwidgets-config.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtwidgetsexports.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qwindowdefs.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qobjectdefs.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qnamespace.h \
@@ -331,18 +330,62 @@ CMakeFiles/main.dir/src/loginscreen.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qsizepolicy.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qcursor.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qbitmap.h \
- /home/vbroda/inventory-project/main_autogen/include/ui_loginscreen.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/QVariant \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qvariant.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QApplication \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qapplication.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qcoreapplication.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qcoreevent.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qeventloop.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qnativeinterface.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qguiapplication.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qinputmethod.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qlocale.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qguiapplication_platform.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QPushButton \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qpushbutton.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QHBoxLayout \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qgridlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QVBoxLayout \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLabel \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlabel.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qframe.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpicture.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qiodevice.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextdocument.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qurl.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextcursor.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/vbroda/inventory-project/./include/InventoryManager.hpp \
+ /usr/include/c++/11/fstream /usr/include/c++/11/istream \
+ /usr/include/c++/11/ios /usr/include/c++/11/bits/basic_ios.h \
+ /usr/include/c++/11/bits/locale_facets.h /usr/include/c++/11/cwctype \
+ /usr/include/wctype.h /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
+ /usr/include/c++/11/bits/locale_facets.tcc \
+ /usr/include/c++/11/bits/basic_ios.tcc /usr/include/c++/11/ostream \
+ /usr/include/c++/11/bits/ostream.tcc \
+ /usr/include/c++/11/bits/istream.tcc /usr/include/c++/11/bits/codecvt.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/c++io.h \
+ /usr/include/c++/11/bits/fstream.tcc /usr/include/c++/11/iostream \
+ /home/vbroda/inventory-project/./include/ActiveInventory.hpp \
+ /home/vbroda/inventory-project/./include/Item.hpp \
+ /usr/include/c++/11/iomanip /usr/include/c++/11/locale \
+ /usr/include/c++/11/bits/locale_facets_nonio.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/time_members.h \
+ /usr/include/x86_64-linux-gnu/c++/11/bits/messages_members.h \
+ /usr/include/libintl.h /usr/include/c++/11/bits/locale_facets_nonio.tcc \
+ /usr/include/c++/11/bits/locale_conv.h \
+ /usr/include/c++/11/bits/quoted_string.h /usr/include/c++/11/sstream \
+ /usr/include/c++/11/bits/sstream.tcc \
+ /home/vbroda/inventory-project/./include/HelperFunctions.hpp \
+ /home/vbroda/inventory-project/./include/Logger.hpp \
+ /home/vbroda/inventory-project/./include/Login.hpp \
+ /home/vbroda/inventory-project/./include/User.hpp \
+ /home/vbroda/inventory-project/./include/NonPerishableItem.hpp \
+ /home/vbroda/inventory-project/./include/PerishableItem.hpp \
+ /home/vbroda/inventory-project/./include/Date.hpp \
+ /home/vbroda/inventory-project/./include/Sales.hpp

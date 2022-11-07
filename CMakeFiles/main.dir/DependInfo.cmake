@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/vbroda/inventory-project/src/Login.cpp" "CMakeFiles/main.dir/src/Login.cpp.o" "gcc" "CMakeFiles/main.dir/src/Login.cpp.o.d"
   "/home/vbroda/inventory-project/src/Sales.cpp" "CMakeFiles/main.dir/src/Sales.cpp.o" "gcc" "CMakeFiles/main.dir/src/Sales.cpp.o.d"
   "/home/vbroda/inventory-project/src/User.cpp" "CMakeFiles/main.dir/src/User.cpp.o" "gcc" "CMakeFiles/main.dir/src/User.cpp.o.d"
+  "/home/vbroda/inventory-project/src/loginscreen.cpp" "CMakeFiles/main.dir/src/loginscreen.cpp.o" "gcc" "CMakeFiles/main.dir/src/loginscreen.cpp.o.d"
   "/home/vbroda/inventory-project/src/main.cpp" "CMakeFiles/main.dir/src/main.cpp.o" "gcc" "CMakeFiles/main.dir/src/main.cpp.o.d"
   )
 

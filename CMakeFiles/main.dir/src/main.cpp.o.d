@@ -341,39 +341,6 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qlocale.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qvariant.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qguiapplication_platform.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QPushButton \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qpushbutton.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qabstractbutton.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qicon.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qkeysequence.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qaction.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpalette.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qbrush.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfont.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfontmetrics.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfontinfo.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qsizepolicy.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QHBoxLayout \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayout.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayoutitem.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qgridlayout.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QVBoxLayout \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLabel \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlabel.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qframe.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpicture.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qiodevice.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextdocument.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qurl.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextcursor.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
  /home/vbroda/inventory-project/./include/InventoryManager.hpp \
  /usr/include/c++/11/fstream /usr/include/c++/11/bits/codecvt.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/basic_file.h \
@@ -396,4 +363,44 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /home/vbroda/inventory-project/./include/NonPerishableItem.hpp \
  /home/vbroda/inventory-project/./include/PerishableItem.hpp \
  /home/vbroda/inventory-project/./include/Date.hpp \
- /home/vbroda/inventory-project/./include/Sales.hpp
+ /home/vbroda/inventory-project/./include/Sales.hpp \
+ /home/vbroda/inventory-project/./include/loginscreen.hpp \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qaction.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qkeysequence.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qicon.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpalette.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qbrush.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfont.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfontmetrics.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qfontinfo.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QPushButton \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qpushbutton.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QHBoxLayout \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qgridlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QVBoxLayout \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLabel \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlabel.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qframe.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpicture.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qiodevice.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextdocument.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qurl.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextcursor.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/vbroda/inventory-project/./include/InventoryManager.hpp

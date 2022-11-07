@@ -1,12 +1,9 @@
 #include <iostream>
 #include <QApplication>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QLabel>
-#include <QLineEdit>
+
 
 #include "InventoryManager.hpp"
+#include "loginscreen.hpp"
 
 /* Entry point for InventoryManager */
 int main(int argc, char** argv) {
@@ -24,42 +21,9 @@ int main(int argc, char** argv) {
 
     if (!command_line) {
         QApplication app(argc, argv);
-        QWidget *w = new QWidget();
 
-        QHBoxLayout *hUserLayout = new QHBoxLayout;
-        QLabel *userLabel = new QLabel;
-        QLineEdit *userLineEdit = new QLineEdit;
-        userLabel->setBuddy(userLineEdit);
-        userLabel->setText("Username");
-        hUserLayout->addWidget(userLabel);
-        hUserLayout->addWidget(userLineEdit);
-
-        QHBoxLayout *hPasswordLayout = new QHBoxLayout;
-        QLabel *passwordLabel = new QLabel;
-        QLineEdit *passwordLineEdit = new QLineEdit;
-        passwordLabel->setBuddy(passwordLineEdit);
-        passwordLabel->setText("Password ");
-        hPasswordLayout->addWidget(passwordLabel);
-        hPasswordLayout->addWidget(passwordLineEdit);
-
-        QHBoxLayout *hButtonsLayout = new QHBoxLayout;
-        QPushButton *bLogin = new QPushButton("Login");
-        QPushButton *bQuit = new QPushButton("Quit");
-        //bLogin->setBuddy(bQuit);
-        hButtonsLayout->addWidget(bLogin);
-        hButtonsLayout->addWidget(bQuit);
-
-        QLabel *imLabel = new QLabel("Inventory Manager");
-
-        QVBoxLayout *vLoginLayout = new QVBoxLayout;
-        vLoginLayout->addWidget(imLabel);
-        vLoginLayout->addLayout(hUserLayout);
-        vLoginLayout->addLayout(hPasswordLayout);
-        vLoginLayout->addLayout(hButtonsLayout);
-
-
-        w->setLayout(vLoginLayout);
-        w->show();
+        LoginScreen ls;
+        ls.openWindow(csv_file);
 
         return app.exec();
     }
