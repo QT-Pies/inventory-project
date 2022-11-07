@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPixmap>
 
 #include <string>
 

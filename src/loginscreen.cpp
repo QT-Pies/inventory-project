@@ -42,7 +42,10 @@ void LoginScreen::openWindow(std::string file) {
     hButtonsLayout->addWidget(bQuit);
 
     // make this a pixle map
-    QLabel *imLabel = new QLabel("Inventory Manager");
+    QPixmap pix("IM_LOGO_RD.png");
+    QLabel *imLabel = new QLabel;
+    int wid = userLabel->width();
+    imLabel->setPixmap(pix.scaled(wid/2,wid/2,Qt::KeepAspectRatio));
 
     QVBoxLayout *vLoginLayout = new QVBoxLayout;
     vLoginLayout->addWidget(imLabel);
@@ -66,6 +69,7 @@ void LoginScreen::loginApp() {
 
     if(im->guiLogin(un.toStdString(), pas.toStdString())) {
         QMessageBox::information(w, "Login", "Loggin Sucsessful");
+        w->hide();
     }
     else {
         QMessageBox::warning(w,"Login", "Username and/or password is incorrect");
@@ -74,6 +78,5 @@ void LoginScreen::loginApp() {
 }
 
 void LoginScreen::quitApp() {
-    //w->setWindowTitle("TEST");
     w->close();
 }

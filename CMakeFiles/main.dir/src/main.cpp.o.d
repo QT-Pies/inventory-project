@@ -403,4 +403,6 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
  /home/vbroda/inventory-project/./include/InventoryManager.hpp

@@ -1677,6 +1677,8 @@ CMakeFiles/main.dir/src/loginscreen.cpp.o: src/loginscreen.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
   include/InventoryManager.hpp \
   /usr/include/c++/11/fstream \
   /usr/include/c++/11/istream \
@@ -2180,6 +2182,11 @@ CMakeFiles/main.dir/src/main.cpp.o: src/main.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
   include/InventoryManager.hpp
 
 
@@ -2308,6 +2315,8 @@ src/main.cpp:
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qarraydataops.h:
 
 /usr/include/c++/11/bits/unordered_map.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qmap.h:
 
