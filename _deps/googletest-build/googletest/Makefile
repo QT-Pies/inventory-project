@@ -275,54 +275,6 @@ gtest_main_autogen/mocs_compilation.cpp.s:
 	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/gtest_main_autogen/mocs_compilation.cpp.s
 .PHONY : gtest_main_autogen/mocs_compilation.cpp.s
 
-src/gtest-all.o: src/gtest-all.cc.o
-.PHONY : src/gtest-all.o
-
-# target to build an object file
-src/gtest-all.cc.o:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
-.PHONY : src/gtest-all.cc.o
-
-src/gtest-all.i: src/gtest-all.cc.i
-.PHONY : src/gtest-all.i
-
-# target to preprocess a source file
-src/gtest-all.cc.i:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.i
-.PHONY : src/gtest-all.cc.i
-
-src/gtest-all.s: src/gtest-all.cc.s
-.PHONY : src/gtest-all.s
-
-# target to generate assembly for a file
-src/gtest-all.cc.s:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.s
-.PHONY : src/gtest-all.cc.s
-
-src/gtest_main.o: src/gtest_main.cc.o
-.PHONY : src/gtest_main.o
-
-# target to build an object file
-src/gtest_main.cc.o:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-.PHONY : src/gtest_main.cc.o
-
-src/gtest_main.i: src/gtest_main.cc.i
-.PHONY : src/gtest_main.i
-
-# target to preprocess a source file
-src/gtest_main.cc.i:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.i
-.PHONY : src/gtest_main.cc.i
-
-src/gtest_main.s: src/gtest_main.cc.s
-.PHONY : src/gtest_main.s
-
-# target to generate assembly for a file
-src/gtest_main.cc.s:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.s
-.PHONY : src/gtest_main.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -346,12 +298,6 @@ help:
 	@echo "... gtest_main_autogen/mocs_compilation.o"
 	@echo "... gtest_main_autogen/mocs_compilation.i"
 	@echo "... gtest_main_autogen/mocs_compilation.s"
-	@echo "... src/gtest-all.o"
-	@echo "... src/gtest-all.i"
-	@echo "... src/gtest-all.s"
-	@echo "... src/gtest_main.o"
-	@echo "... src/gtest_main.i"
-	@echo "... src/gtest_main.s"
 .PHONY : help
 
 

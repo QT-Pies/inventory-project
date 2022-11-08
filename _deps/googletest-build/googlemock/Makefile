@@ -275,54 +275,6 @@ gmock_main_autogen/mocs_compilation.cpp.s:
 	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/gmock_main_autogen/mocs_compilation.cpp.s
 .PHONY : gmock_main_autogen/mocs_compilation.cpp.s
 
-src/gmock-all.o: src/gmock-all.cc.o
-.PHONY : src/gmock-all.o
-
-# target to build an object file
-src/gmock-all.cc.o:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
-.PHONY : src/gmock-all.cc.o
-
-src/gmock-all.i: src/gmock-all.cc.i
-.PHONY : src/gmock-all.i
-
-# target to preprocess a source file
-src/gmock-all.cc.i:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.i
-.PHONY : src/gmock-all.cc.i
-
-src/gmock-all.s: src/gmock-all.cc.s
-.PHONY : src/gmock-all.s
-
-# target to generate assembly for a file
-src/gmock-all.cc.s:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.s
-.PHONY : src/gmock-all.cc.s
-
-src/gmock_main.o: src/gmock_main.cc.o
-.PHONY : src/gmock_main.o
-
-# target to build an object file
-src/gmock_main.cc.o:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
-.PHONY : src/gmock_main.cc.o
-
-src/gmock_main.i: src/gmock_main.cc.i
-.PHONY : src/gmock_main.i
-
-# target to preprocess a source file
-src/gmock_main.cc.i:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.i
-.PHONY : src/gmock_main.cc.i
-
-src/gmock_main.s: src/gmock_main.cc.s
-.PHONY : src/gmock_main.s
-
-# target to generate assembly for a file
-src/gmock_main.cc.s:
-	cd /home/vbroda/inventory-project && $(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.s
-.PHONY : src/gmock_main.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -346,12 +298,6 @@ help:
 	@echo "... gmock_main_autogen/mocs_compilation.o"
 	@echo "... gmock_main_autogen/mocs_compilation.i"
 	@echo "... gmock_main_autogen/mocs_compilation.s"
-	@echo "... src/gmock-all.o"
-	@echo "... src/gmock-all.i"
-	@echo "... src/gmock-all.s"
-	@echo "... src/gmock_main.o"
-	@echo "... src/gmock_main.i"
-	@echo "... src/gmock_main.s"
 .PHONY : help
 
 

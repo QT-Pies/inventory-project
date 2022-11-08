@@ -6,8 +6,6 @@ file(REMOVE_RECURSE
   "gmock_autogen"
   "CMakeFiles/gmock.dir/gmock_autogen/mocs_compilation.cpp.o"
   "CMakeFiles/gmock.dir/gmock_autogen/mocs_compilation.cpp.o.d"
-  "CMakeFiles/gmock.dir/src/gmock-all.cc.o"
-  "CMakeFiles/gmock.dir/src/gmock-all.cc.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

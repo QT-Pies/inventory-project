@@ -306,9 +306,7 @@
 		"/home/vbroda/Qt/6.4.0/gcc_64/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessTargets.cmake",
 		"/home/vbroda/Qt/6.4.0/gcc_64/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake",
 		"/usr/share/cmake-3.22/Modules/CMakeParseArguments.cmake",
-		"/usr/share/cmake-3.22/Modules/GNUInstallDirs.cmake",
-		"/usr/share/cmake-3.22/Modules/FetchContent.cmake",
-		"/usr/share/cmake-3.22/Modules/FetchContent/CMakeLists.cmake.in"
+		"/usr/share/cmake-3.22/Modules/GNUInstallDirs.cmake"
 	],
 	"CMAKE_SOURCE_DIR" : "/home/vbroda/inventory-project",
 	"DEP_FILE" : "",

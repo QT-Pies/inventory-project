@@ -81,28 +81,28 @@ add_executable(gen-sales
 
 # Unit test section
 
-include(FetchContent)
+# include(FetchContent)
 
-# Fetch GTest
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
+# # Fetch GTest
+# FetchContent_Declare(
+#   googletest
+#   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+# )
 
-enable_testing()
+# enable_testing()
 
-FetchContent_MakeAvailable(googletest)
+# FetchContent_MakeAvailable(googletest)
 
-# Add source files for bin/unit_tests
-add_executable(unit_tests
-  src/HelperFunctions.cpp
-  src/ActiveInventory.cpp
-  src/User.cpp
-  src/Login.cpp
-  src/Sales.cpp
-  src/InventoryManager.cpp
-  src/unit_tests.cpp
-)
+# # Add source files for bin/unit_tests
+# add_executable(unit_tests
+#   src/HelperFunctions.cpp
+#   src/ActiveInventory.cpp
+#   src/User.cpp
+#   src/Login.cpp
+#   src/Sales.cpp
+#   src/InventoryManager.cpp
+#   src/unit_tests.cpp
+# )
 
-# Link GTest
-target_link_libraries(unit_tests GTest::gtest)
+# # Link GTest
+# target_link_libraries(unit_tests GTest::gtest)

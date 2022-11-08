@@ -65,16 +65,6 @@ CMAKE_BINARY_DIR = /home/vbroda/inventory-project
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-.PHONY : test/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -94,51 +84,6 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-.PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -211,19 +156,6 @@ gen-sales/fast:
 .PHONY : gen-sales/fast
 
 #=============================================================================
-# Target rules for targets named unit_tests
-
-# Build rule for target.
-unit_tests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 unit_tests
-.PHONY : unit_tests
-
-# fast build rule for target.
-unit_tests/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/build
-.PHONY : unit_tests/fast
-
-#=============================================================================
 # Target rules for targets named main_autogen
 
 # Build rule for target.
@@ -261,123 +193,6 @@ gen-sales_autogen: cmake_check_build_system
 gen-sales_autogen/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/gen-sales_autogen.dir/build.make CMakeFiles/gen-sales_autogen.dir/build
 .PHONY : gen-sales_autogen/fast
-
-#=============================================================================
-# Target rules for targets named unit_tests_autogen
-
-# Build rule for target.
-unit_tests_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 unit_tests_autogen
-.PHONY : unit_tests_autogen
-
-# fast build rule for target.
-unit_tests_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests_autogen.dir/build.make CMakeFiles/unit_tests_autogen.dir/build
-.PHONY : unit_tests_autogen/fast
-
-#=============================================================================
-# Target rules for targets named gmock
-
-# Build rule for target.
-gmock: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock
-.PHONY : gmock
-
-# fast build rule for target.
-gmock/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/build
-.PHONY : gmock/fast
-
-#=============================================================================
-# Target rules for targets named gmock_main
-
-# Build rule for target.
-gmock_main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock_main
-.PHONY : gmock_main
-
-# fast build rule for target.
-gmock_main/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
-.PHONY : gmock_main/fast
-
-#=============================================================================
-# Target rules for targets named gmock_autogen
-
-# Build rule for target.
-gmock_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock_autogen
-.PHONY : gmock_autogen
-
-# fast build rule for target.
-gmock_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_autogen.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_autogen.dir/build
-.PHONY : gmock_autogen/fast
-
-#=============================================================================
-# Target rules for targets named gmock_main_autogen
-
-# Build rule for target.
-gmock_main_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gmock_main_autogen
-.PHONY : gmock_main_autogen
-
-# fast build rule for target.
-gmock_main_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googlemock/CMakeFiles/gmock_main_autogen.dir/build.make _deps/googletest-build/googlemock/CMakeFiles/gmock_main_autogen.dir/build
-.PHONY : gmock_main_autogen/fast
-
-#=============================================================================
-# Target rules for targets named gtest
-
-# Build rule for target.
-gtest: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest
-.PHONY : gtest
-
-# fast build rule for target.
-gtest/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest.dir/build
-.PHONY : gtest/fast
-
-#=============================================================================
-# Target rules for targets named gtest_main
-
-# Build rule for target.
-gtest_main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest_main
-.PHONY : gtest_main
-
-# fast build rule for target.
-gtest_main/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/build
-.PHONY : gtest_main/fast
-
-#=============================================================================
-# Target rules for targets named gtest_autogen
-
-# Build rule for target.
-gtest_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest_autogen
-.PHONY : gtest_autogen
-
-# fast build rule for target.
-gtest_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_autogen.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_autogen.dir/build
-.PHONY : gtest_autogen/fast
-
-#=============================================================================
-# Target rules for targets named gtest_main_autogen
-
-# Build rule for target.
-gtest_main_autogen: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 gtest_main_autogen
-.PHONY : gtest_main_autogen
-
-# fast build rule for target.
-gtest_main_autogen/fast:
-	$(MAKE) $(MAKESILENT) -f _deps/googletest-build/googletest/CMakeFiles/gtest_main_autogen.dir/build.make _deps/googletest-build/googletest/CMakeFiles/gtest_main_autogen.dir/build
-.PHONY : gtest_main_autogen/fast
 
 gen-inventory_autogen/mocs_compilation.o: gen-inventory_autogen/mocs_compilation.cpp.o
 .PHONY : gen-inventory_autogen/mocs_compilation.o
@@ -457,7 +272,6 @@ src/ActiveInventory.o: src/ActiveInventory.cpp.o
 # target to build an object file
 src/ActiveInventory.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ActiveInventory.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.o
 .PHONY : src/ActiveInventory.cpp.o
 
 src/ActiveInventory.i: src/ActiveInventory.cpp.i
@@ -466,7 +280,6 @@ src/ActiveInventory.i: src/ActiveInventory.cpp.i
 # target to preprocess a source file
 src/ActiveInventory.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ActiveInventory.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.i
 .PHONY : src/ActiveInventory.cpp.i
 
 src/ActiveInventory.s: src/ActiveInventory.cpp.s
@@ -475,7 +288,6 @@ src/ActiveInventory.s: src/ActiveInventory.cpp.s
 # target to generate assembly for a file
 src/ActiveInventory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ActiveInventory.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.s
 .PHONY : src/ActiveInventory.cpp.s
 
 src/CSVEntry.o: src/CSVEntry.cpp.o
@@ -535,7 +347,6 @@ src/HelperFunctions.o: src/HelperFunctions.cpp.o
 # target to build an object file
 src/HelperFunctions.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/HelperFunctions.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.o
 .PHONY : src/HelperFunctions.cpp.o
 
 src/HelperFunctions.i: src/HelperFunctions.cpp.i
@@ -544,7 +355,6 @@ src/HelperFunctions.i: src/HelperFunctions.cpp.i
 # target to preprocess a source file
 src/HelperFunctions.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/HelperFunctions.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.i
 .PHONY : src/HelperFunctions.cpp.i
 
 src/HelperFunctions.s: src/HelperFunctions.cpp.s
@@ -553,7 +363,6 @@ src/HelperFunctions.s: src/HelperFunctions.cpp.s
 # target to generate assembly for a file
 src/HelperFunctions.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/HelperFunctions.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.s
 .PHONY : src/HelperFunctions.cpp.s
 
 src/InventoryGenerator.o: src/InventoryGenerator.cpp.o
@@ -610,7 +419,6 @@ src/InventoryManager.o: src/InventoryManager.cpp.o
 # target to build an object file
 src/InventoryManager.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryManager.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o
 .PHONY : src/InventoryManager.cpp.o
 
 src/InventoryManager.i: src/InventoryManager.cpp.i
@@ -619,7 +427,6 @@ src/InventoryManager.i: src/InventoryManager.cpp.i
 # target to preprocess a source file
 src/InventoryManager.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryManager.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.i
 .PHONY : src/InventoryManager.cpp.i
 
 src/InventoryManager.s: src/InventoryManager.cpp.s
@@ -628,7 +435,6 @@ src/InventoryManager.s: src/InventoryManager.cpp.s
 # target to generate assembly for a file
 src/InventoryManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryManager.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.s
 .PHONY : src/InventoryManager.cpp.s
 
 src/Login.o: src/Login.cpp.o
@@ -637,7 +443,6 @@ src/Login.o: src/Login.cpp.o
 # target to build an object file
 src/Login.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Login.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Login.cpp.o
 .PHONY : src/Login.cpp.o
 
 src/Login.i: src/Login.cpp.i
@@ -646,7 +451,6 @@ src/Login.i: src/Login.cpp.i
 # target to preprocess a source file
 src/Login.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Login.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Login.cpp.i
 .PHONY : src/Login.cpp.i
 
 src/Login.s: src/Login.cpp.s
@@ -655,7 +459,6 @@ src/Login.s: src/Login.cpp.s
 # target to generate assembly for a file
 src/Login.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Login.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Login.cpp.s
 .PHONY : src/Login.cpp.s
 
 src/Sales.o: src/Sales.cpp.o
@@ -664,7 +467,6 @@ src/Sales.o: src/Sales.cpp.o
 # target to build an object file
 src/Sales.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Sales.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Sales.cpp.o
 .PHONY : src/Sales.cpp.o
 
 src/Sales.i: src/Sales.cpp.i
@@ -673,7 +475,6 @@ src/Sales.i: src/Sales.cpp.i
 # target to preprocess a source file
 src/Sales.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Sales.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Sales.cpp.i
 .PHONY : src/Sales.cpp.i
 
 src/Sales.s: src/Sales.cpp.s
@@ -682,7 +483,6 @@ src/Sales.s: src/Sales.cpp.s
 # target to generate assembly for a file
 src/Sales.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Sales.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/Sales.cpp.s
 .PHONY : src/Sales.cpp.s
 
 src/SalesGenerator.o: src/SalesGenerator.cpp.o
@@ -739,7 +539,6 @@ src/User.o: src/User.cpp.o
 # target to build an object file
 src/User.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/User.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/User.cpp.o
 .PHONY : src/User.cpp.o
 
 src/User.i: src/User.cpp.i
@@ -748,7 +547,6 @@ src/User.i: src/User.cpp.i
 # target to preprocess a source file
 src/User.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/User.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/User.cpp.i
 .PHONY : src/User.cpp.i
 
 src/User.s: src/User.cpp.s
@@ -757,7 +555,6 @@ src/User.s: src/User.cpp.s
 # target to generate assembly for a file
 src/User.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/User.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/User.cpp.s
 .PHONY : src/User.cpp.s
 
 src/loginscreen.o: src/loginscreen.cpp.o
@@ -808,54 +605,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/unit_tests.o: src/unit_tests.cpp.o
-.PHONY : src/unit_tests.o
-
-# target to build an object file
-src/unit_tests.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o
-.PHONY : src/unit_tests.cpp.o
-
-src/unit_tests.i: src/unit_tests.cpp.i
-.PHONY : src/unit_tests.i
-
-# target to preprocess a source file
-src/unit_tests.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.i
-.PHONY : src/unit_tests.cpp.i
-
-src/unit_tests.s: src/unit_tests.cpp.s
-.PHONY : src/unit_tests.s
-
-# target to generate assembly for a file
-src/unit_tests.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/unit_tests.cpp.s
-.PHONY : src/unit_tests.cpp.s
-
-unit_tests_autogen/mocs_compilation.o: unit_tests_autogen/mocs_compilation.cpp.o
-.PHONY : unit_tests_autogen/mocs_compilation.o
-
-# target to build an object file
-unit_tests_autogen/mocs_compilation.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/unit_tests_autogen/mocs_compilation.cpp.o
-.PHONY : unit_tests_autogen/mocs_compilation.cpp.o
-
-unit_tests_autogen/mocs_compilation.i: unit_tests_autogen/mocs_compilation.cpp.i
-.PHONY : unit_tests_autogen/mocs_compilation.i
-
-# target to preprocess a source file
-unit_tests_autogen/mocs_compilation.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/unit_tests_autogen/mocs_compilation.cpp.i
-.PHONY : unit_tests_autogen/mocs_compilation.cpp.i
-
-unit_tests_autogen/mocs_compilation.s: unit_tests_autogen/mocs_compilation.cpp.s
-.PHONY : unit_tests_autogen/mocs_compilation.s
-
-# target to generate assembly for a file
-unit_tests_autogen/mocs_compilation.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/unit_tests_autogen/mocs_compilation.cpp.s
-.PHONY : unit_tests_autogen/mocs_compilation.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -863,28 +612,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... install"
-	@echo "... install/local"
-	@echo "... install/strip"
-	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... test"
 	@echo "... gen-inventory_autogen"
 	@echo "... gen-sales_autogen"
-	@echo "... gmock_autogen"
-	@echo "... gmock_main_autogen"
-	@echo "... gtest_autogen"
-	@echo "... gtest_main_autogen"
 	@echo "... main_autogen"
-	@echo "... unit_tests_autogen"
 	@echo "... gen-inventory"
 	@echo "... gen-sales"
-	@echo "... gmock"
-	@echo "... gmock_main"
-	@echo "... gtest"
-	@echo "... gtest_main"
 	@echo "... main"
-	@echo "... unit_tests"
 	@echo "... gen-inventory_autogen/mocs_compilation.o"
 	@echo "... gen-inventory_autogen/mocs_compilation.i"
 	@echo "... gen-inventory_autogen/mocs_compilation.s"
@@ -936,12 +670,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/unit_tests.o"
-	@echo "... src/unit_tests.i"
-	@echo "... src/unit_tests.s"
-	@echo "... unit_tests_autogen/mocs_compilation.o"
-	@echo "... unit_tests_autogen/mocs_compilation.i"
-	@echo "... unit_tests_autogen/mocs_compilation.s"
 .PHONY : help
 
 

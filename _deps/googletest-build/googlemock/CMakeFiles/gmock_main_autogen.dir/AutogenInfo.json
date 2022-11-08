@@ -75,14 +75,7 @@
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 4,
 	"SETTINGS_FILE" : "/home/vbroda/inventory-project/_deps/googletest-build/googlemock/CMakeFiles/gmock_main_autogen.dir/AutogenUsed.txt",
-	"SOURCES" : 
-	[
-		[
-			"/home/vbroda/inventory-project/_deps/googletest-src/googlemock/src/gmock_main.cc",
-			"MU",
-			null
-		]
-	],
+	"SOURCES" : [],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],
 	"UIC_SKIP" : [],

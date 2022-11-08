@@ -6,8 +6,6 @@ file(REMOVE_RECURSE
   "gtest_main_autogen"
   "CMakeFiles/gtest_main.dir/gtest_main_autogen/mocs_compilation.cpp.o"
   "CMakeFiles/gtest_main.dir/gtest_main_autogen/mocs_compilation.cpp.o.d"
-  "CMakeFiles/gtest_main.dir/src/gtest_main.cc.o"
-  "CMakeFiles/gtest_main.dir/src/gtest_main.cc.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
