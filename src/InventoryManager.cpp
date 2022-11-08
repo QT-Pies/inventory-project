@@ -14,7 +14,7 @@ InventoryManager::~InventoryManager() {
 
 int InventoryManager::userInput() {
     std::string argument;
-    std::string name, category, sub_category, expiration, value;
+    std::string name, category, sub_category, expiration, value, location;
     std::string id, backorder, quantity, buyer, seller, date;
     std::string sale_price, buy_price, tax;
     bool valid_transaction;
@@ -49,6 +49,8 @@ int InventoryManager::userInput() {
         std::cin >> category;
         std::cout << "Enter item sub-category: ";
         std::cin >> sub_category;
+        std::cout << "Enter item location: ";
+        std::cin >> location;
         std::cout << "Enter item quantity: ";
         std::cin >> quantity;
         std::cout << "Enter backorder (set to zero unless there is negative stock): ";
@@ -67,11 +69,11 @@ int InventoryManager::userInput() {
         lowerCaseString(category);
         try {
             if (category == "perishable") {
-                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, quantity, backorder, id,
-                                                            sale_price, buy_price, tax, expiration);
+                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, location, quantity,
+                                                            backorder, id, sale_price, buy_price, tax, expiration);
             } else if (category == "nonperishable") {
-                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, quantity, backorder,
-                                                               id, sale_price, buy_price, tax);
+                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, location, quantity,
+                                                               backorder, id, sale_price, buy_price, tax);
             } else {
                 throw std::runtime_error("Invalid category.");
                 return 0;
@@ -172,10 +174,16 @@ int InventoryManager::userInput() {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
-        std::cout << "\nPlease select a category to print or enter an item name.\n";
-        std::cout << "All | Perishable | NonPerishable | Item Name : ";
+        std::cout << "\nPlease select a category to print or an item name.\n";
+        std::cout << "All | Perishable | NonPerishable | Location | Item Name : ";
         std::cin >> category;
-        active_inventory->printItems(category);
+        if (category == "Location") {
+            std::cout << "Location: ";
+            std::cin >> location;
+            active_inventory->printItems(category, location);
+        } else {
+            active_inventory->printItems("", category);
+        }
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
     } else if (argument == "s" || argument == "sales") {
         std::cin.clear();
@@ -245,7 +253,7 @@ int InventoryManager::userInput() {
 }
 
 void InventoryManager::readCSVFile() {
-    std::string name, str_id, cat, sub_cat, qty, back, sale_price;
+    std::string name, str_id, cat, sub_cat, location, qty, back, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;
     std::shared_ptr<Item> new_item;
     unsigned long lines_read, lines_successful, errors;
@@ -275,6 +283,7 @@ void InventoryManager::readCSVFile() {
         getline(csv_file, str_id, ',');
         getline(csv_file, cat, ',');
         getline(csv_file, sub_cat, ',');
+        getline(csv_file, location, ',');
         getline(csv_file, qty, ',');
         getline(csv_file, back, ',');
         getline(csv_file, sale_price, ',');
@@ -287,11 +296,11 @@ void InventoryManager::readCSVFile() {
         try {
             /* Create the Item to be added. */
             if (cat == "Perishable") {
-                new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price, buy_cost,
-                                                            tax, exp);
+                new_item = std::make_shared<PerishableItem>(name, cat, sub_cat, location, qty, back, str_id, sale_price,
+                                                            buy_cost, tax, exp);
             } else if (cat == "NonPerishable") {
-                new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, qty, back, str_id, sale_price,
-                                                               buy_cost, tax);
+                new_item = std::make_shared<NonPerishableItem>(name, cat, sub_cat, location, qty, back, str_id,
+                                                               sale_price, buy_cost, tax);
             } else {
                 throw std::runtime_error("Bad category for Item.");
             }
@@ -333,7 +342,7 @@ int InventoryManager::fileOutput() {
         return -1;
     }
 
-    file << "Name,ID,Category,Sub-Category,Quantity,Backorder,Sale Price,Tax,Total "
+    file << "Name,ID,Category,Sub-Category,Location,Quantity,Backorder,Sale Price,Tax,Total "
             "Price,Buy Cost,Profit,Expiration Date"
          << std::endl;
 
