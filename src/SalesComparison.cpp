@@ -3,8 +3,9 @@
 SalesComparison::SalesComparison() {}
 
 void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
-    std::map<unsigned int, std::map<unsigned int, std::map<unsigned int,
-            std::vector<std::shared_ptr<Transaction> > > > >::iterator yit;
+    std::map<unsigned int,
+             std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >::iterator
+        yit;
     std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator mit;
     std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator dit;
     std::map<int, double>::iterator ait;
@@ -185,20 +186,21 @@ void SalesComparison::printComparison(std::string function, int x) {
 
     if (function == "ByYear") {
         result = compareByYear();
-        fprintf(stdout, "Average sales per year : %.2f\n"
-                        "Sales so far this year : %.2f\n"
-                        "Gain this year vs avg  : %%%.2f\n\n",
+        fprintf(stdout,
+                "Average sales per year : %.2f\n"
+                "Sales so far this year : %.2f\n"
+                "Gain this year vs avg  : %%%.2f\n\n",
                 avgByYear, currentYearSales, result);
     } else if (function == "ByMonth") {
         result = compareByMonth();
-        fprintf(stdout, "Average sales per month %d : %.2f\n"
-                        "Sales so far this month    : %.2f\n"
-                        "Gain this month vs avg     : %%%.2f\n\n",
+        fprintf(stdout,
+                "Average sales per month %d : %.2f\n"
+                "Sales so far this month    : %.2f\n"
+                "Gain this month vs avg     : %%%.2f\n\n",
                 curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result);
     } else if (function == "LastXYears") {
         result = compareLastXYears(x);
-        fprintf(stdout, "Sales so far this year compared to the average over the past %d years : %%%.2f\n",
-                x, result);
+        fprintf(stdout, "Sales so far this year compared to the average over the past %d years : %%%.2f\n", x, result);
     } else if (function == "LastMonth") {
         result = compareLastMonth();
         fprintf(stdout, "Sales so far this month compared to last month so far : %%%.2f\n", result);
@@ -227,15 +229,17 @@ void SalesComparison::printAllComparisons() {
     double result;
 
     result = compareByYear();
-    fprintf(stdout, "Average sales per year : %.2f\n"
-                    "Sales so far this year : %.2f\n"
-                    "Gain this year vs avg  : %%%.2f\n\n",
+    fprintf(stdout,
+            "Average sales per year : %.2f\n"
+            "Sales so far this year : %.2f\n"
+            "Gain this year vs avg  : %%%.2f\n\n",
             avgByYear, currentYearSales, result - 100);
 
     result = compareByMonth();
-    fprintf(stdout, "Average sales per month %d : %.2f\n"
-                    "Sales so far this month    : %.2f\n"
-                    "Gain this month vs avg     : %%%.2f\n\n",
+    fprintf(stdout,
+            "Average sales per month %d : %.2f\n"
+            "Sales so far this month    : %.2f\n"
+            "Gain this month vs avg     : %%%.2f\n\n",
             curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result - 100);
 
     result = compareLastMonth();
@@ -277,7 +281,8 @@ double SalesComparison::compareLastXYears(int x) {
     /* This function will compare up to 10 years in the past, however if there are not 10 years to compare it will
      *  tell you how many years are being compared. */
     num_years = 0;
-    for (yit = salesList->transaction_by_date.end(); yit->first != curr_y - 1; yit--);
+    for (yit = salesList->transaction_by_date.end(); yit->first != curr_y - 1; yit--)
+        ;
     for (yit = yit; yit != salesList->transaction_by_date.begin(); yit--) {
         num_years++;
         if (num_years == x) break;
@@ -290,7 +295,8 @@ double SalesComparison::compareLastXYears(int x) {
     }
 
     total = 0;
-    for (mit = salesByYear.begin(); mit->first <= first_year; mit++);
+    for (mit = salesByYear.begin(); mit->first <= first_year; mit++)
+        ;
     std::cout << mit->first << std::endl;
     for (mit = mit; mit != salesByYear.end(); mit++) {
         total += mit->second;
