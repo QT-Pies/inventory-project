@@ -7,7 +7,7 @@ Sale::~Sale() {}
 
 Transaction::Transaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int y,
                          const unsigned int m, const unsigned int d)
-    : sale_id(sid), year(y), month(m), day(d), buyer(b), seller(s) {
+    : sale_id(sid), buyer(b), seller(s) {
     total_price = 0;
     num_sales = 0;
     date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
@@ -46,32 +46,9 @@ bool Transaction::removeSale(const unsigned long sid, const unsigned long iid, c
     return false;
 }
 
-void Transaction::processTransaction(std::shared_ptr<ActiveInventory> active_inv) {
-    unsigned int i;
-    unsigned long amount;
-
-    for (i = 0; i < sales.size(); i++) {
-        auto s = sales[i];
-        auto item = active_inv->searchById(s->item_id);
-
-        if (item == NULL) {
-            Logger::logError("Invalid item id %lu. Continuing to process.", s->item_id);
-        } else {
-            if (item->quantity < s->num_sold) {
-                amount = s->num_sold - item->quantity;
-                item->quantity = 0;
-                item->backorder += amount;
-
-            } else {
-                item->quantity -= s->num_sold;
-            }
-        }
-    }
-}
-
 SaleList::SaleList() {
-    std::make_unique<std::map<
-        unsigned int, std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > > >(
+    std::make_unique<
+        std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(
         transaction_by_date);
     std::make_unique<std::vector<std::shared_ptr<Transaction> > >(transaction_by_order);
     curr_sale_id = 1;
@@ -96,7 +73,7 @@ void SaleList::newTransaction(const unsigned long sid, const std::string b, cons
                               const unsigned int m, const unsigned int d) {
     auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
     transaction_by_order.push_back(new_transaction);
-    transaction_by_date[y][m][d].push_back(new_transaction);
+    transaction_by_date[y][m][d] = new_transaction;
     curr_transaction = transaction_by_order.size() - 1;
 }
 

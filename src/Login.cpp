@@ -6,12 +6,14 @@ Login::~Login() { /* no deletion required*/
 }
 
 bool Login::createUser(const std::string name, const std::string password, std::string account) {
+    /* Ignore casing on account type */
     lowerCaseString(account);
 
     if (account != "manager" && account != "owner" && account != "employee") {
         Logger::logError("Invalid account type '%s'", account.c_str());
         return false;
     }
+
     if (users.find(name) == users.end()) {
         std::shared_ptr<User> new_user = std::make_shared<User>(name, password, account);
         users[name] = new_user;
@@ -25,10 +27,10 @@ bool Login::createUser(const std::string name, const std::string password, std::
 
 std::shared_ptr<User> Login::userInput() {
     char argument;
-    std::string category, name, password;
+    std::string category, name, password, account;
 
     while (true) {
-        std::cout << "\n(L)ogin, (C)reate User, or (Q)uit: ";
+        std::cout << "\n(L)ogin or (C)reate User: ";
         std::cin >> argument;
 
         switch (argument) {
@@ -63,13 +65,10 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin >> name;
                 std::cout << "Password: ";
                 std::cin >> password;
-                createUser(name, password);
+                std::cout << "Account Type: ";
+                std::cin >> account;
+                createUser(name, password, account);
                 break;
-            }
-            case 'q':
-            case 'Q': {
-                printf("Exiting InventoryManager.\n");
-                return NULL;
             }
             default:
                 break;
@@ -77,6 +76,14 @@ std::shared_ptr<User> Login::userInput() {
 
         std::cin.clear();
         std::cin.ignore(10000, '\n');
+    }
+    return NULL;
+}
+
+std::shared_ptr<User> Login::guiInput(std::string name, std::string password) {
+    auto user = verifyUser(name, password);
+    if (user != NULL) {
+        return user;
     }
     return NULL;
 }
@@ -142,31 +149,4 @@ std::shared_ptr<User> Login::verifyUser(const std::string name, const std::strin
     }
 
     return NULL;
-}
-
-bool Login::changePermission(std::string username, std::string account, std::shared_ptr<User> current_user) {
-    int p;
-
-    p = current_user->getPermissionLevel(account);
-
-    if (p == -1) return false;
-
-    auto it = users.find(username);
-    if (it != users.end()) {
-        /* if the current_user's permissions are greater than or equal to the account it is updating too and
-           the current_user's permissions are greater then the user account is is updating then update
-           */
-        if (current_user->permission >= p && current_user->permission > it->second->permission) {
-            if (it->second->updateAccount(account)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            Logger::logWarn("User %s does not have the required permissions to change permissions of user '%s'.",
-                            current_user->name.c_str(), username.c_str());
-        }
-    }
-
-    return false;
 }

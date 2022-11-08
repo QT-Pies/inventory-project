@@ -1,8 +1,7 @@
 #include "Item.hpp"
 
 Item::Item(const std::string &nm, const std::string &cat, const std::string &sub_cat, const std::string &qty,
-           const std::string &back, const std::string &idd, const std::string &price, const std::string &cost,
-           const std::string &tx) {
+           const std::string &back, const std::string &idd, const std::string &price, const std::string &cost, const std::string &tx) {
     /* Validate input */
     setValue("name", nm);
     setValue("category", cat);
@@ -31,7 +30,7 @@ void Item::setValue(std::string key, const std::string &value) {
         } else if (key == "quantity") {
             quantity = toUnsignedLong(value);
         } else if (key == "backorder") {
-            backorder = toUnsignedLong(value);
+            backorder = toUnsignedLong(value); 
         } else if (key == "id") {
             id = toUnsignedLong(value);
         } else if (key == "sale_price") {

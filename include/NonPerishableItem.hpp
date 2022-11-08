@@ -18,8 +18,7 @@ class NonPerishableItem : public Item {
      * @param std::string Tax
      */
     NonPerishableItem(const std::string&, const std::string&, const std::string&, const std::string&,
-                      const std::string&, const std::string&, const std::string&, const std::string&,
-                      const std::string&);
+                      const std::string&, const std::string&, const std::string&, const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     ~NonPerishableItem() override;
