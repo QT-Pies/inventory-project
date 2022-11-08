@@ -1,4 +1,4 @@
-#include "loginscreen.hpp"
+#include "LoginScreen.hpp"
 
 LoginScreen::LoginScreen(QWidget *parent) :
     QWidget(parent)
@@ -70,6 +70,8 @@ void LoginScreen::loginApp() {
     if(im->guiLogin(un.toStdString(), pas.toStdString())) {
         QMessageBox::information(w, "Login", "Loggin Sucsessful");
         w->hide();
+        inventoryWindow = new InventoryScreen();
+        inventoryWindow->OpenWindow(im);
     }
     else {
         QMessageBox::warning(w,"Login", "Username and/or password is incorrect");

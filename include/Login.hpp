@@ -35,6 +35,10 @@ class Login {
      */
     std::shared_ptr<User> userInput();
 
+    /*
+     * @breif user will be able to login from the GUI
+     * @return shared_ptr<User>
+    */
     std::shared_ptr<User> guiInput(std::string, std::string);
 
     /*

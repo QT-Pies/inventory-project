@@ -3,7 +3,7 @@
 
 
 #include "InventoryManager.hpp"
-#include "loginscreen.hpp"
+#include "LoginScreen.hpp"
 
 /* Entry point for InventoryManager */
 int main(int argc, char** argv) {
@@ -24,10 +24,12 @@ int main(int argc, char** argv) {
         // may want to change the first screen to be a welcome screen
         // this would just say the files it will try to read in
         // then the user hits a button to take them to the login screen
-        // maybe just have it automatically open the loginscreen
+        // or maybe just have it automatically open the loginscreen
         // either way, both windows should be open and functional
         // but once login in is sucsessful, they will close and the next window will open
         // this will just be a list of the inventory right now
+        // Will also want to add way to create user in the login screen
+        // again will just want to add a button for this
         LoginScreen ls;
         ls.openWindow(csv_file);
 

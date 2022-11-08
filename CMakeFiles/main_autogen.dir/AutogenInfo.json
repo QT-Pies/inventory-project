@@ -373,10 +373,11 @@
 		[ "/home/vbroda/inventory-project/src/ActiveInventory.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/HelperFunctions.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/InventoryManager.cpp", "MU", null ],
+		[ "/home/vbroda/inventory-project/src/InventoryScreen.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/Login.cpp", "MU", null ],
+		[ "/home/vbroda/inventory-project/src/LoginScreen.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/Sales.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/User.cpp", "MU", null ],
-		[ "/home/vbroda/inventory-project/src/loginscreen.cpp", "MU", null ],
 		[ "/home/vbroda/inventory-project/src/main.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],

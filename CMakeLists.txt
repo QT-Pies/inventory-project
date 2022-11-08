@@ -53,7 +53,8 @@ add_executable(main
   src/Login.cpp
   src/User.cpp
   src/Sales.cpp
-  src/loginscreen.cpp 
+  src/LoginScreen.cpp 
+  src/InventoryScreen.cpp
   src/main.cpp
 )
 

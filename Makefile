@@ -437,6 +437,30 @@ src/InventoryManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryManager.cpp.s
 .PHONY : src/InventoryManager.cpp.s
 
+src/InventoryScreen.o: src/InventoryScreen.cpp.o
+.PHONY : src/InventoryScreen.o
+
+# target to build an object file
+src/InventoryScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryScreen.cpp.o
+.PHONY : src/InventoryScreen.cpp.o
+
+src/InventoryScreen.i: src/InventoryScreen.cpp.i
+.PHONY : src/InventoryScreen.i
+
+# target to preprocess a source file
+src/InventoryScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryScreen.cpp.i
+.PHONY : src/InventoryScreen.cpp.i
+
+src/InventoryScreen.s: src/InventoryScreen.cpp.s
+.PHONY : src/InventoryScreen.s
+
+# target to generate assembly for a file
+src/InventoryScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/InventoryScreen.cpp.s
+.PHONY : src/InventoryScreen.cpp.s
+
 src/Login.o: src/Login.cpp.o
 .PHONY : src/Login.o
 
@@ -460,6 +484,30 @@ src/Login.s: src/Login.cpp.s
 src/Login.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/Login.cpp.s
 .PHONY : src/Login.cpp.s
+
+src/LoginScreen.o: src/LoginScreen.cpp.o
+.PHONY : src/LoginScreen.o
+
+# target to build an object file
+src/LoginScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/LoginScreen.cpp.o
+.PHONY : src/LoginScreen.cpp.o
+
+src/LoginScreen.i: src/LoginScreen.cpp.i
+.PHONY : src/LoginScreen.i
+
+# target to preprocess a source file
+src/LoginScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/LoginScreen.cpp.i
+.PHONY : src/LoginScreen.cpp.i
+
+src/LoginScreen.s: src/LoginScreen.cpp.s
+.PHONY : src/LoginScreen.s
+
+# target to generate assembly for a file
+src/LoginScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/LoginScreen.cpp.s
+.PHONY : src/LoginScreen.cpp.s
 
 src/Sales.o: src/Sales.cpp.o
 .PHONY : src/Sales.o
@@ -557,30 +605,6 @@ src/User.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/User.cpp.s
 .PHONY : src/User.cpp.s
 
-src/loginscreen.o: src/loginscreen.cpp.o
-.PHONY : src/loginscreen.o
-
-# target to build an object file
-src/loginscreen.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.o
-.PHONY : src/loginscreen.cpp.o
-
-src/loginscreen.i: src/loginscreen.cpp.i
-.PHONY : src/loginscreen.i
-
-# target to preprocess a source file
-src/loginscreen.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.i
-.PHONY : src/loginscreen.cpp.i
-
-src/loginscreen.s: src/loginscreen.cpp.s
-.PHONY : src/loginscreen.s
-
-# target to generate assembly for a file
-src/loginscreen.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/loginscreen.cpp.s
-.PHONY : src/loginscreen.cpp.s
-
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -649,9 +673,15 @@ help:
 	@echo "... src/InventoryManager.o"
 	@echo "... src/InventoryManager.i"
 	@echo "... src/InventoryManager.s"
+	@echo "... src/InventoryScreen.o"
+	@echo "... src/InventoryScreen.i"
+	@echo "... src/InventoryScreen.s"
 	@echo "... src/Login.o"
 	@echo "... src/Login.i"
 	@echo "... src/Login.s"
+	@echo "... src/LoginScreen.o"
+	@echo "... src/LoginScreen.i"
+	@echo "... src/LoginScreen.s"
 	@echo "... src/Sales.o"
 	@echo "... src/Sales.i"
 	@echo "... src/Sales.s"
@@ -664,9 +694,6 @@ help:
 	@echo "... src/User.o"
 	@echo "... src/User.i"
 	@echo "... src/User.s"
-	@echo "... src/loginscreen.o"
-	@echo "... src/loginscreen.i"
-	@echo "... src/loginscreen.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

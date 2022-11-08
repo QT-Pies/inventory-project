@@ -49,9 +49,14 @@ class InventoryManager {
      */
     bool userLogin();
 
+    /*
+     * @breif trys to login from inputs from the GUI
+     * @return true if successful login and false if not
+     */
     bool guiLogin(std::string, std::string);
 
    private:
+    friend class InventoryScreen;
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};

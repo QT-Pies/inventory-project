@@ -50,6 +50,7 @@ class Item {
    private:
     friend class ActiveInventory;
     friend class InventoryManager;
+    friend class InventoryScreen;
 
    protected:
     std::string name;
