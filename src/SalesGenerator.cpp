@@ -140,7 +140,7 @@ std::string MockTransaction::getRandomName() {
 
 void MockTransaction::print(std::ostream& out) {
     out << id << ',';
-    out << date.year << '/' << date.month << '/' << date.day << ',';
+    out << date.month << '/' << date.day << '/' << date.year << ',';
     out << total_price << ',' << quantity_of_items << ',';
     out << buyer << ',' << seller << std::endl;
 }
