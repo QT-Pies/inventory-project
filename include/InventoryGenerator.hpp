@@ -70,7 +70,7 @@ class InventoryGenerator {
     bool isBadKey(const std::string&);
 
     /* Expected columns */
-    const std::vector<std::string> columns = {"Name",        "ID",         "Category",   "Sub-Category",
+    const std::vector<std::string> columns = {"Name",        "ID",         "Category",   "Sub-Category", "Location",
                                               "Quantity",    "Back Order", "Sale Price", "Tax",
                                               "Total Price", "Buy Cost",   "Profit",     "Expiration Date"};
 
