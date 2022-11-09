@@ -1,6 +1,6 @@
 CC = g++
 INCLUDES = -I./include
-CFLAGS = -g -Wall -Werror -Wno-format-security -std=c++17 $(INCLUDES) -O3
+CFLAGS = -g -Wall -Werror -Wno-self-assign-overloaded -Wno-format-security -std=c++17 $(INCLUDES) -O3
 
 EXECUTABLES = bin/main bin/gen-inventory bin/unit_tests bin/gen-sales
 
