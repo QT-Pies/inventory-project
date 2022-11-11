@@ -473,3 +473,31 @@ double SalesComparison::compareYesterday() {
         return 0;
     }
 }
+
+void SalesComparison::suggestSale() {
+    double worst_perc;
+    unsigned long worst_id;
+    std::string ret;
+    std::map<unsigned long, double>::iterator it;
+
+    worst_perc = 1000000000000000000000.0;
+    worst_id = -1;
+    for (it = currentMonthItemIds.begin(); it != currentMonthItemIds.end(); it++) {
+        if (it->second / (itemIdsByMonth[curr_m][it->first] * (1 - daysLeftMonth)) < worst_perc) {
+            // printf("id : %lu     total : %f\n", it->first, it->second);
+            // printf("itemIdsByMonth[%u][%lu] : %f\n", curr_m, it->first, (itemIdsByMonth[curr_m][it->first] * (1 -
+            // daysLeftMonth)));
+            worst_perc = it->second / (itemIdsByMonth[curr_m][it->first] * (1 - daysLeftMonth));
+            worst_id = it->first;
+        }
+    }
+
+    if (worst_perc <= 0.85) {
+        printf(
+            "We suggest a sale on item id %lu.\n"
+            "Yours sales this month are %.2f%% of the average from this month in previous years.\n",
+            worst_id, worst_perc);
+    } else {
+        printf("All items are selling well.\nNo sale suggested.\n");
+    }
+}
