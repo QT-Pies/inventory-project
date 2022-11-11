@@ -43,7 +43,7 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
                             currentMonthSales += yit->second[i]->total_price;
                             for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
                                 currentMonthItemIds[yit->second[i]->sales[j]->item_id] +=
-                                        yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                                    yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
                             }
                         }
                         if (dit->first == curr_d) {
@@ -57,9 +57,8 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
                         salesByYear[yit->second[i]->year] += yit->second[i]->total_price;
                         salesByMonth[yit->second[i]->month] += yit->second[i]->total_price;
                         for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
-                            //std::cout << itemIdsByMonth[yit->second[i]->month][yit->second[i]->sales[j]->item_id] << std::endl;
                             itemIdsByMonth[yit->second[i]->month][yit->second[i]->sales[j]->item_id] +=
-                                    yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                                yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
                         }
                     }
                 }
@@ -81,9 +80,7 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
 
     for (it = itemIdsByMonth.begin(); it != itemIdsByMonth.end(); it++) {
         for (idIt = it->second.begin(); idIt != it->second.end(); idIt++) {
-            //printf("idIt->second : %f\nnumYears : %f\n", idIt->second, numYears);
             idIt->second /= numYears;
-            //printf("new idIt->second : %f\n", idIt->second);
         }
     }
 
@@ -476,4 +473,3 @@ double SalesComparison::compareYesterday() {
         return 0;
     }
 }
-
