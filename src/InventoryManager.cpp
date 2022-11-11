@@ -26,7 +26,7 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, "
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (SS)Suggest Sale, "
                  "(P)rint, (L)ogout, or (Q)uit: ";
     std::cin >> argument;
     lowerCaseString(argument);
@@ -169,6 +169,9 @@ int InventoryManager::userInput() {
         } else if (category == "Yesterday") {
             sales_comp->printComparison("Yesterday", 0);
         }
+    } else if (argument == "ss" || argument == "suggest") {
+        std::cout << std::endl;
+        sales_comp->suggestSale();
 
     } else if (argument == "p" || argument == "print") {
         std::cin.clear();
@@ -185,7 +188,7 @@ int InventoryManager::userInput() {
             active_inventory->printItems("", category);
         }
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
-    }  else if (argument == "s" || argument == "sales") {
+    } else if (argument == "s" || argument == "sales") {
         std::cin.clear();
         std::cin.ignore(10000, '\n');
 
@@ -212,14 +215,14 @@ int InventoryManager::userInput() {
 
             if (item_ptr != NULL) {
                 sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
-                        sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
+                    sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
                 valid_transaction = true;
             } else
                 Logger::logWarn("Invalid item -- continuing to read.");
         }
 
         /* if no valid sales are added to the transaction, then it is deleted, once proper delete feture is added
-        * this will be changed */
+         * this will be changed */
         if (valid_transaction == false) {
             Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
             sale_list->transaction_by_order.pop_back();
