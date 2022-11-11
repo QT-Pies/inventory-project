@@ -32,6 +32,7 @@ class Sale {
    private:
     friend class Transaction;
     friend class SaleList;
+    friend class SalesComparison;
 
    protected:
     unsigned long sale_id, item_id, num_sold;
