@@ -41,8 +41,8 @@ class SalesComparison {
     /*
      * @brief The compareLast functions will compare sales from your current year, month, or day with data from the
      * past 10 years, 5 years, month, 7days, or just yesterday.
-     * @param int number of years to compare
-     * @return %difference of current / past.
+     * @param int - number of years to compare
+     * @return %difference of current / past
      */
     double compareLastXYears(int);
     double compareLastMonth();
@@ -53,10 +53,12 @@ class SalesComparison {
     std::map<int, double> salesByYear;   // This will store all past sales totals based on the year.
     double avgByYear;                    // This will store the average of all past sales totals based on the year.
     std::map<int, double> salesByMonth;  // This will store all past sales totals based on the month of the year.
+    std::map<int, std::map<unsigned long, double> > itemIdsByMonth; //This stores item totals averaged by month.
+    std::map<unsigned long, double> currentMonthItemIds; //This stores this month's total items by id.
     std::map<int, double> avgByMonth;    // This will store the average of all past sales totals based on the month.
-    double currentYearSales;             // This will store the running sales total of the current year.
-    double currentMonthSales;            // This will store the running sales total of the current month.
-    double currentDaySales;              // This will store the running sales total of the day.
+    double currentYearSales = 0;             // This will store the running sales total of the current year.
+    double currentMonthSales = 0;            // This will store the running sales total of the current month.
+    double currentDaySales = 0;              // This will store the running sales total of the day.
     unsigned int curr_y, curr_m, curr_d;
     double daysLeftYear;
     double daysLeftMonth;

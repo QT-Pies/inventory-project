@@ -5,12 +5,14 @@ SalesComparison::SalesComparison() {}
 void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     std::map<unsigned int,
              std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >::iterator
-        yit;
-    std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator mit;
-    std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator dit;
+        mit;
+    std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator dit;
+    std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator yit;
     std::map<int, double>::iterator ait;
+    std::map<int, std::map<unsigned long, double> >::iterator it;
+    std::map<unsigned long, double>::iterator idIt;
     double numYears, totalYears;
-    unsigned int month, day;
+    unsigned int month;
     time_t current_date;
 
     // getting current date to check if transactions have been added on the same day
@@ -24,38 +26,42 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     totalYears = 0;
     salesList = sale_list;
     /* Here we traverse all stored transactions and add their data to the needed maps. */
-    for (yit = sale_list->transaction_by_date.begin(); yit != sale_list->transaction_by_date.end(); yit++) {
+    for (mit = sale_list->transaction_by_date.begin(); mit != sale_list->transaction_by_date.end(); mit++) {
         numYears++;
-        month = 0;
-        for (mit = yit->second.begin(); mit != yit->second.end(); mit++) {
-            month++;
-            day = 1;
-            for (dit = mit->second.begin(); dit != mit->second.end(); dit++) {
-                if (yit->first == curr_y && month <= curr_m) {
-                    for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        if (month < curr_m || day <= curr_d) {
-                            currentYearSales += dit->second[i]->total_price;
+        for (dit = mit->second.begin(); dit != mit->second.end(); dit++) {
+            for (yit = dit->second.begin(); yit != dit->second.end(); yit++) {
+                if (yit->first == curr_y && mit->first <= curr_m) {
+                    for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                        if (mit->first < curr_m || dit->first <= curr_d) {
+                            currentYearSales += yit->second[i]->total_price;
                         } else {
-                            salesByYear[dit->second[i]->year] += dit->second[i]->total_price;
+                            salesByYear[yit->second[i]->year] += yit->second[i]->total_price;
                         }
                     }
-                    if (month == curr_m && day <= curr_d) {
-                        for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                            currentMonthSales += dit->second[i]->total_price;
+                    if (mit->first == curr_m && dit->first <= curr_d) {
+                        for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                            currentMonthSales += yit->second[i]->total_price;
+                            for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
+                                currentMonthItemIds[yit->second[i]->sales[j]->item_id] +=
+                                    yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                            }
                         }
-                        if (day == curr_d) {
-                            for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                                currentDaySales += dit->second[i]->total_price;
+                        if (dit->first == curr_d) {
+                            for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                                currentDaySales += yit->second[i]->total_price;
                             }
                         }
                     }
                 } else {
-                    for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        salesByYear[dit->second[i]->year] += dit->second[i]->total_price;
-                        salesByMonth[dit->second[i]->month] += dit->second[i]->total_price;
+                    for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                        salesByYear[yit->second[i]->year] += yit->second[i]->total_price;
+                        salesByMonth[yit->second[i]->month] += yit->second[i]->total_price;
+                        for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
+                            itemIdsByMonth[yit->second[i]->month][yit->second[i]->sales[j]->item_id] +=
+                                yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                        }
                     }
                 }
-                day++;
             }
         }
     }
@@ -70,6 +76,12 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     for (ait = salesByMonth.begin(); ait != salesByMonth.end(); ait++) {
         avgByMonth[month] = ait->second / numYears;
         month++;
+    }
+
+    for (it = itemIdsByMonth.begin(); it != itemIdsByMonth.end(); it++) {
+        for (idIt = it->second.begin(); idIt != it->second.end(); idIt++) {
+            idIt->second /= numYears;
+        }
     }
 
     /* Now we set the percent of the year and month that is left. */
@@ -187,15 +199,15 @@ void SalesComparison::printComparison(std::string function, int x) {
     if (function == "ByYear") {
         result = compareByYear();
         fprintf(stdout,
-                "Average sales per year : %.2f\n"
-                "Sales so far this year : %.2f\n"
+                "Average sales per year : $%.2f\n"
+                "Sales so far this year : $%.2f\n"
                 "Gain this year vs avg  : %%%.2f\n\n",
                 avgByYear, currentYearSales, result);
     } else if (function == "ByMonth") {
         result = compareByMonth();
         fprintf(stdout,
-                "Average sales per month %d : %.2f\n"
-                "Sales so far this month    : %.2f\n"
+                "Average sales per month %d : $%.2f\n"
+                "Sales so far this month    : $%.2f\n"
                 "Gain this month vs avg     : %%%.2f\n\n",
                 curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result);
     } else if (function == "LastXYears") {
@@ -230,15 +242,15 @@ void SalesComparison::printAllComparisons() {
 
     result = compareByYear();
     fprintf(stdout,
-            "Average sales per year : %.2f\n"
-            "Sales so far this year : %.2f\n"
+            "Average sales per year : $%.2f\n"
+            "Sales so far this year : $%.2f\n"
             "Gain this year vs avg  : %%%.2f\n\n",
             avgByYear, currentYearSales, result - 100);
 
     result = compareByMonth();
     fprintf(stdout,
-            "Average sales per month %d : %.2f\n"
-            "Sales so far this month    : %.2f\n"
+            "Average sales per month %d : $%.2f\n"
+            "Sales so far this month    : $%.2f\n"
             "Gain this month vs avg     : %%%.2f\n\n",
             curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result - 100);
 
