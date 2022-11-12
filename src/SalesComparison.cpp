@@ -199,15 +199,15 @@ void SalesComparison::printComparison(std::string function, int x) {
     if (function == "ByYear") {
         result = compareByYear();
         fprintf(stdout,
-                "Average sales per year : %.2f\n"
-                "Sales so far this year : %.2f\n"
+                "Average sales per year : $%.2f\n"
+                "Sales so far this year : $%.2f\n"
                 "Gain this year vs avg  : %%%.2f\n\n",
                 avgByYear, currentYearSales, result);
     } else if (function == "ByMonth") {
         result = compareByMonth();
         fprintf(stdout,
-                "Average sales per month %d : %.2f\n"
-                "Sales so far this month    : %.2f\n"
+                "Average sales per month %d : $%.2f\n"
+                "Sales so far this month    : $%.2f\n"
                 "Gain this month vs avg     : %%%.2f\n\n",
                 curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result);
     } else if (function == "LastXYears") {
@@ -242,15 +242,15 @@ void SalesComparison::printAllComparisons() {
 
     result = compareByYear();
     fprintf(stdout,
-            "Average sales per year : %.2f\n"
-            "Sales so far this year : %.2f\n"
+            "Average sales per year : $%.2f\n"
+            "Sales so far this year : $%.2f\n"
             "Gain this year vs avg  : %%%.2f\n\n",
             avgByYear, currentYearSales, result - 100);
 
     result = compareByMonth();
     fprintf(stdout,
-            "Average sales per month %d : %.2f\n"
-            "Sales so far this month    : %.2f\n"
+            "Average sales per month %d : $%.2f\n"
+            "Sales so far this month    : $%.2f\n"
             "Gain this month vs avg     : %%%.2f\n\n",
             curr_m, avgByMonth[curr_m] * (1 - daysLeftMonth), currentMonthSales, result - 100);
 
