@@ -56,20 +56,20 @@ class SalesComparison {
     double compareLast7Days();
     double compareYesterday();
 
-    std::shared_ptr<SaleList> salesList;
-    std::map<int, double> salesByYear;   // This will store all past sales totals based on the year.
-    double avgByYear;                    // This will store the average of all past sales totals based on the year.
-    std::map<int, double> salesByMonth;  // This will store all past sales totals based on the month of the year.
-    std::map<int, std::map<unsigned long, double> > itemIdsByMonth;  // This stores item totals averaged by month.
-    std::map<unsigned long, double> currentMonthItemIds;             // This stores this month's total items by id.
-    std::map<int, double> avgByMonth;  // This will store the average of all past sales totals based on the month.
-    double currentYearSales = 0;       // This will store the running sales total of the current year.
-    double currentMonthSales = 0;      // This will store the running sales total of the current month.
-    double currentDaySales = 0;        // This will store the running sales total of the day.
+    std::shared_ptr<SaleList> sales_list;
+    std::map<int, double> sales_by_year;   // This will store all past sales totals based on the year.
+    double avg_by_year;                    // This will store the average of all past sales totals based on the year.
+    std::map<int, double> sales_by_month;  // This will store all past sales totals based on the month of the year.
+    std::map<int, std::map<unsigned long, double> > item_ids_by_month;  // This stores item totals averaged by month.
+    std::map<unsigned long, double> current_month_item_ids;             // This stores this month's total items by id.
+    std::map<int, double> avg_by_month;  // This will store the average of all past sales totals based on the month.
+    double current_year_sales = 0;       // This will store the running sales total of the current year.
+    double current_month_sales = 0;      // This will store the running sales total of the current month.
+    double current_day_sales = 0;        // This will store the running sales total of the day.
     unsigned int curr_y, curr_m, curr_d;
-    double daysLeftYear;
-    double daysLeftMonth;
-    std::vector<int> daysInMonth;
+    double days_left_year;
+    double days_left_month;
+    std::vector<int> days_in_month;
 };
 
 #endif /* SALES_COMPARISON_HPP */
