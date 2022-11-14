@@ -1,6 +1,8 @@
 #ifndef SALES_COMPARISON_HPP
 #define SALES_COMPARISON_HPP
 
+#include <set>
+
 #include "Sales.hpp"
 
 class SalesComparison {
@@ -57,6 +59,7 @@ class SalesComparison {
     double compareYesterday();
 
     std::shared_ptr<SaleList> sales_list;
+    std::set<unsigned long> years;         // This holds the years that have sales stored.
     std::map<int, double> sales_by_year;   // This will store all past sales totals based on the year.
     double avg_by_year;                    // This will store the average of all past sales totals based on the year.
     std::map<int, double> sales_by_month;  // This will store all past sales totals based on the month of the year.
