@@ -231,12 +231,36 @@ int InventoryManager::userInput() {
     return 0;
 }
 
+int InventoryManager::displayInventory() {
+    auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
+    //auto table = std::make_shared<QTableWidget>(item_count, 0, nullptr);
+    
+    int row;
+
+    QStringList inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+
+    auto table = new QTableWidget(item_count + 1, static_cast<int>(inv_header.size()), nullptr);
+    table->setHorizontalHeaderLabels(inv_header);
+    
+    row = 0;
+    /* Load in inventory */
+    for (auto it = active_inventory->inv_by_id.begin(); it != active_inventory->inv_by_id.end(); ++it, ++row) {
+        auto name = QString::fromStdString(it->second->name);
+        //auto entry = std::make_shared<QTableWidgetItem>(name, 0);
+        auto entry = new QTableWidgetItem(name, 0);
+        table->setItem(row, 0, entry);
+    }
+
+    table->show();
+    return 0;
+}
+
 int InventoryManager::guiInput(int argc, char** argv) {
-    QApplication app(argc, argv);
-    QPushButton HelloWorld("Hello, World!");
-    HelloWorld.resize(960,540);
-    HelloWorld.show();
-    app.exec();
+    app = std::make_shared<QApplication>(argc, argv);
+
+    displayInventory();
+
+    app->exec();
     return 0;
 }
 

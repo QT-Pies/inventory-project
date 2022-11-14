@@ -7,7 +7,10 @@
 #include <string>
 #include <QApplication>
 #include <QPushButton>
-
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QString>
+#include <QStringList>
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -34,6 +37,11 @@ class InventoryManager {
      * @return 0 on success, -1 on failure
      */
     int userInput();
+
+    /*
+     * @brief temp function to display inventory.
+    */
+    int displayInventory();
 
     /*
      * @brief Starts up a Qt application of the IM.
@@ -73,6 +81,8 @@ class InventoryManager {
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
     std::string file_name;
+
+    std::shared_ptr<QApplication> app;
 };
 
 #endif
