@@ -1,6 +1,4 @@
 #include <iostream>
-#include <QApplication>
-#include <QPushButton>
 
 #include "InventoryManager.hpp"
 
@@ -18,26 +16,22 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    if (!command_line) {
-        QApplication app(argc, argv);
-        QPushButton HelloWorld("Hello, World!");
-        HelloWorld.resize(300,60);
-        HelloWorld.show();
-        return app.exec();
-    }
-
     InventoryManager im(command_line, csv_file);
 
     /* Wrap program in try/catch in case of uncaught exception, we can print it out here. */
     try {
         im.readCSVFile();
 
-        if (im.userLogin()) {
-            while (true) {
-                if (im.userInput() == -1) break;
+        if (command_line) {
+            if (im.userLogin()) {
+                while (true) {
+                    if (im.userInput() == -1) break;
+                }
             }
         }
-
+        else {
+            im.guiInput(argc, argv);
+        }
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
 

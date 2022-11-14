@@ -231,6 +231,15 @@ int InventoryManager::userInput() {
     return 0;
 }
 
+int InventoryManager::guiInput(int argc, char** argv) {
+    QApplication app(argc, argv);
+    QPushButton HelloWorld("Hello, World!");
+    HelloWorld.resize(960,540);
+    HelloWorld.show();
+    app.exec();
+    return 0;
+}
+
 void InventoryManager::readCSVFile() {
     std::string name, str_id, cat, sub_cat, qty, back, sale_price;
     std::string tax, total_price, buy_cost, profit, exp, tmp_line;

@@ -5,6 +5,9 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <QApplication>
+#include <QPushButton>
+
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -31,6 +34,12 @@ class InventoryManager {
      * @return 0 on success, -1 on failure
      */
     int userInput();
+
+    /*
+     * @brief Starts up a Qt application of the IM.
+     * @return 0 on success, -1 on failure.
+    */
+    int guiInput(int, char**);
 
     /*
      * @brief Reads in CSV file and stores it into active_inventory
