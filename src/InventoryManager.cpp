@@ -161,6 +161,11 @@ int InventoryManager::userInput() {
         } else if (category == "X_Years") {
             std::cout << "Number of years to compare : ";
             std::cin >> x;
+            while (x <= 0) {
+                std::cout << "Invalid number of years. Try again.\n";
+                std::cout << "Number of years to compare : ";
+                std::cin >> x;
+            }
             sales_comp->printComparison("LastXYears", x);
         } else if (category == "Last_Month") {
             sales_comp->printComparison("LastMonth", 0);
