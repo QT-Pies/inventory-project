@@ -101,3 +101,8 @@ add_executable(unit_tests
 
 # Link GTest
 target_link_libraries(unit_tests GTest::gtest)
+target_link_libraries(unit_tests
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Widgets
+)
