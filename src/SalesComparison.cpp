@@ -27,44 +27,47 @@ void SalesComparison::setup(std::shared_ptr<SaleList> sale_list) {
     sales_list = sale_list;
     /* Here we traverse all stored transactions and add their data to the needed maps. */
     for (mit = sale_list->transaction_by_date.begin(); mit != sale_list->transaction_by_date.end(); mit++) {
-        numYears++;
         for (dit = mit->second.begin(); dit != mit->second.end(); dit++) {
             for (yit = dit->second.begin(); yit != dit->second.end(); yit++) {
-                if (yit->first == curr_y && mit->first <= curr_m) {
-                    for (long unsigned int i = 0; i < yit->second.size(); i++) {
-                        if (mit->first < curr_m || dit->first <= curr_d) {
-                            current_year_sales += yit->second[i]->total_price;
-                        } else {
-                            sales_by_year[yit->second[i]->year] += yit->second[i]->total_price;
-                        }
-                    }
-                    if (mit->first == curr_m && dit->first <= curr_d) {
+                years.insert(yit->first);
+                if (yit->first == curr_y) {
+                    if (mit->first <= curr_m) {
                         for (long unsigned int i = 0; i < yit->second.size(); i++) {
-                            current_month_sales += yit->second[i]->total_price;
-                            for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
-                                current_month_item_ids[yit->second[i]->sales[j]->item_id] +=
-                                    yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                            if (mit->first < curr_m || dit->first <= curr_d) {
+                                current_year_sales += yit->second[i]->total_price;
+                            } else {
+                                sales_by_year[yit->second[i]->year] += yit->second[i]->total_price;
                             }
                         }
-                        if (dit->first == curr_d) {
+                        if (mit->first == curr_m && dit->first <= curr_d) {
                             for (long unsigned int i = 0; i < yit->second.size(); i++) {
-                                current_day_sales += yit->second[i]->total_price;
+                                current_month_sales += yit->second[i]->total_price;
+                                for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
+                                    current_month_item_ids[yit->second[i]->sales[j]->item_id] +=
+                                        yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
+                                }
+                            }
+                            if (dit->first == curr_d) {
+                                for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                                    current_day_sales += yit->second[i]->total_price;
+                                }
                             }
                         }
                     }
-                } else {
-                    for (long unsigned int i = 0; i < yit->second.size(); i++) {
-                        sales_by_year[yit->second[i]->year] += yit->second[i]->total_price;
-                        sales_by_month[yit->second[i]->month] += yit->second[i]->total_price;
-                        for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
-                            item_ids_by_month[yit->second[i]->month][yit->second[i]->sales[j]->item_id] +=
-                                yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
-                        }
+                }
+                for (long unsigned int i = 0; i < yit->second.size(); i++) {
+                    sales_by_year[yit->second[i]->year] += yit->second[i]->total_price;
+                    sales_by_month[yit->second[i]->month] += yit->second[i]->total_price;
+                    for (long unsigned int j = 0; j < yit->second[i]->sales.size(); j++) {
+                        item_ids_by_month[yit->second[i]->month][yit->second[i]->sales[j]->item_id] +=
+                            yit->second[i]->sales[j]->sale_price * yit->second[i]->sales[j]->num_sold;
                     }
                 }
             }
         }
     }
+
+    numYears = years.size();
 
     /* Now we set average sales. */
     for (ait = sales_by_year.begin(); ait != sales_by_year.end(); ait++) {
@@ -201,32 +204,33 @@ void SalesComparison::printComparison(std::string function, int x) {
         fprintf(stdout,
                 "Average sales per year : $%.2f\n"
                 "Sales so far this year : $%.2f\n"
-                "Gain this year vs avg  : %%%.2f\n\n",
-                avg_by_year, current_year_sales, result);
+                "%% Gain this year vs avg : %.2f\n\n",
+                avg_by_year, current_year_sales, result - 100);
     } else if (function == "ByMonth") {
         result = compareByMonth();
         fprintf(stdout,
-                "Average sales per month %d : $%.2f\n"
-                "Sales so far this month    : $%.2f\n"
-                "Gain this month vs avg     : %%%.2f\n\n",
-                curr_m, avg_by_month[curr_m] * (1 - days_left_month), current_month_sales, result);
+                "Average sales per month %d  : $%.2f\n"
+                "Sales so far this month     : $%.2f\n"
+                "%% Gain this month vs avg    : %.2f\n\n",
+                curr_m, avg_by_month[curr_m] * (1 - days_left_month), current_month_sales, result - 100);
     } else if (function == "LastXYears") {
         result = compareLastXYears(x);
-        fprintf(stdout, "Sales so far this year compared to the average over the past %d years : %%%.2f\n", x, result);
+        fprintf(stdout, "%% Sales so far this year compared to the average over the past %d years : %.2f\n", x,
+                result - 100);
     } else if (function == "LastMonth") {
         result = compareLastMonth();
-        fprintf(stdout, "Sales so far this month compared to last month so far : %%%.2f\n", result);
+        fprintf(stdout, "%% Sales so far this month compared to last month so far : %.2f\n", result - 100);
     } else if (function == "Last7Days") {
         result = compareLast7Days();
         fprintf(stdout,
-                "Sales over the past 7 days compared to today : %%%.2f\n"
+                "%% Sales over the past 7 days compared to today : %.2f\n"
                 "***This number will be lower earlier in the day and only\n"
                 " shows an accurate comparison at the end of the day.***\n",
                 result - 100);
     } else if (function == "Yesterday") {
         result = compareYesterday();
         fprintf(stdout,
-                "Yesterdays sales compared to today : %%%.2f\n"
+                "%% Yesterdays sales compared to today : %.2f\n"
                 "***This number will be lower earlier in the day and only\n"
                 " shows an accurate comparison at the end of the day.***\n",
                 result - 100);
@@ -242,31 +246,31 @@ void SalesComparison::printAllComparisons() {
 
     result = compareByYear();
     fprintf(stdout,
-            "Average sales per year : $%.2f\n"
-            "Sales so far this year : $%.2f\n"
-            "Gain this year vs avg  : %%%.2f\n\n",
+            "Average sales per year  : $%.2f\n"
+            "Sales so far this year  : $%.2f\n"
+            "%% Gain this year vs avg : %.2f\n\n",
             avg_by_year, current_year_sales, result - 100);
 
     result = compareByMonth();
     fprintf(stdout,
             "Average sales per month %d : $%.2f\n"
             "Sales so far this month    : $%.2f\n"
-            "Gain this month vs avg     : %%%.2f\n\n",
+            "%% Gain this month vs avg   : %.2f\n\n",
             curr_m, avg_by_month[curr_m] * (1 - days_left_month), current_month_sales, result - 100);
 
     result = compareLastMonth();
-    fprintf(stdout, "Sales so far this month compared to last month so far : %%%.2f\n\n", result - 100);
+    fprintf(stdout, "%% Sales so far this month compared to last month so far : %.2f\n\n", result - 100);
 
     result = compareLast7Days();
     fprintf(stdout,
-            "Sales over the past 7 days compared to today : %%%.2f\n"
+            "%% Sales over the past 7 days compared to today : %.2f\n"
             "***This number will be lower earlier in the day and only\n"
             " shows an accurate comparison at the end of the day.***\n\n",
             result - 100);
 
     result = compareYesterday();
     fprintf(stdout,
-            "Yesterdays sales compared to today : %%%.2f\n"
+            "%% Yesterdays sales compared to today : %.2f\n"
             "***This number will be lower earlier in the day and only\n"
             " shows an accurate comparison at the end of the day.***\n\n",
             result - 100);
@@ -291,7 +295,8 @@ double SalesComparison::compareLastXYears(int x) {
     /* This function will compare up to 10 years in the past, however if there are not 10 years to compare it will
      *  tell you how many years are being compared. */
     num_years = 0;
-    for (yit = sales_list->transaction_by_date[curr_m][curr_d].end(); yit->first != curr_y - 1; yit--);
+    for (yit = sales_list->transaction_by_date[curr_m][curr_d].end(); yit->first != curr_y - 1; yit--)
+        ;
     for (yit = yit; yit != sales_list->transaction_by_date[curr_m][curr_d].end(); yit--) {
         num_years++;
         if (num_years == x) break;
@@ -304,44 +309,39 @@ double SalesComparison::compareLastXYears(int x) {
     }
 
     total = 0;
-    for (it = sales_by_year.begin(); it->first < first_year; it++);
+    for (it = sales_by_year.begin(); it->first < first_year; it++)
+        ;
     for (it = it; it != sales_by_year.end(); it++) {
         total += it->second;
     }
     return 100.0 * (current_year_sales / ((total / num_years) * days_left_year));
-} 
+}
 
 double SalesComparison::compareLastMonth() {
     double last_month = 0;
-    std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator dit;
+    std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator dit;
 
     if (curr_m == 1) {
-        if (sales_list->transaction_by_date.find(curr_y - 1) != sales_list->transaction_by_date.end()) {
-            if (sales_list->transaction_by_date[curr_y - 1].find(12) !=
-                    sales_list->transaction_by_date[curr_y - 1].end()) {
-                for (dit = sales_list->transaction_by_date[curr_y - 1][12].begin();
-                     dit != sales_list->transaction_by_date[curr_y - 1][12].end(); dit++) {
-                    for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        last_month += dit->second[i]->total_price;
-                    }
+        if (years.find(curr_y - 1) != years.end()) {
+            for (dit = sales_list->transaction_by_date[12].begin(); dit != sales_list->transaction_by_date[12].end();
+                 dit++) {
+                for (long unsigned int i = 0; i < dit->second[curr_y - 1].size(); i++) {
+                    last_month += dit->second[curr_y - 1][i]->total_price;
                 }
-                return 100.0 * (current_month_sales / (last_month * (1 - days_left_month)));
             }
+            return 100.0 * (current_month_sales / (last_month * (1 - days_left_month)));
         }
         fprintf(stderr, "No sales made in the last month to compare to.\n");
         return 0;
     } else {
-        if (sales_list->transaction_by_date.find(curr_y) != sales_list->transaction_by_date.end()) {
-            if (sales_list->transaction_by_date[curr_y].find(curr_m - 1) !=
-                    sales_list->transaction_by_date[curr_y].end()) {
-                for (dit = sales_list->transaction_by_date[curr_y][curr_m - 1].begin();
-                     dit != sales_list->transaction_by_date[curr_y][curr_m - 1].end(); dit++) {
-                    for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        last_month += dit->second[i]->total_price;
-                    }
+        if (years.find(curr_y - 1) != years.end()) {
+            for (dit = sales_list->transaction_by_date[curr_m - 1].begin();
+                 dit != sales_list->transaction_by_date[curr_m - 1].end(); dit++) {
+                for (long unsigned int i = 0; i < dit->second[curr_y].size(); i++) {
+                    last_month += dit->second[curr_y][i]->total_price;
                 }
-                return 100.0 * (current_month_sales / (last_month * days_left_month));
             }
+            return 100.0 * (current_month_sales / (last_month * (1 - days_left_month)));
         }
         fprintf(stderr, "No sales made in the last month to compare to.\n");
         return 0;
@@ -350,24 +350,22 @@ double SalesComparison::compareLastMonth() {
 
 double SalesComparison::compareLast7Days() {
     double last_week;
-    int days_in_last_month, days;
-    std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator dit;
+    int days_in_last_month;
+    std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > >::iterator dit;
 
     last_week = 0;
     if (curr_d < 7) {
         days_in_last_month = 7 - curr_d;
         if (curr_m == 1) {
-            if (sales_list->transaction_by_date.find(curr_y - 1) != sales_list->transaction_by_date.end()) {
-                if (sales_list->transaction_by_date[curr_y - 1].find(12) !=
-                        sales_list->transaction_by_date[curr_y - 1].end()) {
-                    dit = sales_list->transaction_by_date[curr_y][12].end();
-                    dit--;
-                    days = 0;
-                    for (dit = dit; days != days_in_last_month; dit--) {
-                        for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                            last_week += dit->second[i]->total_price;
+            if (years.find(curr_y - 1) != years.end()) {
+                if (sales_list->transaction_by_date[12][days_in_month[11] - days_in_last_month].find(curr_y - 1) !=
+                    sales_list->transaction_by_date[12][days_in_month[11] - days_in_last_month].end()) {
+                    dit = sales_list->transaction_by_date[12].find(days_in_month[11] - days_in_last_month);
+                    for (int j = 0; j < days_in_last_month; j++) {
+                        for (long unsigned int i = 0; i < dit->second[curr_y - 1].size(); i++) {
+                            last_week += dit->second[curr_y - 1][i]->total_price;
                         }
-                        days++;
+                        dit++;
                     }
                     return 100.0 * (current_day_sales / ((last_week + current_month_sales - current_day_sales) / 7));
                 }
@@ -375,17 +373,17 @@ double SalesComparison::compareLast7Days() {
             fprintf(stderr, "No sales made in the last week to compare to.\n");
             return 0;
         } else {
-            if (sales_list->transaction_by_date.find(curr_y) != sales_list->transaction_by_date.end()) {
-                if (sales_list->transaction_by_date[curr_y].find(curr_m - 1) !=
-                        sales_list->transaction_by_date[curr_y].end()) {
-                    dit = sales_list->transaction_by_date[curr_y][curr_m - 1].end();
-                    dit--;
-                    days = 0;
-                    for (dit = dit; days != days_in_last_month; dit--) {
-                        for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                            last_week += dit->second[i]->total_price;
+            if (years.find(curr_y) != years.end()) {
+                if (sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2] - days_in_last_month].find(
+                        curr_y) !=
+                    sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2] - days_in_last_month].end()) {
+                    dit = sales_list->transaction_by_date[curr_m - 1].find(days_in_month[curr_m - 2] -
+                                                                           days_in_last_month);
+                    for (int j = 0; j < days_in_last_month; j++) {
+                        for (long unsigned int i = 0; i < dit->second[curr_y].size(); i++) {
+                            last_week += dit->second[curr_y][i]->total_price;
                         }
-                        days++;
+                        dit++;
                     }
                     return 100.0 * (current_day_sales / ((last_week + current_month_sales - current_day_sales) / 7));
                 }
@@ -394,14 +392,15 @@ double SalesComparison::compareLast7Days() {
             return 0;
         }
     } else {
-        if (sales_list->transaction_by_date.find(curr_y) != sales_list->transaction_by_date.end()) {
-            if (sales_list->transaction_by_date[curr_y].find(curr_m) != sales_list->transaction_by_date[curr_y].end()) {
-                for (dit = sales_list->transaction_by_date[curr_y][curr_m].begin(); dit->first < curr_d - 7; dit++)
-                    ;
-                for (dit = dit; dit->first != curr_d; dit++) {
-                    for (long unsigned int i = 0; i < dit->second.size(); i++) {
-                        last_week += dit->second[i]->total_price;
+        if (years.find(curr_y) != years.end()) {
+            if (sales_list->transaction_by_date[curr_m][curr_d - 7].find(curr_y) !=
+                sales_list->transaction_by_date[curr_m][curr_d - 7].end()) {
+                dit = sales_list->transaction_by_date[curr_m].find(curr_d - 7);
+                for (int j = 0; j < 7; j++) {
+                    for (long unsigned int i = 0; i < dit->second[curr_y].size(); i++) {
+                        last_week += dit->second[curr_y][i]->total_price;
                     }
+                    dit++;
                 }
                 return 100.0 * (current_day_sales / (last_week / 7));
             }
@@ -416,14 +415,15 @@ double SalesComparison::compareYesterday() {
 
     if (curr_d == 1) {
         if (curr_m == 1) {
-            if (sales_list->transaction_by_date.find(curr_y - 1) != sales_list->transaction_by_date.end()) {
-                if (sales_list->transaction_by_date[curr_y - 1].find(12) !=
-                        sales_list->transaction_by_date[curr_y - 1].end()) {
-                    if (sales_list->transaction_by_date[curr_y - 1][12].find(31) !=
-                            sales_list->transaction_by_date[curr_y - 1][12].end()) {
-                        for (long unsigned int i = 0; i < sales_list->transaction_by_date[curr_y - 1][12][31].size();
-                             i++) {
-                            yesterday_sales += sales_list->transaction_by_date[curr_y - 1][12][31][i]->total_price;
+            if (years.find(curr_y - 1) != years.end()) {
+                if (sales_list->transaction_by_date[12].find(days_in_month[11]) !=
+                    sales_list->transaction_by_date[12].end()) {
+                    if (sales_list->transaction_by_date[12][days_in_month[11]].find(curr_y - 1) !=
+                        sales_list->transaction_by_date[12][days_in_month[11]].end()) {
+                        for (long unsigned int i = 0;
+                             i < sales_list->transaction_by_date[12][days_in_month[11]][curr_y - 1].size(); i++) {
+                            yesterday_sales +=
+                                sales_list->transaction_by_date[12][days_in_month[11]][curr_y - 1][i]->total_price;
                         }
                         return 100.0 * (current_day_sales / yesterday_sales);
                     }
@@ -432,16 +432,16 @@ double SalesComparison::compareYesterday() {
             fprintf(stderr, "No sales made yesterday to compare to.\n");
             return 0;
         } else {
-            if (sales_list->transaction_by_date.find(curr_y) != sales_list->transaction_by_date.end()) {
-                if (sales_list->transaction_by_date[curr_y].find(curr_m - 1) !=
-                        sales_list->transaction_by_date[curr_y].end()) {
-                    if (sales_list->transaction_by_date[curr_y][curr_m - 1].find(days_in_month[curr_m]) !=
-                            sales_list->transaction_by_date[curr_y][curr_m - 1].end()) {
+            if (years.find(curr_y) != years.end()) {
+                if (sales_list->transaction_by_date[curr_m - 1].find(days_in_month[curr_m - 2]) !=
+                    sales_list->transaction_by_date[curr_m - 1].end()) {
+                    if (sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2]].find(curr_y) !=
+                        sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2]].end()) {
                         for (long unsigned int i = 0;
-                             i < sales_list->transaction_by_date[curr_y][curr_m - 1][days_in_month[curr_m - 1]].size();
+                             i < sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2]][curr_y].size();
                              i++) {
                             yesterday_sales +=
-                                    sales_list->transaction_by_date[curr_y][curr_m - 1][days_in_month[curr_m - 1]][i]
+                                sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2]][curr_y][i]
                                     ->total_price;
                         }
                         return 100.0 * (current_day_sales / yesterday_sales);
@@ -452,13 +452,14 @@ double SalesComparison::compareYesterday() {
             return 0;
         }
     } else {
-        if (sales_list->transaction_by_date.find(curr_y) != sales_list->transaction_by_date.end()) {
-            if (sales_list->transaction_by_date[curr_y].find(curr_m) != sales_list->transaction_by_date[curr_y].end()) {
-                if (sales_list->transaction_by_date[curr_y][curr_m].find(curr_d - 1) !=
-                        sales_list->transaction_by_date[curr_y][curr_m].end()) {
-                    for (long unsigned int i = 0; i < sales_list->transaction_by_date[curr_y][curr_m][curr_d - 1].size();
-                         i++) {
-                        yesterday_sales += sales_list->transaction_by_date[curr_y][curr_m][curr_d - 1][i]->total_price;
+        if (years.find(curr_y) != years.end()) {
+            if (sales_list->transaction_by_date[curr_m].find(curr_d - 1) !=
+                sales_list->transaction_by_date[curr_m].end()) {
+                if (sales_list->transaction_by_date[curr_m][curr_d - 1].find(curr_y) !=
+                    sales_list->transaction_by_date[curr_m][curr_d - 1].end()) {
+                    for (long unsigned int i = 0;
+                         i < sales_list->transaction_by_date[curr_m][curr_d - 1][curr_y].size(); i++) {
+                        yesterday_sales += sales_list->transaction_by_date[curr_m][curr_d - 1][curr_y][i]->total_price;
                     }
                     return 100.0 * (current_day_sales / yesterday_sales);
                 }
@@ -489,9 +490,9 @@ void SalesComparison::suggestSale() {
     if (worst_vector.size() != 0) {
         for (size_t i = 0; i < worst_vector.size(); i++) {
             printf(
-                    "We suggest a sale on item id %lu.\n"
-                    "Yours sales this month are %.2f%% of the average from this month in previous years.\n",
-                    worst_vector[i].first, worst_vector[i].second);
+                "We suggest a sale on item id %lu.\n"
+                "Yours sales this month are %.2f%% of the average from this month in previous years.\n",
+                worst_vector[i].first, worst_vector[i].second);
         }
     } else {
         printf("All items are selling well.\nNo sale suggested.\n");
