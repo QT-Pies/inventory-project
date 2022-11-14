@@ -285,17 +285,14 @@ double SalesComparison::compareByMonth() {
 double SalesComparison::compareLastXYears(int x) {
     int num_years, first_year;
     double total;
-    std::map<unsigned int,
-             std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > >::iterator
-        yit;
-    std::map<int, double>::iterator mit;
+    std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > >::iterator yit;
+    std::map<int, double>::iterator it;
 
     /* This function will compare up to 10 years in the past, however if there are not 10 years to compare it will
      *  tell you how many years are being compared. */
     num_years = 0;
-    for (yit = sales_list->transaction_by_date.end(); yit->first != curr_y - 1; yit--)
-        ;
-    for (yit = yit; yit != sales_list->transaction_by_date.begin(); yit--) {
+    for (yit = sales_list->transaction_by_date[curr_m][curr_d].end(); yit->first != curr_y - 1; yit--);
+    for (yit = yit; yit != sales_list->transaction_by_date[curr_m][curr_d].end(); yit--) {
         num_years++;
         if (num_years == x) break;
     }
@@ -303,18 +300,16 @@ double SalesComparison::compareLastXYears(int x) {
     first_year = yit->first;
 
     if (num_years < x) {
-        fprintf(stdout, "Only %d years to compare with.\n", num_years);
+        fprintf(stdout, "Only %d year(s) to compare with.\n", num_years);
     }
 
     total = 0;
-    for (mit = sales_by_year.begin(); mit->first <= first_year; mit++)
-        ;
-    std::cout << mit->first << std::endl;
-    for (mit = mit; mit != sales_by_year.end(); mit++) {
-        total += mit->second;
+    for (it = sales_by_year.begin(); it->first < first_year; it++);
+    for (it = it; it != sales_by_year.end(); it++) {
+        total += it->second;
     }
     return 100.0 * (current_year_sales / ((total / num_years) * days_left_year));
-}
+} 
 
 double SalesComparison::compareLastMonth() {
     double last_month = 0;
