@@ -28,8 +28,8 @@ Chicken Breast,Perishable,Chicken,Meat
 Pork Tenderloin,Perishable,Pork,Meat
 Bacon,Perishable,Pork,Meat
 Paper Towels,NonPerishable,Cleaning,Cleaning
-AA Batteries,NonPerishable,Battery,Household Goods
-AAA Batteries,NonPerishable,Battery,Household Goods
+AA Batteries,NonPerishable,Battery,Household
+AAA Batteries,NonPerishable,Battery,Household
 Colgate Toothpaste,NonPerishable,Toothpaste,Hygiene
 Creast Toothpaste,NonPerishable,Toothpaste,Hygiene
 Suave Shampoo,NonPerishable,Shampoo,Hygiene
