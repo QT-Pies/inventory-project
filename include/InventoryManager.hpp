@@ -19,6 +19,11 @@
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
 
+class QInventoryManager : public QObject {
+public:
+    void itemChanged(QTableWidgetItem *);
+};
+
 class InventoryManager {
    public:
     /*
@@ -83,6 +88,8 @@ class InventoryManager {
     std::string file_name;
 
     std::shared_ptr<QApplication> app;
+
+    static void inventoryItemChanged(QTableWidgetItem*);
 };
 
 #endif

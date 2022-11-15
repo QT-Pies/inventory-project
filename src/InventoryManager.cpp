@@ -231,25 +231,83 @@ int InventoryManager::userInput() {
     return 0;
 }
 
+void InventoryManager::inventoryItemChanged(QTableWidgetItem *item) {
+    std::cout << "Hello, I was changed." << std::endl;
+}
+
+void QInventoryManager::itemChanged(QTableWidgetItem *item) {
+    std::cout << "Hello, I was changed." << std::endl;
+}
+
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
     //auto table = std::make_shared<QTableWidget>(item_count, 0, nullptr);
-    
+    QInventoryManager qim;
+
     int row;
 
     QStringList inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
 
     auto table = new QTableWidget(item_count + 1, static_cast<int>(inv_header.size()), nullptr);
     table->setHorizontalHeaderLabels(inv_header);
-    
+
     row = 0;
     /* Load in inventory */
     for (auto it = active_inventory->inv_by_id.begin(); it != active_inventory->inv_by_id.end(); ++it, ++row) {
         auto name = QString::fromStdString(it->second->name);
-        //auto entry = std::make_shared<QTableWidgetItem>(name, 0);
-        auto entry = new QTableWidgetItem(name, 0);
-        table->setItem(row, 0, entry);
+        auto id = QString::number(it->second->id);
+        auto category = QString::fromStdString(it->second->category);
+        auto subcategory = QString::fromStdString(it->second->sub_category);
+        auto quantity = QString::number(it->second->quantity);
+        auto backorder = QString::number(it->second->backorder);
+        auto sale_price = QString::number(it->second->sale_price);
+        auto tax = QString::number(it->second->tax);
+        auto total_price = QString::number(it->second->total_price);
+        auto buy_cost = QString::number(it->second->buy_cost);
+        auto profit = QString::number(it->second->profit);
+        QString expiration_date;
+
+        /* Special expiration date logic. */
+        if (it->second->category == "Perishable") {
+            PerishableItem *tmp = (PerishableItem*) it->second.get();
+            expiration_date = QString::fromStdString(tmp->expiration_date.string_date);
+        } else expiration_date = "-1";
+
+        auto name_entry = new QTableWidgetItem(name, 0);
+        auto id_entry = new QTableWidgetItem(id, 0);
+        auto cat_entry = new QTableWidgetItem(category, 0);
+        auto sub_entry = new QTableWidgetItem(subcategory, 0);
+        auto quantity_entry = new QTableWidgetItem(quantity, 0);
+        auto backorder_entry = new QTableWidgetItem(backorder, 0);
+        auto sale_entry = new QTableWidgetItem(sale_price, 0);
+        auto tax_entry = new QTableWidgetItem(tax, 0);
+        auto total_entry = new QTableWidgetItem(total_price, 0);
+        auto buy_entry = new QTableWidgetItem(buy_cost, 0);
+        auto profit_entry = new QTableWidgetItem(profit, 0);
+        auto exp_entry = new QTableWidgetItem(expiration_date, 0);
+
+        table->setItem(row, 0, name_entry);
+        table->setItem(row, 1, id_entry);
+        table->setItem(row, 2, cat_entry);
+        table->setItem(row, 3, sub_entry);
+        table->setItem(row, 4, quantity_entry);
+        table->setItem(row, 5, backorder_entry);
+        table->setItem(row, 6, sale_entry);
+        table->setItem(row, 7, tax_entry);
+        table->setItem(row, 8, total_entry);
+        table->setItem(row, 9, buy_entry);
+        table->setItem(row, 10, profit_entry);
+        table->setItem(row, 11, exp_entry);
     }
+
+  //  QObject::connect(table, &QTableWidget::itemChanged, this, inventoryItemChanged);
+
+    QObject::connect(table, &QTableWidget::itemChanged, []() {
+        std::cout << "Hello, I am an QTableWidgetItem and I have been changed." << std::endl;
+    });
+
+    // this one compiles
+   // QObject::connect(table, SIGNAL(itemChanged(QTableWidgetItem *)), &qim, SLOT(itemChanged(QTableWidgetItem *)));
 
     table->show();
     return 0;

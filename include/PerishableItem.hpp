@@ -4,7 +4,10 @@
 #include "Date.hpp"
 #include "Item.hpp"
 
+class InventoryManager;
+
 class PerishableItem : public Item {
+    friend class InventoryManager;
    public:
     /*
      * @brief Constructs a NonPerishableItem with the given values
