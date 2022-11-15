@@ -4,7 +4,7 @@ CFLAGS = -g -Wall -Werror -Wno-self-assign-overloaded -Wno-format-security -std=
 
 EXECUTABLES = bin/main bin/gen-inventory bin/unit_tests bin/gen-sales bin/randomize-inventory
 
-SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/InventoryRandomizer.cpp src/InventoryRandomizerMain.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp src/SalesComparison.cpp
+SOURCE = src/main.cpp src/CSVEntry.cpp src/InventoryGenerator.cpp src/InventoryGeneratorDriver.cpp src/InventoryRandomizerMain.cpp src/InventoryRandomizer.cpp src/Date.cpp src/HelperFunctions.cpp src/Item.cpp src/NonPerishableItem.cpp src/PerishableItem.cpp src/ActiveInventory.cpp src/InventoryManager.cpp src/Sales.cpp src/Login.cpp src/User.cpp src/SalesGenerator.cpp src/SalesComparison.cpp
 OBJECT = obj/main.o obj/CSVEntry.o obj/InventoryGenerator.o obj/InventoryGeneratorDriver.o obj/InventoryRandomizer.o obj/InventoryRandomizerMain.o obj/Date.o obj/HelperFunctions.o obj/Item.o obj/NonPerishableItem.o obj/PerishableItem.o obj/ActiveInventory.o obj/InventoryManager.o obj/Sales.o obj/Login.o obj/User.o obj/SalesGenerator.o obj/SalesComparison.o
 
 all: $(OBJECT) $(EXECUTABLES)

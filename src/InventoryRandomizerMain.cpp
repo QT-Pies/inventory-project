@@ -13,4 +13,6 @@ int main(int argc, char**argv)
     in = argv[1];
     out = argv[2];
     InventoryRandomizer inv_ran(in, out);
+
+    return 0;
 }
