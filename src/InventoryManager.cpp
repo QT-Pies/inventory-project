@@ -248,8 +248,11 @@ int InventoryManager::displayInventory() {
 
     QStringList inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
 
-    auto table = new QTableWidget(item_count + 1, static_cast<int>(inv_header.size()), nullptr);
+    auto table = new QTableWidget(item_count + 1, static_cast<int>(inv_header.size()), window.get());
     table->setHorizontalHeaderLabels(inv_header);
+
+    table->setFixedSize(880, 540);
+    table->move(80, 0);
 
     row = 0;
     /* Load in inventory */
@@ -315,9 +318,30 @@ int InventoryManager::displayInventory() {
 
 int InventoryManager::guiInput(int argc, char** argv) {
     app = std::make_shared<QApplication>(argc, argv);
+    window = std::make_shared<QWidget>();
 
+    window->resize(960, 540);
+    window->setFixedSize(960, 540);
+    window->setWindowTitle(QApplication::translate("InventoryManager", "Inventory Manager"));
+
+    /* Set up side panel */
+    auto inv_button = std::make_shared<QToolButton>(window.get());
+    inv_button->setIcon(QIcon("./images/inventory-button.png"));
+    inv_button->setIconSize(QSize(80, 80));
+    inv_button->move(-5,0);
+    inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    inv_button->show();
+
+
+    auto help_button = std::make_shared<QToolButton>(window.get());
+    help_button->setIcon(QIcon("./images/about.png"));
+    help_button->setIconSize(QSize(80, 80));
+    help_button->move(-5, 455);
+    help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    help_button->show();
     displayInventory();
 
+    window->show();
     app->exec();
     return 0;
 }

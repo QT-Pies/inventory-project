@@ -6,11 +6,14 @@
 #include <map>
 #include <string>
 #include <QApplication>
+#include <QIcon>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QToolButton>
 #include <QString>
 #include <QStringList>
+#include <QWidget>
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -88,6 +91,7 @@ class InventoryManager {
     std::string file_name;
 
     std::shared_ptr<QApplication> app;
+    std::shared_ptr<QWidget> window;
 
     static void inventoryItemChanged(QTableWidgetItem*);
 };
