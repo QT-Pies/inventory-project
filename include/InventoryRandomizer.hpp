@@ -4,11 +4,13 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <chrono>
 
 class Entry {
     public:
         Entry(std::string, std::string, std::string, std::string);
-        void print();
+        void print(std::ofstream&);
     private:
         friend class InventoryRandomizer;
         std::string name;
