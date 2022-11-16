@@ -13,7 +13,7 @@ InventoryManager::~InventoryManager() {
 }
 
 int InventoryManager::userInput() {
-    std::string argument;
+    std::string argument, arg;
     std::string name, category, sub_category, expiration, value, location;
     std::string id, backorder, quantity, buyer, seller, date;
     std::string sale_price, buy_price, tax;
@@ -194,22 +194,19 @@ int InventoryManager::userInput() {
 
         valid_transaction = false;
 
-        std::cout << "Buyer | Seller\n";
-        std::cin >> buyer >> seller;
-        std::cout << "Enter Q for Item name or 0 for Quantity Sold to stop reading sales in the transaction\n";
+        std::cout << "\nCustomer name: ";
+        std::cin >> buyer;
+        std::cout << "Seller name (you): ";
+        std::cin >> seller;
 
-        sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
+        do {
+            sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
 
-        while (true) {
-            std::cout << "Item Name: ";
+            std::cout << "\nItem Name: ";
             std::cin >> name;
-
-            if (name == "Q" || name == "q") break;
-
+ 
             std::cout << "Quantity Sold: ";
             std::cin >> quantity;
-
-            if (quantity == "0") break;
 
             auto item_ptr = active_inventory->searchByName(name);
 
@@ -217,21 +214,33 @@ int InventoryManager::userInput() {
                 sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
                     sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
                 valid_transaction = true;
-            } else
-                Logger::logWarn("Invalid item -- continuing to read.");
-        }
+            } else valid_transaction = false;
 
-        /* if no valid sales are added to the transaction, then it is deleted, once proper delete feture is added
-         * this will be changed */
-        if (valid_transaction == false) {
-            Logger::logError("Invalid transaction -- no valid sales were input.  Continuing to read.");
-            sale_list->transaction_by_order.pop_back();
-            sale_list->curr_transaction--;
-        } else {
-            sale_list->curr_sale_id++;
-            makeTransaction();
-            Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
-        }
+            /* if no valid sales are added to the transaction, then it is deleted */
+            if (valid_transaction == false) {
+                Logger::logError("Invalid transaction -- no valid sales were input.\n");
+                sale_list->transaction_by_order.pop_back();
+                sale_list->curr_transaction--;
+            } else {
+                std::cout << "\n" << quantity << " " << name << "(s) sold.\n"; 
+                std::cout << "End of transaction. Thank you!\n\n";
+                sale_list->curr_sale_id++;
+                makeTransaction();
+                Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+            }
+            std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
+            std::cin >> arg;
+            lowerCaseString(arg);
+
+            if (arg != "y" && arg != "n" ) {
+                std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
+                std::cin >> arg;
+                lowerCaseString(arg);
+            }
+        } while (arg != "n" && arg != "no");
+
+        std::cout << "Exiting Sales. Thank you for your business!\n";
+
     } else if (argument == "l" || argument == "logout") {
         Logger::logTrace("User %s logged out.", current_user->name.c_str());
         current_user = NULL;
