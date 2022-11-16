@@ -18,6 +18,7 @@ Entry::Entry(std::string item, std::string cat, std::string sub_cat, std::string
 
 void Entry::print(std::ofstream &of) 
 {
+    /*outputs to given file stream*/
     of << name << ",";
     of << id << ",";
     of << category << ",";
@@ -50,7 +51,7 @@ void InventoryRandomizer::readFile()
 
     getline(f, tmp, '\n');
 
-    while(f.good()) {
+    while(f.peek() != EOF) {
         getline(f, item, ',');        
         getline(f, cat, ',');
         getline(f, sub_cat, ',');

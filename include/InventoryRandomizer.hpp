@@ -1,3 +1,6 @@
+#ifndef INVENTORY_RANDOMIZER_HPP
+#define INVENTORY_RANDOMIZER_HPP
+
 #include <memory>
 #include <fstream>
 #include <iostream>
@@ -39,3 +42,5 @@ class InventoryRandomizer{
         std::string out_file;
         std::vector <std::shared_ptr<Entry>> entries;
 };
+
+#endif

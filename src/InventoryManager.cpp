@@ -26,8 +26,8 @@ int InventoryManager::userInput() {
         return -1;
     }
 
-    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (P)rint, (L)ogout, or "
-                 "(Q)uit: ";
+    std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (SS)Suggest Sale, "
+                 "(P)rint, (L)ogout, or (Q)uit: ";
     std::cin >> argument;
     lowerCaseString(argument);
 
@@ -161,6 +161,11 @@ int InventoryManager::userInput() {
         } else if (category == "X_Years") {
             std::cout << "Number of years to compare : ";
             std::cin >> x;
+            while (x <= 0) {
+                std::cout << "Invalid number of years. Try again.\n";
+                std::cout << "Number of years to compare : ";
+                std::cin >> x;
+            }
             sales_comp->printComparison("LastXYears", x);
         } else if (category == "Last_Month") {
             sales_comp->printComparison("LastMonth", 0);
@@ -169,6 +174,9 @@ int InventoryManager::userInput() {
         } else if (category == "Yesterday") {
             sales_comp->printComparison("Yesterday", 0);
         }
+    } else if (argument == "ss" || argument == "suggest") {
+        std::cout << std::endl;
+        sales_comp->suggestSale();
 
     } else if (argument == "p" || argument == "print") {
         std::cin.clear();
