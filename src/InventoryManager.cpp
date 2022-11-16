@@ -208,6 +208,12 @@ int InventoryManager::userInput() {
             std::cout << "Quantity Sold: ";
             std::cin >> quantity;
 
+            while (stoi(quantity) <= 0) {
+                std::cout << "Invalid quantity. Try again.\n";
+                std::cout << "Quantity Sold: ";
+                std::cin >> quantity;
+            }
+           
             auto item_ptr = active_inventory->searchByName(name);
 
             if (item_ptr != NULL) {
@@ -237,7 +243,7 @@ int InventoryManager::userInput() {
                 std::cin >> arg;
                 lowerCaseString(arg);
             }
-        } while (arg != "n" && arg != "no");
+        } while (arg != "n");
 
         std::cout << "Exiting Sales. Thank you for your business!\n";
 
