@@ -200,25 +200,32 @@ int InventoryManager::userInput() {
         std::cin >> seller;
 
         do {
+            unsigned long tmp_quantity;
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
 
             std::cout << "\nItem Name: ";
             std::cin >> name;
  
-            std::cout << "Quantity Sold: ";
-            std::cin >> quantity;
-
-            while (stoi(quantity) <= 0) {
-                std::cout << "Invalid quantity. Try again.\n";
+        while (1) {
+            try {
                 std::cout << "Quantity Sold: ";
                 std::cin >> quantity;
+                tmp_quantity = toUnsignedLong(quantity);
+                if (tmp_quantity == 0) {
+                    throw std::invalid_argument("Quantity can't be zero.");
+                }
+                break;
+            } catch (std::exception& e) {
+                Logger::logDebug(e.what());
+                std::cout << "Invalid quantity. Try again.\n";
             }
+        }
            
             auto item_ptr = active_inventory->searchByName(name);
 
             if (item_ptr != NULL) {
                 sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
-                    sale_list->curr_sale_id, item_ptr->id, stoul(quantity), item_ptr->sale_price);
+                    sale_list->curr_sale_id, item_ptr->id, tmp_quantity, item_ptr->sale_price);
                 valid_transaction = true;
             } else valid_transaction = false;
 
