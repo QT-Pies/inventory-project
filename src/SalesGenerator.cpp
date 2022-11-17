@@ -5,6 +5,20 @@ SalesGenerator::SalesGenerator(const std::string& name, const std::string& start
     readInventory();
     parent_name = name.substr(0, name.size() - 4) + "_parent_sales.csv";
     child_name = name.substr(0, name.size() - 4) + "_child_sales.csv";
+
+    /* Lastly set how many days are in a month. */
+    if (curr_y % 4 == 0) {
+        days_in_month = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    } else {
+        days_in_month = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    }
+    
+    time_t current_date;
+    current_date = time(0);
+    tm *ltm = localtime(&current_date);
+    curr_y = 1900 + ltm->tm_year;
+    curr_m = 1 + ltm->tm_mon;
+    curr_d = ltm->tm_mday;
 }
 
 bool SalesGenerator::readInventory() {
@@ -75,6 +89,8 @@ void SalesGenerator::generateTransactions(unsigned long max) {
         transaction->date = last_date;
         transaction->print(p_file);
         nextDate();
+
+        if (last_date.year == curr_y && last_date.month == curr_m && last_date.day > curr_d) break;
     }
 
     p_file.close();
@@ -98,7 +114,7 @@ void SalesGenerator::nextDate() {
     tmp.day++;
 
     /* Move month */
-    if (tmp.day > 28) {
+    if ((int)tmp.day > days_in_month[tmp.month]) {
         tmp.month++;
         tmp.day = 1;
         if (tmp.month > 12) {
@@ -153,7 +169,15 @@ MockSale::MockSale(std::shared_ptr<CSVEntry> c_item, unsigned long idd) : item(c
 void MockSale::setNumSold() {
     std::random_device rand;
     std::mt19937 gen(rand());
-    std::uniform_int_distribution<unsigned long> distrib_sold(1, item->quantity / 2);
+    unsigned long q;
+    
+    if (item->quantity/2 <= 3) {
+        q = item->quantity/2;
+    } else {
+        q = 3;
+    }
+    
+    std::uniform_int_distribution<unsigned long> distrib_sold(1, q);
 
     num_sold = distrib_sold(gen);
 
