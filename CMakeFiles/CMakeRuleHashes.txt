@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+a1b8bd64b2eecd0676886f53afcbb175 CMakeFiles/gen-inventory_autogen
+2ea669e8d9ef4a21a627af7dc28e2ceb CMakeFiles/gen-sales_autogen
+527449132b68adf518d3e8f96b4012c3 CMakeFiles/main_autogen

@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../lib/libgmock.a CMakeFiles/gmock.dir/gmock_autogen/mocs_compilation.cpp.o
+/usr/bin/ranlib ../../../lib/libgmock.a

@@ -14,7 +14,6 @@ CSVEntry::CSVEntry(std::string line) {
 
     std::getline(input, category, ',');
     std::getline(input, sub_category, ',');
-    std::getline(input, location, ',');
 
     std::getline(input, tmp, ',');
     quantity = std::stoi(tmp);
@@ -38,7 +37,6 @@ void CSVEntry::printEntry(std::ostream &out) {
     out << id << ',';
     out << category << ',';
     out << sub_category << ',';
-    out << location << ',';
     out << quantity << ',';
     out << backorder << ',';
     out << std::setprecision(2) << std::fixed << std::showpoint << sale_price << ',';

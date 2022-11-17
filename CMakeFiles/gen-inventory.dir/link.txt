@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Werror -Wno-format-security  CMakeFiles/gen-inventory.dir/gen-inventory_autogen/mocs_compilation.cpp.o CMakeFiles/gen-inventory.dir/src/CSVEntry.cpp.o CMakeFiles/gen-inventory.dir/src/InventoryGenerator.cpp.o CMakeFiles/gen-inventory.dir/src/InventoryGeneratorDriver.cpp.o -o bin/gen-inventory 

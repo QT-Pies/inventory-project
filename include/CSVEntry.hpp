@@ -36,7 +36,6 @@ class CSVEntry {
     std::string name;
     std::string category;
     std::string sub_category;
-    std::string location;
     int quantity;
     int backorder;
     int id;

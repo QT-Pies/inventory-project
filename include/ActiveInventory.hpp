@@ -56,11 +56,11 @@ class ActiveInventory {
     std::shared_ptr<Item> searchById(unsigned long);
 
     /*
-     * @brief this function will print out all items, Perishable item, NonPerishable items, items in certain Location
-     * or an individual item base on user input.
-     * @param std::string field std::string Category to print
+     * @brief this function will print out all items, Perishable item, NonPerishable items, or
+     * an individual item base on user input.
+     * @param std::string Category to print
      */
-    void printItems(std::string, std::string);
+    void printItems(std::string);
 
     /*
      * @brief this function will print the head for the printItems function
@@ -69,7 +69,7 @@ class ActiveInventory {
 
    private:
     friend class InventoryManager;
-    friend class Transaction;
+    friend class InventoryScreen;
     /*
      * These maps will store the active inventory by category, by name,
      * and by id for searching purposes.
@@ -77,7 +77,6 @@ class ActiveInventory {
     std::map<std::string, std::map<std::string, std::shared_ptr<Item> > > inv_by_category;
     std::map<std::string, std::shared_ptr<Item> > inv_by_name;
     std::map<unsigned long, std::shared_ptr<Item> > inv_by_id;
-    std::map<std::string, std::map<std::string, std::shared_ptr<Item> > > inv_by_location;
 };
 
 #endif /* ACTIVE_INVENTORY_HPP */

@@ -12,7 +12,6 @@
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
-#include "SalesComparison.hpp"
 
 class InventoryManager {
    public:
@@ -51,25 +50,18 @@ class InventoryManager {
     bool userLogin();
 
     /*
-     * @brief call updateUser in User class
-     * @return return true if successful and false if not
-     * @param std::string username
-     * @param std::string account_type
+     * @breif trys to login from inputs from the GUI
+     * @return true if successful login and false if not
      */
-    bool updatePermission(std::string, std::string);
-
-    /*
-     * @brief calls process transaction function in Transaction
-     */
-    void makeTransaction();
+    bool guiLogin(std::string, std::string);
 
    private:
+    friend class InventoryScreen;
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
-    std::shared_ptr<SalesComparison> sales_comp{new SalesComparison};
     std::string file_name;
 };
 

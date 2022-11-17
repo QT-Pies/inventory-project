@@ -1,0 +1,8 @@
+/home/vbroda/inventory-project/CMakeFiles/main.dir
+/home/vbroda/inventory-project/CMakeFiles/gen-inventory.dir
+/home/vbroda/inventory-project/CMakeFiles/gen-sales.dir
+/home/vbroda/inventory-project/CMakeFiles/edit_cache.dir
+/home/vbroda/inventory-project/CMakeFiles/rebuild_cache.dir
+/home/vbroda/inventory-project/CMakeFiles/main_autogen.dir
+/home/vbroda/inventory-project/CMakeFiles/gen-inventory_autogen.dir
+/home/vbroda/inventory-project/CMakeFiles/gen-sales_autogen.dir
