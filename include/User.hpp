@@ -16,6 +16,7 @@ class User {
    private:
     friend class Login;
     friend class InventoryManager;
+    friend class InventoryScreen;
     std::string name;
     std::string password;
     std::string account_type;

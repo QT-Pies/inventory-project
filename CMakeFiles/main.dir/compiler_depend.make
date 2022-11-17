@@ -2724,7 +2724,9 @@ CMakeFiles/main.dir/src/main.cpp.o: src/main.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtabwidget.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qrubberband.h \
   include/InventoryManager.hpp \
-  include/InventoryScreen.hpp
+  include/InventoryScreen.hpp \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h
 
 
 src/User.cpp:

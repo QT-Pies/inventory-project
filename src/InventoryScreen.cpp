@@ -79,5 +79,46 @@ void InventoryScreen::QuitApp() {
 }
 
 void InventoryScreen::AddUser() {
-    w->close();
+    QString un = userLineEdit->text();
+    QString pas = passwordLineEdit->text();
+    QString acc = "";
+
+    if(ownerButton->isChecked()) {
+        acc = "owner";
+    }
+    else if(managerButton->isChecked()) {
+        acc = "manager";
+    }
+    else if(employeeButton->isChecked()) {
+        acc = "employee";
+    }
+
+    if(un == "") {
+        QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+        return;
+    }
+    else if(pas == "") {
+        QMessageBox::warning(w,"Didn't create New User", "Password is blank.");
+        return;
+    }
+    else if(acc == "") {
+        QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+        return;
+    }
+    // check for if user is allready made, ask if we want to allow same usernames or just if same username and password
+    //if()
+
+    if(im->current_user->permission == 1) {
+        QMessageBox::warning(w,"Didn't create New User", "Employees cannot create accounts. Please have a manager or owner create the account.");
+        return;
+    }
+    else if(im->current_user->permission == 3 && (acc == "owner" || acc == "manager")) {
+        QMessageBox::warning(w,"Didn't create New User", "Managers can only create employee accounts. Please have an owner create the account.");
+        return;
+    }
+    
+    im->login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString());
+    QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+    
+
 }
