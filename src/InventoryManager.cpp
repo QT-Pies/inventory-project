@@ -245,7 +245,7 @@ int InventoryManager::userInput() {
             std::cin >> arg;
             lowerCaseString(arg);
 
-            if (arg != "y" && arg != "n" ) {
+            while (arg != "y" && arg != "n" ) {
                 std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
                 std::cin >> arg;
                 lowerCaseString(arg);
