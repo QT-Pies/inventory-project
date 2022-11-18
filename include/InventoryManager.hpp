@@ -7,6 +7,7 @@
 #include <string>
 #include <QApplication>
 #include <QIcon>
+#include <QLabel>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -75,6 +76,11 @@ class InventoryManager {
     bool userLogin();
 
     /*
+     * @brief GUI login
+     */
+    void guiLogin();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -90,8 +96,13 @@ class InventoryManager {
     std::shared_ptr<SaleList> sale_list{new SaleList};
     std::string file_name;
 
+    std::vector<std::shared_ptr<QObject>> view_gc;
+    std::vector<QObject*> gc;
     std::shared_ptr<QApplication> app;
     std::shared_ptr<QWidget> window;
+    std::shared_ptr<QWidget> view;
+
+    void initializeSidePanel(QWidget*);
 
     static void inventoryItemChanged(QTableWidgetItem*);
 };

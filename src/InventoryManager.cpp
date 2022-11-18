@@ -239,6 +239,43 @@ void QInventoryManager::itemChanged(QTableWidgetItem *item) {
     std::cout << "Hello, I was changed." << std::endl;
 }
 
+void InventoryManager::guiLogin() {
+    view_gc.clear();
+
+    auto login_view = std::make_shared<QWidget>(window.get());
+    login_view->setFixedSize(960, 540);
+    view = login_view;
+
+    // Made this a normal pointer because smart was causing an issue.
+    // TODO: Fix smart pointer issue or impl. our own garbage collection.
+    auto text = new QLabel(login_view.get());
+    text->setText("Please login");
+
+    auto login_button = new QPushButton(login_view.get());
+    login_button->setText("I'm an admin, trust me");
+    login_button->setFixedSize(256,128);
+    login_button->move(352, 206);
+    login_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    login_button->show();
+    gc.push_back(login_button);
+
+    QObject::connect(login_button, &QPushButton::clicked, [&]() {
+        std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
+
+        auto user = login->verifyUser("admin", "admin");
+
+        if (user != nullptr) {
+            /* Switch to main program view */
+            initializeSidePanel(window.get());
+            displayInventory();
+            view->hide();
+        }
+
+    });
+
+    login_view->show();
+}
+
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
     //auto table = std::make_shared<QTableWidget>(item_count, 0, nullptr);
@@ -316,6 +353,29 @@ int InventoryManager::displayInventory() {
     return 0;
 }
 
+void InventoryManager::initializeSidePanel(QWidget *w) {
+    /* Clear out current gc collection */
+    view_gc.clear();
+
+    /* Set up side panel buttons */
+
+    /* Inventory Button to switch to inventory view */
+    auto inv_button = new QToolButton(w);
+    inv_button->setIcon(QIcon("./images/inventory-button.png"));
+    inv_button->setIconSize(QSize(80, 80));
+    inv_button->move(-5,0);
+    inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    inv_button->show();
+
+    /* Help Button to switch to help view */
+    auto help_button = new QToolButton(w);
+    help_button->setIcon(QIcon("./images/about.png"));
+    help_button->setIconSize(QSize(80, 80));
+    help_button->move(-5, 455);
+    help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    help_button->show();
+}
+
 int InventoryManager::guiInput(int argc, char** argv) {
     app = std::make_shared<QApplication>(argc, argv);
     window = std::make_shared<QWidget>();
@@ -324,22 +384,7 @@ int InventoryManager::guiInput(int argc, char** argv) {
     window->setFixedSize(960, 540);
     window->setWindowTitle(QApplication::translate("InventoryManager", "Inventory Manager"));
 
-    /* Set up side panel */
-    auto inv_button = std::make_shared<QToolButton>(window.get());
-    inv_button->setIcon(QIcon("./images/inventory-button.png"));
-    inv_button->setIconSize(QSize(80, 80));
-    inv_button->move(-5,0);
-    inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
-    inv_button->show();
-
-
-    auto help_button = std::make_shared<QToolButton>(window.get());
-    help_button->setIcon(QIcon("./images/about.png"));
-    help_button->setIconSize(QSize(80, 80));
-    help_button->move(-5, 455);
-    help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
-    help_button->show();
-    displayInventory();
+    guiLogin();
 
     window->show();
     app->exec();
