@@ -22,12 +22,16 @@ int main(int argc, char** argv) {
     try {
         im.readCSVFile();
 
-        if (im.userLogin()) {
-            while (true) {
-                if (im.userInput() == -1) break;
+        if (command_line) {
+            if (im.userLogin()) {
+                while (true) {
+                    if (im.userInput() == -1) break;
+                }
             }
         }
-
+        else {
+            im.guiInput(argc, argv);
+        }
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
 

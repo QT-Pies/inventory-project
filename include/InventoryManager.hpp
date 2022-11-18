@@ -5,6 +5,15 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <QApplication>
+#include <QIcon>
+#include <QPushButton>
+#include <QTableWidget>
+#include <QTableWidgetItem>
+#include <QToolButton>
+#include <QString>
+#include <QStringList>
+#include <QWidget>
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -12,7 +21,11 @@
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
-#include "SalesComparison.hpp"
+
+class QInventoryManager : public QObject {
+public:
+    void itemChanged(QTableWidgetItem *);
+};
 
 class InventoryManager {
    public:
@@ -32,6 +45,17 @@ class InventoryManager {
      * @return 0 on success, -1 on failure
      */
     int userInput();
+
+    /*
+     * @brief temp function to display inventory.
+    */
+    int displayInventory();
+
+    /*
+     * @brief Starts up a Qt application of the IM.
+     * @return 0 on success, -1 on failure.
+    */
+    int guiInput(int, char**);
 
     /*
      * @brief Reads in CSV file and stores it into active_inventory
@@ -58,19 +82,18 @@ class InventoryManager {
      */
     bool updatePermission(std::string, std::string);
 
-    /*
-     * @brief calls process transaction function in Transaction
-     */
-    void makeTransaction();
-
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
-    std::shared_ptr<SalesComparison> sales_comp{new SalesComparison};
     std::string file_name;
+
+    std::shared_ptr<QApplication> app;
+    std::shared_ptr<QWidget> window;
+
+    static void inventoryItemChanged(QTableWidgetItem*);
 };
 
 #endif
