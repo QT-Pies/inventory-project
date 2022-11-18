@@ -105,8 +105,6 @@ void InventoryScreen::AddUser() {
         QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
         return;
     }
-    // check for if user is allready made, ask if we want to allow same usernames or just if same username and password
-    //if()
 
     if(im->current_user->permission == 1) {
         QMessageBox::warning(w,"Didn't create New User", "Employees cannot create accounts. Please have a manager or owner create the account.");
@@ -117,8 +115,12 @@ void InventoryScreen::AddUser() {
         return;
     }
     
-    im->login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString());
-    QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+    if(im->login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString())) {
+        QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+    }
+    else {
+        QMessageBox::warning(w,"Didn't create New User", "The User was unable to be created. Allready Exists");
+    }
     
 
 }

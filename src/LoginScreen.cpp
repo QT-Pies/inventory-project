@@ -16,7 +16,6 @@ LoginScreen::~LoginScreen() {
 // change everything to smart pointers
 void LoginScreen::openWindow(std::string file) {
     im = std::make_shared<InventoryManager>(false, file);
-    //w->
     w->setWindowTitle("Jimventory Manager");
 
     QHBoxLayout *hUserLayout = new QHBoxLayout;
@@ -56,7 +55,6 @@ void LoginScreen::openWindow(std::string file) {
 
     w->setLayout(vLoginLayout);
 
-    //connect(bQuit, SIGNAL(clicked()), w, SLOT(quitApp()));
     connect(bLogin, &QPushButton::clicked, this, &LoginScreen::loginApp);
     connect(bQuit, &QPushButton::clicked, this, &LoginScreen::quitApp);
 
@@ -76,7 +74,6 @@ void LoginScreen::loginApp() {
     else {
         QMessageBox::warning(w,"Login", "Username and/or password is incorrect");
     }
-
 }
 
 void LoginScreen::quitApp() {
