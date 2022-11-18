@@ -50,7 +50,7 @@ class LoginScreen : public QWidget{
    private:
     QWidget *w;
     QLineEdit *userLineEdit;
-    QLineEdit *passwordLineEdit ;
+    QLineEdit *passwordLineEdit;
 
     std::shared_ptr<InventoryManager> im;
     InventoryScreen *inventoryWindow;
