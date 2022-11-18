@@ -114,7 +114,7 @@ void SalesGenerator::nextDate() {
     tmp.day++;
 
     /* Move month */
-    if ((int)tmp.day > days_in_month[tmp.month]) {
+    if ((int)tmp.day > days_in_month[tmp.month-1]) {
         tmp.month++;
         tmp.day = 1;
         if (tmp.month > 12) {
