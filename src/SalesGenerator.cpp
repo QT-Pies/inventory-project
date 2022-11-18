@@ -90,7 +90,10 @@ void SalesGenerator::generateTransactions(unsigned long max) {
         transaction->print(p_file);
         nextDate();
 
-        if (last_date.year == curr_y && last_date.month == curr_m && last_date.day > curr_d) break;
+        if (last_date.year == curr_y && last_date.month == curr_m && last_date.day > curr_d){
+             std::cout << "Only able to generate " << i + 1 << " sales" << std::endl;
+             break;
+        }
     }
 
     p_file.close();
