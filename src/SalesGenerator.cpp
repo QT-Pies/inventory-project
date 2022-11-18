@@ -183,9 +183,6 @@ void MockSale::setNumSold() {
     std::uniform_int_distribution<unsigned long> distrib_sold(1, q);
 
     num_sold = distrib_sold(gen);
-
-    /* We don't use items with quantity == 0, and the range is 1->quantity, so no fear of < 0. */
-    item->quantity -= num_sold;
 }
 
 void MockSale::print(std::ostream& out) {
