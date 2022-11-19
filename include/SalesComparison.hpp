@@ -39,7 +39,6 @@ class SalesComparison {
     void suggestSale();
 
    private:
-
     friend class InventoryManager;
     /*
      * @brief The compareBy functions will compare sales from your current year or month with data from all
