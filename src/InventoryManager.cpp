@@ -491,6 +491,31 @@ int InventoryManager::displayInventory() {
         }
     });
 
+    QObject::connect(add_action, &QAction::triggered, [&]() {
+        std::cout << "I am adding an item." << std::endl;
+    });
+
+    QObject::connect(remove_action, &QAction::triggered, [&]() {
+        auto name = QInputDialog::getText(view.get(), "Remove Item from Inventory", "Name of Item:", QLineEdit::Normal);
+
+        auto item = active_inventory->searchByName(name.toStdString());
+
+        if (item == nullptr) {
+            Logger::logWarn("Could not find item '%s' in the inventory.", name.toStdString().c_str());
+        }
+
+        for (row = 1; row < table->rowCount(); ++row) {
+            auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+            if (row_id == item->id) {
+                table->removeRow(row);
+                active_inventory->removeItem(item->name);
+                return;
+            }
+        }
+
+    });
+
     table->show();
     return 0;
 }

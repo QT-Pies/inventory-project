@@ -7,6 +7,7 @@
 #include <string>
 #include <QApplication>
 #include <QIcon>
+#include <QInputDialog>
 #include <QLabel>
 #include <QPushButton>
 #include <QTableWidget>
