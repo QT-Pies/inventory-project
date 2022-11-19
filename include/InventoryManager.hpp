@@ -12,6 +12,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QToolButton>
+#include <QToolBar>
 #include <QString>
 #include <QStringList>
 #include <QWidget>
@@ -121,6 +122,9 @@ class InventoryManager {
      * @brief Displays side panel.
      */
     void initializeSidePanel();
+
+    /* Other variables for Qt */
+    bool inv_update_debounce;
 };
 
 #endif

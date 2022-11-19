@@ -8,6 +8,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
 
     inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
     item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
+    inv_update_debounce = false;
 
 }
 
@@ -332,8 +333,30 @@ int InventoryManager::displayInventory() {
 
     table = std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), view.get());
     table->setHorizontalHeaderLabels(inv_header);
-    table->setFixedSize(880, 540);
+    table->setFixedSize(880, 500);
     table->move(80, 0);
+
+    /* 
+    auto title = new QLabel(view.get());
+    title->setText(QString::fromStdString(file_name));
+    title->setFixedSize(440, 40);
+    title->move(120, 0);
+    title->show();
+    */
+
+    auto bar = new QToolBar(view.get());
+    bar->setFixedSize(880, 40);
+    bar->move(80, 500);
+    bar->show();
+
+    /* Create Add action */
+    auto add_action = new QAction(bar);
+    add_action->setIcon(QIcon("./images/add.png"));
+    bar->addAction(add_action);
+
+    auto remove_action = new QAction(bar);
+    remove_action->setIcon(QIcon("./images/remove.png"));
+    bar->addAction(remove_action);
 
     row = 0;
 
@@ -398,6 +421,12 @@ int InventoryManager::displayInventory() {
         auto cat = item_fields.at(item->column()).toStdString();
         auto val = item->text().toStdString();
 
+        /* Skip updating anything if we were called from a manual setText() */
+        if (inv_update_debounce) {
+            inv_update_debounce = false;
+            return;
+        }
+
         /* So, ActiveInventory::updateItem() takes the item name. 
          * Currently, we grab the item name by checking the first column of this row.
          * However, if we're updating the name, we can't use that.\
@@ -457,7 +486,8 @@ int InventoryManager::displayInventory() {
                 }
             }
 
-            item->setText(q_string); 
+            inv_update_debounce = true;
+            item->setText(q_string);
         }
     });
 
