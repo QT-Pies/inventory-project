@@ -76,6 +76,11 @@ class InventoryManager {
     bool userLogin();
 
     /*
+     * @brief Main GUI view
+     */
+    void mainWindow();
+
+    /*
      * @brief GUI login
      */
     void guiLogin();
@@ -101,8 +106,10 @@ class InventoryManager {
     std::shared_ptr<QApplication> app;
     std::shared_ptr<QWidget> window;
     std::shared_ptr<QWidget> view;
+    std::shared_ptr<QTableWidget> table;
+    QStringList inv_header;
 
-    void initializeSidePanel(QWidget*);
+    void initializeSidePanel();
 
     static void inventoryItemChanged(QTableWidgetItem*);
 };

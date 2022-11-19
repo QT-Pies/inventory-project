@@ -240,14 +240,13 @@ void QInventoryManager::itemChanged(QTableWidgetItem *item) {
 }
 
 void InventoryManager::guiLogin() {
+    // Pretty sure Vincent has an implementation of login already, this is just here as a place holder.
     view_gc.clear();
 
     auto login_view = std::make_shared<QWidget>(window.get());
     login_view->setFixedSize(960, 540);
     view = login_view;
 
-    // Made this a normal pointer because smart was causing an issue.
-    // TODO: Fix smart pointer issue or impl. our own garbage collection.
     auto text = new QLabel(login_view.get());
     text->setText("Please login");
 
@@ -266,9 +265,8 @@ void InventoryManager::guiLogin() {
 
         if (user != nullptr) {
             /* Switch to main program view */
-            initializeSidePanel(window.get());
-            displayInventory();
             view->hide();
+            mainWindow();
         }
 
     });
@@ -278,14 +276,13 @@ void InventoryManager::guiLogin() {
 
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
-    //auto table = std::make_shared<QTableWidget>(item_count, 0, nullptr);
     QInventoryManager qim;
 
     int row;
 
-    QStringList inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+    inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
 
-    auto table = new QTableWidget(item_count + 1, static_cast<int>(inv_header.size()), window.get());
+    table =  std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), view.get());
     table->setHorizontalHeaderLabels(inv_header);
 
     table->setFixedSize(880, 540);
@@ -340,27 +337,36 @@ int InventoryManager::displayInventory() {
         table->setItem(row, 11, exp_entry);
     }
 
-  //  QObject::connect(table, &QTableWidget::itemChanged, this, inventoryItemChanged);
-
-    QObject::connect(table, &QTableWidget::itemChanged, []() {
+    QObject::connect(table.get(), &QTableWidget::itemChanged, [&](QTableWidgetItem* item) {
         std::cout << "Hello, I am an QTableWidgetItem and I have been changed." << std::endl;
-    });
+        std::cout << "Changed value: " << item->text().toStdString() << std::endl;
 
-    // this one compiles
-   // QObject::connect(table, SIGNAL(itemChanged(QTableWidgetItem *)), &qim, SLOT(itemChanged(QTableWidgetItem *)));
+        auto item_name = table->item(item->row(), 0)->text().toStdString();
+        auto cat = inv_header.at(item->column()).toStdString();
+        auto val = item->text().toStdString();
+
+        if (active_inventory->updateItem(item_name, cat, val)) {
+            auto inv_item = active_inventory->searchByName(item_name);
+            if (cat == "Category") {
+                std::cout << "Resetting text field" << std::endl;
+                auto q_string = QString::fromStdString(inv_item->category);
+                item->setText(q_string);
+            } 
+        }
+    });
 
     table->show();
     return 0;
 }
 
-void InventoryManager::initializeSidePanel(QWidget *w) {
+void InventoryManager::initializeSidePanel() {
     /* Clear out current gc collection */
     view_gc.clear();
 
     /* Set up side panel buttons */
 
     /* Inventory Button to switch to inventory view */
-    auto inv_button = new QToolButton(w);
+    auto inv_button = new QToolButton(view.get());
     inv_button->setIcon(QIcon("./images/inventory-button.png"));
     inv_button->setIconSize(QSize(80, 80));
     inv_button->move(-5,0);
@@ -368,12 +374,34 @@ void InventoryManager::initializeSidePanel(QWidget *w) {
     inv_button->show();
 
     /* Help Button to switch to help view */
-    auto help_button = new QToolButton(w);
+    auto help_button = new QToolButton(view.get());
     help_button->setIcon(QIcon("./images/about.png"));
     help_button->setIconSize(QSize(80, 80));
     help_button->move(-5, 455);
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
+
+    QObject::connect(inv_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the inventory button and I have been clicked." << std::endl;
+    });
+
+    QObject::connect(help_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the help button and I have been clicked." << std::endl;
+    });
+}
+
+void InventoryManager::mainWindow() {
+    auto main_view = std::make_shared<QWidget>(window.get());
+
+    main_view->setFixedSize(960, 540);
+    view = main_view;
+
+    initializeSidePanel();
+
+    // Open up inventory view on program login.
+    displayInventory();
+
+    main_view->show();
 }
 
 int InventoryManager::guiInput(int argc, char** argv) {
