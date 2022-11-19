@@ -15,6 +15,11 @@
 #include <QString>
 #include <QStringList>
 #include <QWidget>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPixmap>
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -115,6 +120,9 @@ class InventoryManager {
     std::shared_ptr<QWidget> view;
     std::shared_ptr<QTableWidget> table;
     QStringList inv_header;
+    std::shared_ptr<QLineEdit> username_line;
+    std::shared_ptr<QLineEdit> password_line;
+
 
     void initializeSidePanel();
 

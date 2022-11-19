@@ -298,26 +298,52 @@ void InventoryManager::guiLogin() {
     login_view->setFixedSize(960, 540);
     view = login_view;
 
-    auto text = new QLabel(login_view.get());
-    text->setText("Please login");
+    auto logo = new QLabel(login_view.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(256,256,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+
+    auto user_label = new QLabel(login_view.get());
+    user_label->setText("Username:");
+    user_label->move(352,260);
+    username_line = std::make_shared<QLineEdit>(window.get());
+    username_line->move(440,256);
+    gc.push_back(user_label);
+
+    auto password_label = new QLabel(login_view.get());
+    password_label->setText("Password:");
+    password_label->move(352,300);
+    password_line = std::make_shared<QLineEdit>(window.get());
+    password_line->move(440,296);
+    password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+
 
     auto login_button = new QPushButton(login_view.get());
-    login_button->setText("I'm an admin, trust me");
+    login_button->setText("Login");
     login_button->setFixedSize(256,128);
-    login_button->move(352, 206);
+    login_button->move(352, 340);
     login_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
-    login_button->show();
+    //login_button->show();
     gc.push_back(login_button);
 
     QObject::connect(login_button, &QPushButton::clicked, [&]() {
         std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
 
-        auto user = login->verifyUser("admin", "admin");
+        QString un = username_line->text();
+        QString pas = password_line->text();
+
+        auto user = login->verifyUser(un.toStdString(), pas.toStdString());
 
         if (user != nullptr) {
             /* Switch to main program view */
+            //QMessageBox::information( "Login", "Login Successful");
             view->hide();
             mainWindow();
+        }
+        else {
+            //QMessageBox::warning("Login", "Username and/or password is incorrect");
         }
 
     });
