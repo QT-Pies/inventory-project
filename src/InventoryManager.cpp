@@ -7,6 +7,8 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     sales_comp->setup(sale_list);
 
     inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+    item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
+
 }
 
 InventoryManager::~InventoryManager() {
@@ -393,8 +395,29 @@ int InventoryManager::displayInventory() {
     /* Field was changed; attempt to update it. */
     QObject::connect(table.get(), &QTableWidget::itemChanged, [&](QTableWidgetItem* item) {
         auto item_name = table->item(item->row(), 0)->text().toStdString();
-        auto cat = inv_header.at(item->column()).toStdString();
+        auto cat = item_fields.at(item->column()).toStdString();
         auto val = item->text().toStdString();
+
+        /* So, ActiveInventory::updateItem() takes the item name. 
+         * Currently, we grab the item name by checking the first column of this row.
+         * However, if we're updating the name, we can't use that.\
+         * Instead, grab ID, get item with that ID, then get name from that.
+        */
+        if (item->column() == 0) {
+            try {
+                auto id = toUnsignedLong(table->item(item->row(), 1)->text().toStdString());
+                auto item = active_inventory->searchById(id);
+
+                if (item == nullptr) {
+                    throw std::invalid_argument("Failed to find the item.");
+                }
+
+                item_name = item->name;
+            } catch (std::exception& e) {
+                Logger::logWarn(e.what());
+                return;
+            }
+        }
 
         /* If failed to update, revert the text to the actual current value. */
         if (active_inventory->updateItem(item_name, cat, val)) {       
@@ -403,9 +426,13 @@ int InventoryManager::displayInventory() {
 
             QString q_string;
 
-            if (cat == "Category") {
+            if (cat == "Name") {
+                q_string = QString::fromStdString(inv_item->name);
+            } else if (cat == "ID") {
+                q_string = QString::number(inv_item->id);
+            } else if (cat == "Category") {
                 q_string = QString::fromStdString(inv_item->category);
-            } else if (cat == "Sub-Category") {
+            } else if (cat == "Sub_Category") {
                 q_string = QString::fromStdString(inv_item->sub_category);
             } else if (cat == "Location") {
                 q_string = QString::fromStdString(inv_item->location);
@@ -413,7 +440,7 @@ int InventoryManager::displayInventory() {
                 q_string = QString::number(inv_item->quantity);
             } else if (cat == "Backorder") {
                 q_string = QString::number(inv_item->backorder);
-            } else if (cat == "Sale Price") {
+            } else if (cat == "Sale_Price") {
                 q_string = QString::number(inv_item->sale_price);
             } else if (cat == "Tax") {
                 q_string = QString::number(inv_item->tax);
@@ -421,7 +448,7 @@ int InventoryManager::displayInventory() {
                 q_string = QString::number(inv_item->buy_cost);
             } else if (cat == "Profit") {
                 q_string = QString::number(inv_item->profit);
-            } else if (cat == "Expiration Date") {
+            } else if (cat == "Expiration_Date") {
                 if (inv_item->category == "NonPerishable") {
                     q_string = "-1";
                 } else {

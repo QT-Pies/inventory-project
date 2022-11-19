@@ -112,7 +112,8 @@ class InventoryManager {
     std::shared_ptr<QWidget> view; // The "view" -- login, main program view.
     std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
-    
+    QStringList item_fields;
+
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
 
