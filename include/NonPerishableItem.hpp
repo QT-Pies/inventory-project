@@ -19,7 +19,7 @@ class NonPerishableItem : public Item {
      */
     NonPerishableItem(const std::string&, const std::string&, const std::string&, const std::string&,
                       const std::string&, const std::string&, const std::string&, const std::string&,
-                      const std::string&);
+                      const std::string&, const std::string&);
 
     /* @brief Destructor; does nothing */
     ~NonPerishableItem() override;
