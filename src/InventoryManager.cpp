@@ -412,5 +412,22 @@ bool InventoryManager::updatePermission(std::string name, std::string account) {
 }
 
 void InventoryManager::makeTransaction() {
-    sale_list->transaction_by_order[sale_list->curr_transaction]->processTransaction(active_inventory);
+    
+    unsigned int i;
+
+    auto transaction_data = sale_list->transaction_by_order[sale_list->curr_transaction];
+    
+    sales_comp->current_year_sales += transaction_data->total_price;
+    sales_comp->current_month_sales += transaction_data->total_price;
+    sales_comp->current_day_sales += transaction_data->total_price;
+    sales_comp->sales_by_year[sales_comp->curr_y] += transaction_data->total_price;
+    sales_comp->sales_by_month[sales_comp->curr_m] += transaction_data->total_price;
+    
+    for (i = 0; i < transaction_data->sales.size(); i++) {
+        auto sale = transaction_data->sales[i];
+        sales_comp->current_month_item_ids[sale->item_id] += (sale->num_sold * sale->sale_price);
+        sales_comp->item_ids_by_month[sales_comp->curr_m][sale->item_id] += (sale->num_sold * sale->sale_price);
+    }    
+    
+    transaction_data->processTransaction(active_inventory);
 }
