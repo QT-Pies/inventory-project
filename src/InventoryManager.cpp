@@ -210,29 +210,30 @@ int InventoryManager::userInput() {
 
             std::cout << "\nItem Name: ";
             std::cin >> name;
- 
-        while (1) {
-            try {
-                std::cout << "Quantity Sold: ";
-                std::cin >> quantity;
-                tmp_quantity = toUnsignedLong(quantity);
-                if (tmp_quantity == 0) {
-                    throw std::invalid_argument("Quantity can't be zero.");
+
+            while (1) {
+                try {
+                    std::cout << "Quantity Sold: ";
+                    std::cin >> quantity;
+                    tmp_quantity = toUnsignedLong(quantity);
+                    if (tmp_quantity == 0) {
+                        throw std::invalid_argument("Quantity can't be zero.");
+                    }
+                    break;
+                } catch (std::exception& e) {
+                    Logger::logDebug(e.what());
+                    std::cout << "Invalid quantity. Try again.\n";
                 }
-                break;
-            } catch (std::exception& e) {
-                Logger::logDebug(e.what());
-                std::cout << "Invalid quantity. Try again.\n";
             }
-        }
-           
+
             auto item_ptr = active_inventory->searchByName(name);
 
             if (item_ptr != NULL) {
                 sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
                     sale_list->curr_sale_id, item_ptr->id, tmp_quantity, item_ptr->sale_price);
                 valid_transaction = true;
-            } else valid_transaction = false;
+            } else
+                valid_transaction = false;
 
             /* if no valid sales are added to the transaction, then it is deleted */
             if (valid_transaction == false) {
@@ -240,7 +241,7 @@ int InventoryManager::userInput() {
                 sale_list->transaction_by_order.pop_back();
                 sale_list->curr_transaction--;
             } else {
-                std::cout << "\n" << quantity << " " << name << "(s) sold.\n"; 
+                std::cout << "\n" << quantity << " " << name << "(s) sold.\n";
                 std::cout << "End of transaction. Thank you!\n\n";
                 sale_list->curr_sale_id++;
                 makeTransaction();
@@ -250,7 +251,7 @@ int InventoryManager::userInput() {
             std::cin >> arg;
             lowerCaseString(arg);
 
-            while (arg != "y" && arg != "n" ) {
+            while (arg != "y" && arg != "n") {
                 std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
                 std::cin >> arg;
                 lowerCaseString(arg);
@@ -412,5 +413,21 @@ bool InventoryManager::updatePermission(std::string name, std::string account) {
 }
 
 void InventoryManager::makeTransaction() {
-    sale_list->transaction_by_order[sale_list->curr_transaction]->processTransaction(active_inventory);
+    unsigned int i;
+
+    auto transaction_data = sale_list->transaction_by_order[sale_list->curr_transaction];
+
+    sales_comp->current_year_sales += transaction_data->total_price;
+    sales_comp->current_month_sales += transaction_data->total_price;
+    sales_comp->current_day_sales += transaction_data->total_price;
+    sales_comp->sales_by_year[sales_comp->curr_y] += transaction_data->total_price;
+    sales_comp->sales_by_month[sales_comp->curr_m] += transaction_data->total_price;
+
+    for (i = 0; i < transaction_data->sales.size(); i++) {
+        auto sale = transaction_data->sales[i];
+        sales_comp->current_month_item_ids[sale->item_id] += (sale->num_sold * sale->sale_price);
+        sales_comp->item_ids_by_month[sales_comp->curr_m][sale->item_id] += (sale->num_sold * sale->sale_price);
+    }
+
+    transaction_data->processTransaction(active_inventory);
 }
