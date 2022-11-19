@@ -24,11 +24,6 @@
 #include "Sales.hpp"
 #include "SalesComparison.hpp"
 
-class QInventoryManager : public QObject {
-public:
-    void itemChanged(QTableWidgetItem *);
-};
-
 class InventoryManager {
    public:
     /*
@@ -110,15 +105,21 @@ class InventoryManager {
 
     std::vector<std::shared_ptr<QObject>> view_gc;
     std::vector<QObject*> gc;
-    std::shared_ptr<QApplication> app;
-    std::shared_ptr<QWidget> window;
-    std::shared_ptr<QWidget> view;
-    std::shared_ptr<QTableWidget> table;
+    
+    /* Class wide QObject variables */
+    std::shared_ptr<QApplication> app; // The QApplication context.
+    std::shared_ptr<QWidget> window; // The "main window" widget.
+    std::shared_ptr<QWidget> view; // The "view" -- login, main program view.
+    std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
+    
+    /* Specific QWidget objects */
+    std::shared_ptr<QTableWidget> table;
 
+    /*
+     * @brief Displays side panel.
+     */
     void initializeSidePanel();
-
-    static void inventoryItemChanged(QTableWidgetItem*);
 };
 
 #endif

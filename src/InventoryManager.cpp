@@ -5,6 +5,8 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     file_name = file;
     sale_list->loadSales(file);
     sales_comp->setup(sale_list);
+
+    inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
 }
 
 InventoryManager::~InventoryManager() {
@@ -282,14 +284,6 @@ int InventoryManager::userInput() {
     return 0;
 }
 
-void InventoryManager::inventoryItemChanged(QTableWidgetItem *item) {
-    std::cout << "Hello, I was changed." << std::endl;
-}
-
-void QInventoryManager::itemChanged(QTableWidgetItem *item) {
-    std::cout << "Hello, I was changed." << std::endl;
-}
-
 void InventoryManager::guiLogin() {
     // Pretty sure Vincent has an implementation of login already, this is just here as a place holder.
     view_gc.clear();
@@ -327,25 +321,29 @@ void InventoryManager::guiLogin() {
 
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
-    QInventoryManager qim;
-
     int row;
 
-    inv_header = {"Name", "ID", "Category", "Sub-Category", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+    if (table != nullptr) {
+        table->show();
+        return 0;
+    }
 
-    table =  std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), view.get());
+    table = std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), view.get());
     table->setHorizontalHeaderLabels(inv_header);
-
     table->setFixedSize(880, 540);
     table->move(80, 0);
 
     row = 0;
-    /* Load in inventory */
+
+    /* Create QTableWidgetItems for each item */
     for (auto it = active_inventory->inv_by_id.begin(); it != active_inventory->inv_by_id.end(); ++it, ++row) {
+
+        /* Convert values of item data to QString type */
         auto name = QString::fromStdString(it->second->name);
         auto id = QString::number(it->second->id);
         auto category = QString::fromStdString(it->second->category);
         auto subcategory = QString::fromStdString(it->second->sub_category);
+        auto location = QString::fromStdString(it->second->location);
         auto quantity = QString::number(it->second->quantity);
         auto backorder = QString::number(it->second->backorder);
         auto sale_price = QString::number(it->second->sale_price);
@@ -361,10 +359,12 @@ int InventoryManager::displayInventory() {
             expiration_date = QString::fromStdString(tmp->expiration_date.string_date);
         } else expiration_date = "-1";
 
+        /* Create QTableWidgetItem for each field */
         auto name_entry = new QTableWidgetItem(name, 0);
         auto id_entry = new QTableWidgetItem(id, 0);
         auto cat_entry = new QTableWidgetItem(category, 0);
         auto sub_entry = new QTableWidgetItem(subcategory, 0);
+        auto location_entry = new QTableWidgetItem(location, 0);
         auto quantity_entry = new QTableWidgetItem(quantity, 0);
         auto backorder_entry = new QTableWidgetItem(backorder, 0);
         auto sale_entry = new QTableWidgetItem(sale_price, 0);
@@ -374,35 +374,63 @@ int InventoryManager::displayInventory() {
         auto profit_entry = new QTableWidgetItem(profit, 0);
         auto exp_entry = new QTableWidgetItem(expiration_date, 0);
 
+        /* Insert each item into table */
         table->setItem(row, 0, name_entry);
         table->setItem(row, 1, id_entry);
         table->setItem(row, 2, cat_entry);
         table->setItem(row, 3, sub_entry);
-        table->setItem(row, 4, quantity_entry);
-        table->setItem(row, 5, backorder_entry);
-        table->setItem(row, 6, sale_entry);
-        table->setItem(row, 7, tax_entry);
-        table->setItem(row, 8, total_entry);
-        table->setItem(row, 9, buy_entry);
-        table->setItem(row, 10, profit_entry);
-        table->setItem(row, 11, exp_entry);
+        table->setItem(row, 4, location_entry);
+        table->setItem(row, 5, quantity_entry);
+        table->setItem(row, 6, backorder_entry);
+        table->setItem(row, 7, sale_entry);
+        table->setItem(row, 8, tax_entry);
+        table->setItem(row, 9, total_entry);
+        table->setItem(row, 10, buy_entry);
+        table->setItem(row, 11, profit_entry);
+        table->setItem(row, 12, exp_entry);
     }
 
+    /* Field was changed; attempt to update it. */
     QObject::connect(table.get(), &QTableWidget::itemChanged, [&](QTableWidgetItem* item) {
-        std::cout << "Hello, I am an QTableWidgetItem and I have been changed." << std::endl;
-        std::cout << "Changed value: " << item->text().toStdString() << std::endl;
-
         auto item_name = table->item(item->row(), 0)->text().toStdString();
         auto cat = inv_header.at(item->column()).toStdString();
         auto val = item->text().toStdString();
 
-        if (active_inventory->updateItem(item_name, cat, val)) {
+        /* If failed to update, revert the text to the actual current value. */
+        if (active_inventory->updateItem(item_name, cat, val)) {       
             auto inv_item = active_inventory->searchByName(item_name);
+            Logger::logTrace("Failed to update Item '%s' field '%s' to value '%s'.", item_name.c_str(), cat.c_str(), val.c_str());
+
+            QString q_string;
+
             if (cat == "Category") {
-                std::cout << "Resetting text field" << std::endl;
-                auto q_string = QString::fromStdString(inv_item->category);
-                item->setText(q_string);
-            } 
+                q_string = QString::fromStdString(inv_item->category);
+            } else if (cat == "Sub-Category") {
+                q_string = QString::fromStdString(inv_item->sub_category);
+            } else if (cat == "Location") {
+                q_string = QString::fromStdString(inv_item->location);
+            } else if (cat == "Quantity") {
+                q_string = QString::number(inv_item->quantity);
+            } else if (cat == "Backorder") {
+                q_string = QString::number(inv_item->backorder);
+            } else if (cat == "Sale Price") {
+                q_string = QString::number(inv_item->sale_price);
+            } else if (cat == "Tax") {
+                q_string = QString::number(inv_item->tax);
+            } else if (cat == "Buy Cost") {
+                q_string = QString::number(inv_item->buy_cost);
+            } else if (cat == "Profit") {
+                q_string = QString::number(inv_item->profit);
+            } else if (cat == "Expiration Date") {
+                if (inv_item->category == "NonPerishable") {
+                    q_string = "-1";
+                } else {
+                    auto per_item = (PerishableItem*) inv_item.get();
+                    q_string = QString::fromStdString(per_item->expiration_date.string_date);
+                }
+            }
+
+            item->setText(q_string); 
         }
     });
 
