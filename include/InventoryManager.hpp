@@ -7,6 +7,7 @@
 #include <string>
 #include <QApplication>
 #include <QIcon>
+#include <QLabel>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
@@ -21,6 +22,7 @@
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
+#include "SalesComparison.hpp"
 
 class QInventoryManager : public QObject {
 public:
@@ -75,6 +77,16 @@ class InventoryManager {
     bool userLogin();
 
     /*
+     * @brief Main GUI view
+     */
+    void mainWindow();
+
+    /*
+     * @brief GUI login
+     */
+    void guiLogin();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -82,16 +94,29 @@ class InventoryManager {
      */
     bool updatePermission(std::string, std::string);
 
+    /*
+     * @brief calls process transaction function in Transaction
+     */
+    void makeTransaction();
+
    private:
     bool command_line;
     std::shared_ptr<ActiveInventory> active_inventory{new ActiveInventory};
     std::shared_ptr<Login> login{new Login};
     std::shared_ptr<User> current_user;
     std::shared_ptr<SaleList> sale_list{new SaleList};
+    std::shared_ptr<SalesComparison> sales_comp{new SalesComparison};
     std::string file_name;
 
+    std::vector<std::shared_ptr<QObject>> view_gc;
+    std::vector<QObject*> gc;
     std::shared_ptr<QApplication> app;
     std::shared_ptr<QWidget> window;
+    std::shared_ptr<QWidget> view;
+    std::shared_ptr<QTableWidget> table;
+    QStringList inv_header;
+
+    void initializeSidePanel();
 
     static void inventoryItemChanged(QTableWidgetItem*);
 };

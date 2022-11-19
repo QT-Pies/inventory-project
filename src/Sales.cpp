@@ -5,13 +5,13 @@ Sale::Sale(const unsigned long sid, const unsigned long iid, const unsigned long
 
 Sale::~Sale() {}
 
-Transaction::Transaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int y,
-                         const unsigned int m, const unsigned int d)
-    : sale_id(sid), buyer(b), seller(s) {
+Transaction::Transaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int m,
+                         const unsigned int d, const unsigned int y)
+    : sale_id(sid), month(m), day(d), year(y), buyer(b), seller(s) {
     total_price = 0;
     num_sales = 0;
-    date = std::to_string(y) + '/' + std::to_string(m) + '/' + std::to_string(d);
-    unique_transaction_id = std::to_string(sid) + std::to_string(y) + std::to_string(m) + std::to_string(d);
+    date = std::to_string(m) + '/' + std::to_string(d) + '/' + std::to_string(y);
+    unique_transaction_id = std::to_string(sid) + std::to_string(m) + std::to_string(d) + std::to_string(y);
 }
 
 Transaction::~Transaction() {}
@@ -46,9 +46,32 @@ bool Transaction::removeSale(const unsigned long sid, const unsigned long iid, c
     return false;
 }
 
+void Transaction::processTransaction(std::shared_ptr<ActiveInventory> active_inv) {
+    unsigned int i;
+    unsigned long amount;
+
+    for (i = 0; i < sales.size(); i++) {
+        auto s = sales[i];
+        auto item = active_inv->searchById(s->item_id);
+
+        if (item == NULL) {
+            Logger::logError("Invalid item id %lu. Continuing to process.", s->item_id);
+        } else {
+            if (item->quantity < s->num_sold) {
+                amount = s->num_sold - item->quantity;
+                item->quantity = 0;
+                item->backorder += amount;
+
+            } else {
+                item->quantity -= s->num_sold;
+            }
+        }
+    }
+}
+
 SaleList::SaleList() {
-    std::make_unique<
-        std::map<unsigned int, std::map<unsigned int, std::map<unsigned int, std::shared_ptr<Transaction> > > > >(
+    std::make_unique<std::map<
+        unsigned int, std::map<unsigned int, std::map<unsigned int, std::vector<std::shared_ptr<Transaction> > > > > >(
         transaction_by_date);
     std::make_unique<std::vector<std::shared_ptr<Transaction> > >(transaction_by_order);
     curr_sale_id = 1;
@@ -59,21 +82,21 @@ SaleList::~SaleList() {}
 
 void SaleList::userTransaction(const unsigned long sid, const std::string b, const std::string s) {
     time_t current_date;
-    unsigned int y, m, d;
+    unsigned int m, d, y;
 
     current_date = time(0);
     tm *ltm = localtime(&current_date);
-    y = 1900 + ltm->tm_year;
     m = 1 + ltm->tm_mon;
     d = ltm->tm_mday;
-    newTransaction(sid, b, s, y, m, d);
+    y = 1900 + ltm->tm_year;
+    newTransaction(sid, b, s, m, d, y);
 }
 
-void SaleList::newTransaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int y,
-                              const unsigned int m, const unsigned int d) {
-    auto new_transaction = std::make_shared<Transaction>(sid, b, s, y, m, d);
+void SaleList::newTransaction(const unsigned long sid, const std::string b, const std::string s, const unsigned int m,
+                              const unsigned int d, const unsigned int y) {
+    auto new_transaction = std::make_shared<Transaction>(sid, b, s, m, d, y);
     transaction_by_order.push_back(new_transaction);
-    transaction_by_date[y][m][d] = new_transaction;
+    transaction_by_date[m][d][y].push_back(new_transaction);
     curr_transaction = transaction_by_order.size() - 1;
 }
 
@@ -81,8 +104,8 @@ bool SaleList::loadSales(const std::string file) {
     std::ifstream p_fin, c_fin;
     std::string p_line, c_line;
     std::string s_id, s_id_check, i_id, item_quantity, sold_quantity;
-    std::string y, m, d;
-    unsigned int curr_y, curr_m, curr_d, i;
+    std::string m, d, y;
+    unsigned int curr_m, curr_d, curr_y, i;
     std::string tot_price, i_price;
     std::string b, s;
     time_t current_date;
@@ -90,9 +113,9 @@ bool SaleList::loadSales(const std::string file) {
     // getting current date to check if transactions have been added on the same day
     current_date = time(0);
     tm *ltm = localtime(&current_date);
-    curr_y = 1900 + ltm->tm_year;
     curr_m = 1 + ltm->tm_mon;
     curr_d = ltm->tm_mday;
+    curr_y = 1900 + ltm->tm_year;
 
     // assuming all files end in .csv
     parent_file = file.substr(0, file.size() - 4) + "_parent_sales.csv";
@@ -126,16 +149,16 @@ bool SaleList::loadSales(const std::string file) {
     while (p_fin.good()) {
         getline(p_fin, s_id, ',');
         if (!p_fin.good()) break;
-        getline(p_fin, y, '/');
         getline(p_fin, m, '/');
-        getline(p_fin, d, ',');
+        getline(p_fin, d, '/');
+        getline(p_fin, y, ',');
         getline(p_fin, tot_price, ',');
         getline(p_fin, item_quantity, ',');
         getline(p_fin, b, ',');
         getline(p_fin, s, '\n');
 
         // note total price and item quantity are automatically set when newTransaction is called
-        newTransaction(stoul(s_id), b, s, stoul(y), stoul(m), stoul(d));
+        newTransaction(stoul(s_id), b, s, stoul(m), stoul(d), stoul(y));
         // When items are saved to the file, they should be orginized in order from oldest to newest so it can be read
         // like this.
         for (i = 0; i < stoul(item_quantity); i++) {
@@ -148,7 +171,7 @@ bool SaleList::loadSales(const std::string file) {
                                                                 stod(i_price));
         }
         // sale_id is based on the day, so if previous sales have been added today, the sale Id must account for it
-        if (stoul(y) == curr_y && stoul(m) == curr_m && stoul(d) == curr_d) {
+        if (stoul(m) == curr_m && stoul(d) == curr_d && stoul(y) == curr_y) {
             curr_sale_id = stoul(s_id) + 1;
         }
     }

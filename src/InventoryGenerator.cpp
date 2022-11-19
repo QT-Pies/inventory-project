@@ -77,6 +77,7 @@ std::shared_ptr<CSVEntry> InventoryGenerator::generateItem() {
     /* Set category to undefined, it's not perishable or non-perishable. */
     entry->category = "-1";
     entry->sub_category = "-1";
+    entry->location = "-1";
     entry->expiration_date = "-1";
 
     /* Generate values; potentially make them bad */
