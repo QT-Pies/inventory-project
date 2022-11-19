@@ -297,7 +297,7 @@ double SalesComparison::compareLastXYears(int x) {
     num_years = 0;
     for (yit = sales_list->transaction_by_date[curr_m][curr_d].end(); yit->first != curr_y - 1; yit--)
         ;
-    for (yit = yit; yit != sales_list->transaction_by_date[curr_m][curr_d].end(); yit--) {
+    for (; yit != sales_list->transaction_by_date[curr_m][curr_d].end(); yit--) {
         num_years++;
         if (num_years == x) break;
     }
@@ -311,7 +311,7 @@ double SalesComparison::compareLastXYears(int x) {
     total = 0;
     for (it = sales_by_year.begin(); it->first < first_year; it++)
         ;
-    for (it = it; it != sales_by_year.end(); it++) {
+    for (; it != sales_by_year.end(); it++) {
         total += it->second;
     }
     return 100.0 * (current_year_sales / ((total / num_years) * days_left_year));

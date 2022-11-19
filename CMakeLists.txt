@@ -49,6 +49,7 @@ add_executable(main
   src/Login.cpp
   src/User.cpp
   src/Sales.cpp
+  src/SalesComparison.cpp
   src/main.cpp
 )
 
@@ -96,6 +97,7 @@ add_executable(unit_tests
   src/Login.cpp
   src/Sales.cpp
   src/InventoryManager.cpp
+  src/SalesComparison.cpp
   src/unit_tests.cpp
 )
 
