@@ -125,6 +125,10 @@ class InventoryManager {
      */
     void initializeSidePanel();
 
+    void insertItemIntoTable(std::shared_ptr<Item>, int);
+
+    void redrawTable();
+
     /* Other variables for Qt */
     bool inv_update_debounce;
 };
