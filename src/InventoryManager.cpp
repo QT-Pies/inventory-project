@@ -382,6 +382,8 @@ void InventoryManager::guiUser() {
     user_label->move(352,260);
     username_line = new QLineEdit(view.get());
     username_line->move(440,256);
+    user_label->show();
+    username_line->show();
     gc.push_back(user_label);
     gc.push_back(username_line);
 
@@ -390,6 +392,8 @@ void InventoryManager::guiUser() {
     password_label->move(352,300);
     password_line = new QLineEdit(view.get());
     password_line->move(440,296);
+    password_label->show();
+    password_line->show();
     // password_line->setEchoMode(QLineEdit::Password);
     gc.push_back(password_label);
     gc.push_back(password_line);
@@ -397,13 +401,19 @@ void InventoryManager::guiUser() {
     ownerButton = new QRadioButton("Owner",view.get());
     managerButton = new QRadioButton("Manager",view.get());
     employeeButton = new QRadioButton("Employee",view.get());
-    // ownerButton->show();
+    ownerButton->move(300,200);
+    managerButton->move(350,200);
+    employeeButton->move(400,200);
+    ownerButton->show();
+    managerButton->show();
+    employeeButton->show();
 
     auto create_button = new QPushButton(view.get());
     create_button->setText("Create User");
     create_button->setFixedSize(256,64);
     create_button->move(352, 340);
     create_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    create_button->show();
     gc.push_back(create_button);
 
     auto update_button = new QPushButton(view.get());
@@ -411,14 +421,16 @@ void InventoryManager::guiUser() {
     update_button->setFixedSize(256,64);
     update_button->move(352, 410);
     update_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    update_button->show();
     gc.push_back(update_button);
 
-    auto loggout_button = new QPushButton(view.get());
-    loggout_button->setText("Update User");
-    loggout_button->setFixedSize(256,64);
-    loggout_button->move(352, 480);
-    loggout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
-    gc.push_back(loggout_button);
+    auto logout_button = new QPushButton(view.get());
+    logout_button->setText("Logout");
+    logout_button->setFixedSize(256,64);
+    logout_button->move(352, 480);
+    logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    logout_button->show();
+    gc.push_back(logout_button);
 
     QObject::connect(create_button, &QPushButton::clicked, [&]() {
         //window->close();
@@ -430,7 +442,7 @@ void InventoryManager::guiUser() {
         //return;
     });
 
-    QObject::connect(loggout_button, &QPushButton::clicked, [&]() {
+    QObject::connect(logout_button, &QPushButton::clicked, [&]() {
         window->close();
         return;
     });
