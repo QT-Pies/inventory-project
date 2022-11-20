@@ -102,7 +102,7 @@ class SalesGenerator {
     void nextDate();
 
    protected:
-    const unsigned long MAX_SALES_PER_TRANSACTION = 10;
+    const unsigned long MAX_SALES_PER_TRANSACTION = 5;
 
     unsigned long transactions;
     std::string original_name;
@@ -110,6 +110,8 @@ class SalesGenerator {
     std::string child_name;
     Date last_date;
     std::vector<std::shared_ptr<CSVEntry>> inventory;
+    std::vector<int> days_in_month;
+    unsigned int curr_y, curr_m, curr_d;
 };
 
 #endif

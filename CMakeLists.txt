@@ -49,6 +49,8 @@ add_executable(main
   src/Login.cpp
   src/User.cpp
   src/Sales.cpp
+  src/SalesComparison.cpp
+  src/AddDialog.cpp
   src/main.cpp
 )
 
@@ -96,8 +98,15 @@ add_executable(unit_tests
   src/Login.cpp
   src/Sales.cpp
   src/InventoryManager.cpp
+  src/SalesComparison.cpp
+  src/AddDialog.cpp
   src/unit_tests.cpp
 )
 
 # Link GTest
 target_link_libraries(unit_tests GTest::gtest)
+target_link_libraries(unit_tests
+  Qt6::Core
+  Qt6::Gui
+  Qt6::Widgets
+)
