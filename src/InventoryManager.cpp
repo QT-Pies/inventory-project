@@ -307,17 +307,19 @@ void InventoryManager::guiLogin() {
     auto user_label = new QLabel(login_view.get());
     user_label->setText("Username:");
     user_label->move(352,260);
-    username_line = std::make_shared<QLineEdit>(window.get());
+    username_line = new QLineEdit(login_view.get());
     username_line->move(440,256);
     gc.push_back(user_label);
+    gc.push_back(username_line);
 
     auto password_label = new QLabel(login_view.get());
     password_label->setText("Password:");
     password_label->move(352,300);
-    password_line = std::make_shared<QLineEdit>(window.get());
+    password_line = new QLineEdit(login_view.get());
     password_line->move(440,296);
     password_line->setEchoMode(QLineEdit::Password);
     gc.push_back(password_label);
+    gc.push_back(password_line);
 
 
     auto login_button = new QPushButton(login_view.get());
@@ -357,13 +359,29 @@ void InventoryManager::guiLogin() {
     });
 
     QObject::connect(quit_button, &QPushButton::clicked, [&]() {
-        // segfaults, unsure why revisit
-        view->close();
-        login_view->close();
+        window->close();
         return;
     });
 
     login_view->show();
+}
+
+void InventoryManager::guiUser() {
+    view_gc.clear();
+    std::cout << "TEST\n";
+
+    auto user_view = std::make_shared<QWidget>(window.get());
+    user_view->setFixedSize(960, 540);
+    // view = user_view;
+
+    auto logo = new QLabel(user_view.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(256,256,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+    logo->show();
+
+    user_view->show();
 }
 
 int InventoryManager::displayInventory() {
@@ -491,6 +509,10 @@ void InventoryManager::initializeSidePanel() {
 
     QObject::connect(user_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
+        view->hide();
+
+        //initializeSidePanel();
+         guiUser();
     });
 }
 

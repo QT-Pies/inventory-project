@@ -92,6 +92,11 @@ class InventoryManager {
     void guiLogin();
 
     /*
+     * @breif User view, includes adding user, changing premmisions, and log out
+     */
+    void guiUser();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -120,8 +125,8 @@ class InventoryManager {
     std::shared_ptr<QWidget> view;
     std::shared_ptr<QTableWidget> table;
     QStringList inv_header;
-    std::shared_ptr<QLineEdit> username_line;
-    std::shared_ptr<QLineEdit> password_line;
+    QLineEdit *username_line;
+    QLineEdit *password_line;
 
 
     void initializeSidePanel();
