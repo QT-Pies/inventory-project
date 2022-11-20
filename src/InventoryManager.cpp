@@ -34,7 +34,6 @@ int InventoryManager::userInput() {
     /* switch on argument specified from user and then prompt them accordingly for
      * further input */
     if (argument == "a" || argument == "add") {
-
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to add an Item.",
                             current_user->name.c_str());
@@ -42,9 +41,9 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Enter item name: ";
-        getline(std::cin,name);
+        getline(std::cin, name);
         std::cout << "Enter item category (Perishable or NonPerishable): ";
-        getline(std::cin,category);
+        getline(std::cin, category);
         std::cout << "Enter item sub-category: ";
         getline(std::cin, sub_category);
         std::cout << "Enter item location: ";
@@ -89,7 +88,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "r" || argument == "remove") {
-
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to remove an Item.",
                             current_user->name.c_str());
@@ -104,7 +102,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "u" || argument == "update") {
-
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to update an Item.",
                             current_user->name.c_str());
@@ -124,15 +121,14 @@ int InventoryManager::userInput() {
                 Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
                                  name.c_str(), value.c_str());
             } else {
-                std::cout << "Updated " << category << " of " << name << " to " <<
-                    active_inventory->searchByName(name)->quantity << std::endl;
+                std::cout << "Updated " << category << " of " << name << " to "
+                          << active_inventory->searchByName(name)->quantity << std::endl;
                 Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
                                  name.c_str(), std::to_string(active_inventory->searchByName(name)->quantity).c_str());
             }
         }
 
     } else if (argument == "c" || argument == "change") {
-
         std::cout << "Account name: ";
         getline(std::cin, name);
         std::cout << "New account type: ";
@@ -143,7 +139,6 @@ int InventoryManager::userInput() {
                              category.c_str());
         }
     } else if (argument == "cs" || argument == "compare") {
-
         std::cout << "\nPlease select a range to compare against.\n";
         std::cout << "(Input your choice as the exact string below as you see it.)\n";
         std::cout << "All_By_Year | All_By_Month | X_Years | Last_Month | Last_7_days | Yesterday | Full\n";
@@ -157,7 +152,7 @@ int InventoryManager::userInput() {
             sales_comp->printComparison("ByMonth", 0);
         } else if (category == "X_Years") {
             std::cout << "Number of years to compare : ";
-            std::cin >> x; 
+            std::cin >> x;
             while (x <= 0) {
                 std::cin.clear();
                 std::cin.ignore(10000, '\n');
@@ -180,7 +175,6 @@ int InventoryManager::userInput() {
         sales_comp->suggestSale();
 
     } else if (argument == "p" || argument == "print") {
-
         std::cout << "\nPlease select a category to print or an item name.\n";
         std::cout << "All | Perishable | NonPerishable | Location | Item Name : ";
         getline(std::cin, category);
@@ -193,7 +187,6 @@ int InventoryManager::userInput() {
         }
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
     } else if (argument == "s" || argument == "sales") {
-
         valid_transaction = false;
 
         std::cout << "\nCustomer name: ";
