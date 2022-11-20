@@ -38,9 +38,9 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin.ignore(10000, '\n');
 
                 std::cout << "Name: ";
-                std::cin >> name;
+                getline(std::cin, name);
                 std::cout << "Password: ";
-                std::cin >> password;
+                getline(std::cin, password);
 
                 auto user = verifyUser(name, password);
                 if (user != NULL) {
@@ -60,9 +60,9 @@ std::shared_ptr<User> Login::userInput() {
                 std::cin.ignore(10000, '\n');
 
                 std::cout << "Name: ";
-                std::cin >> name;
+                getline(std::cin, name);
                 std::cout << "Password: ";
-                std::cin >> password;
+                getline(std::cin, password);
                 createUser(name, password);
                 break;
             }
@@ -75,8 +75,6 @@ std::shared_ptr<User> Login::userInput() {
                 break;
         }
 
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
     }
     return NULL;
 }

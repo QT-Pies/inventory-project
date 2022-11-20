@@ -28,14 +28,12 @@ int InventoryManager::userInput() {
 
     std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (SS)Suggest Sale, "
                  "(P)rint, (L)ogout, or (Q)uit: ";
-    std::cin >> argument;
+    getline(std::cin, argument);
     lowerCaseString(argument);
 
     /* switch on argument specified from user and then prompt them accordingly for
      * further input */
     if (argument == "a" || argument == "add") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to add an Item.",
@@ -44,27 +42,27 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Enter item name: ";
-        std::cin >> name;
+        getline(std::cin,name);
         std::cout << "Enter item category (Perishable or NonPerishable): ";
-        std::cin >> category;
+        getline(std::cin,category);
         std::cout << "Enter item sub-category: ";
-        std::cin >> sub_category;
+        getline(std::cin, sub_category);
         std::cout << "Enter item location: ";
-        std::cin >> location;
+        getline(std::cin, location);
         std::cout << "Enter item quantity: ";
-        std::cin >> quantity;
+        getline(std::cin, quantity);
         std::cout << "Enter backorder (set to zero unless there is negative stock): ";
-        std::cin >> backorder;
+        getline(std::cin, backorder);
         std::cout << "Enter item id: ";
-        std::cin >> id;
+        getline(std::cin, id);
         std::cout << "Enter sale price: (format xx.xx) $";
-        std::cin >> sale_price;
+        getline(std::cin, sale_price);
         std::cout << "Enter purchase cost: (format xx.xx) $";
-        std::cin >> buy_price;
+        getline(std::cin, buy_price);
         std::cout << "Enter item tax as a decimal value: ";
-        std::cin >> tax;
+        getline(std::cin, tax);
         std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
-        std::cin >> expiration;
+        getline(std::cin, expiration);
 
         lowerCaseString(category);
         try {
@@ -91,8 +89,6 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "r" || argument == "remove") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to remove an Item.",
@@ -101,15 +97,13 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Name: ";
-        std::cin >> name;
+        getline(std::cin, name);
 
         if (active_inventory->removeItem(name) != -1) {
             std::cout << "Removed " << name << std::endl;
             Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "u" || argument == "update") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to update an Item.",
@@ -118,11 +112,11 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Enter name of item to update: ";
-        std::cin >> name;
+        getline(std::cin, name);
         std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
-        std::cin >> category;
+        getline(std::cin, category);
         std::cout << "Enter new value for " << category << ": ";
-        std::cin >> value;
+        getline(std::cin, value);
 
         if (active_inventory->updateItem(name, category, value) != -1) {
             std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
@@ -131,26 +125,22 @@ int InventoryManager::userInput() {
         }
 
     } else if (argument == "c" || argument == "change") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         std::cout << "Account name: ";
-        std::cin >> name;
+        getline(std::cin, name);
         std::cout << "New account type: ";
-        std::cin >> category;
+        getline(std::cin, category);
 
         if (updatePermission(name, category)) {
             Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
                              category.c_str());
         }
     } else if (argument == "cs" || argument == "compare") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         std::cout << "\nPlease select a range to compare against.\n";
         std::cout << "(Input your choice as the exact string below as you see it.)\n";
         std::cout << "All_By_Year | All_By_Month | X_Years | Last_Month | Last_7_days | Yesterday | Full\n";
-        std::cin >> category;
+        getline(std::cin, category);
 
         if (category == "Full") {
             sales_comp->printAllComparisons();
@@ -160,13 +150,17 @@ int InventoryManager::userInput() {
             sales_comp->printComparison("ByMonth", 0);
         } else if (category == "X_Years") {
             std::cout << "Number of years to compare : ";
-            std::cin >> x;
+            std::cin >> x; 
             while (x <= 0) {
+                std::cin.clear();
+                std::cin.ignore(10000, '\n');
                 std::cout << "Invalid number of years. Try again.\n";
                 std::cout << "Number of years to compare : ";
                 std::cin >> x;
             }
             sales_comp->printComparison("LastXYears", x);
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
         } else if (category == "Last_Month") {
             sales_comp->printComparison("LastMonth", 0);
         } else if (category == "Last_7_days") {
@@ -179,42 +173,38 @@ int InventoryManager::userInput() {
         sales_comp->suggestSale();
 
     } else if (argument == "p" || argument == "print") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         std::cout << "\nPlease select a category to print or an item name.\n";
         std::cout << "All | Perishable | NonPerishable | Location | Item Name : ";
-        std::cin >> category;
+        getline(std::cin, category);
         if (category == "Location") {
             std::cout << "Location: ";
-            std::cin >> location;
+            getline(std::cin, location);
             active_inventory->printItems(category, location);
         } else {
             active_inventory->printItems("", category);
         }
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
     } else if (argument == "s" || argument == "sales") {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
 
         valid_transaction = false;
 
         std::cout << "\nCustomer name: ";
-        std::cin >> buyer;
+        getline(std::cin, buyer);
         std::cout << "Seller name (you): ";
-        std::cin >> seller;
+        getline(std::cin, seller);
 
         do {
             unsigned long tmp_quantity;
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
 
             std::cout << "\nItem Name: ";
-            std::cin >> name;
+            getline(std::cin, name);
 
             while (1) {
                 try {
                     std::cout << "Quantity Sold: ";
-                    std::cin >> quantity;
+                    getline(std::cin, quantity);
                     tmp_quantity = toUnsignedLong(quantity);
                     if (tmp_quantity == 0) {
                         throw std::invalid_argument("Quantity can't be zero.");
@@ -248,12 +238,12 @@ int InventoryManager::userInput() {
                 Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
             }
             std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
-            std::cin >> arg;
+            getline(std::cin, arg);
             lowerCaseString(arg);
 
             while (arg != "y" && arg != "n") {
                 std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
-                std::cin >> arg;
+                getline(std::cin, arg);
                 lowerCaseString(arg);
             }
         } while (arg != "n");
@@ -276,9 +266,6 @@ int InventoryManager::userInput() {
             << "Usage: <(A)dd | (R)emove | (U)pdate | (S)ale | (C)hange Permissions | (P)rint | (L)ogout | (Q)uit>"
             << std::endl;
     }
-
-    std::cin.clear();
-    std::cin.ignore(10000, '\n');
 
     return 0;
 }
