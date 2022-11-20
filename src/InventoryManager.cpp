@@ -367,21 +367,74 @@ void InventoryManager::guiLogin() {
 }
 
 void InventoryManager::guiUser() {
-    view_gc.clear();
+    // username, password, and radio button
+    // button for creating user, button for updating user
+    // also would want to do have password change her maybe
+    // and logout
+    // view_gc.clear();
     std::cout << "TEST\n";
 
-    auto user_view = std::make_shared<QWidget>(window.get());
-    user_view->setFixedSize(960, 540);
-    // view = user_view;
+    //auto user_view = std::make_shared<QWidget>(window.get());
+    //user_view->setFixedSize(960, 540);
+    //view = user_view;
+    auto user_label = new QLabel(view.get());
+    user_label->setText("Username:");
+    user_label->move(352,260);
+    username_line = new QLineEdit(view.get());
+    username_line->move(440,256);
+    gc.push_back(user_label);
+    gc.push_back(username_line);
 
-    auto logo = new QLabel(user_view.get());
-    QPixmap logo_image("./images/logo.png");
-    logo->setPixmap(logo_image.scaled(256,256,Qt::KeepAspectRatio));
-    logo->move(352,0);
-    gc.push_back(logo);
-    logo->show();
+    auto password_label = new QLabel(view.get());
+    password_label->setText("Password:");
+    password_label->move(352,300);
+    password_line = new QLineEdit(view.get());
+    password_line->move(440,296);
+    // password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+    gc.push_back(password_line);
 
-    user_view->show();
+    ownerButton = new QRadioButton("Owner",view.get());
+    managerButton = new QRadioButton("Manager",view.get());
+    employeeButton = new QRadioButton("Employee",view.get());
+    // ownerButton->show();
+
+    auto create_button = new QPushButton(view.get());
+    create_button->setText("Create User");
+    create_button->setFixedSize(256,64);
+    create_button->move(352, 340);
+    create_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(create_button);
+
+    auto update_button = new QPushButton(view.get());
+    update_button->setText("Update User");
+    update_button->setFixedSize(256,64);
+    update_button->move(352, 410);
+    update_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(update_button);
+
+    auto loggout_button = new QPushButton(view.get());
+    loggout_button->setText("Update User");
+    loggout_button->setFixedSize(256,64);
+    loggout_button->move(352, 480);
+    loggout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(loggout_button);
+
+    QObject::connect(create_button, &QPushButton::clicked, [&]() {
+        //window->close();
+        //return;
+    });
+
+    QObject::connect(update_button, &QPushButton::clicked, [&]() {
+        //window->close();
+        //return;
+    });
+
+    QObject::connect(loggout_button, &QPushButton::clicked, [&]() {
+        window->close();
+        return;
+    });
+
 }
 
 int InventoryManager::displayInventory() {
@@ -501,6 +554,7 @@ void InventoryManager::initializeSidePanel() {
 
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
+        displayInventory();
     });
 
     QObject::connect(help_button, &QToolButton::clicked, [&]() {
@@ -509,10 +563,17 @@ void InventoryManager::initializeSidePanel() {
 
     QObject::connect(user_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
-        view->hide();
+        // view->hide();
+
+        //auto main_view = std::make_shared<QWidget>(window.get());
+
+        //main_view->setFixedSize(960, 540);
+        // view = main_view;
+
+        initializeSidePanel();
 
         //initializeSidePanel();
-         guiUser();
+        guiUser();
     });
 }
 
@@ -525,7 +586,7 @@ void InventoryManager::mainWindow() {
     initializeSidePanel();
 
     // Open up inventory view on program login.
-    displayInventory();
+    //displayInventory();
 
     main_view->show();
 }

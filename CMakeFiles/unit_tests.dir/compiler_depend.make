@@ -1059,6 +1059,8 @@ CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o: src/InventoryManager.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/Item.hpp \
   /usr/include/c++/11/iomanip \
@@ -3326,6 +3328,8 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: src/unit_tests.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/Login.hpp \
   include/User.hpp \
@@ -3409,7 +3413,13 @@ _deps/googletest-src/googletest/include/gtest/internal/gtest-internal.h:
 
 _deps/googletest-src/googletest/include/gtest/gtest-matchers.h:
 
+_deps/googletest-src/googletest/include/gtest/internal/gtest-death-test-internal.h:
+
+_deps/googletest-src/googletest/include/gtest/gtest-death-test.h:
+
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qcompare_impl.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton:
 
 /usr/include/c++/11/bits/enable_special_members.h:
 
@@ -3448,8 +3458,6 @@ _deps/googletest-src/googletest/include/gtest/gtest-matchers.h:
 include/Logger.hpp:
 
 /usr/include/c++/11/bits/stream_iterator.h:
-
-_deps/googletest-src/googletest/include/gtest/internal/gtest-death-test-internal.h:
 
 /usr/include/c++/11/sstream:
 
@@ -3688,8 +3696,6 @@ tests/InventoryManager_unit_tests.cpp:
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QApplication:
 
 src/SalesComparison.cpp:
-
-_deps/googletest-src/googletest/include/gtest/gtest-death-test.h:
 
 /usr/include/c++/11/new:
 
@@ -3938,10 +3944,6 @@ _deps/googletest-src/googletest/include/gtest/gtest_pred_impl.h:
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/c++/11/bits/functional_hash.h:
-
-/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qcolor.h:
-
-/usr/include/c++/11/bits/postypes.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
 
@@ -4302,6 +4304,12 @@ include/InventoryManager.hpp:
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
 /usr/include/c++/11/bits/list.tcc:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qcolor.h:
+
+/usr/include/c++/11/bits/postypes.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qbytearrayalgorithms.h:
 

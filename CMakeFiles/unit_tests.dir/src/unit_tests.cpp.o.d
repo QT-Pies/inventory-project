@@ -508,6 +508,8 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
  /home/vbroda/inventory-project/src/../tests/../include/ActiveInventory.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/Login.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/User.hpp \

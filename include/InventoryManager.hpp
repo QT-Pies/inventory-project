@@ -20,6 +20,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPixmap>
+#include <QRadioButton>
 
 #include "ActiveInventory.hpp"
 #include "Logger.hpp"
@@ -127,7 +128,9 @@ class InventoryManager {
     QStringList inv_header;
     QLineEdit *username_line;
     QLineEdit *password_line;
-
+    QRadioButton *ownerButton;
+    QRadioButton *managerButton;
+    QRadioButton *employeeButton;
 
     void initializeSidePanel();
 
