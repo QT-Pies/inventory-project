@@ -379,9 +379,9 @@ void InventoryManager::guiUser() {
     //view = user_view;
     auto user_label = new QLabel(view.get());
     user_label->setText("Username:");
-    user_label->move(352,260);
+    user_label->move(352,160);
     username_line = new QLineEdit(view.get());
-    username_line->move(440,256);
+    username_line->move(440,156);
     user_label->show();
     username_line->show();
     gc.push_back(user_label);
@@ -389,9 +389,9 @@ void InventoryManager::guiUser() {
 
     auto password_label = new QLabel(view.get());
     password_label->setText("Password:");
-    password_label->move(352,300);
+    password_label->move(352,200);
     password_line = new QLineEdit(view.get());
-    password_line->move(440,296);
+    password_line->move(440,196);
     password_label->show();
     password_line->show();
     // password_line->setEchoMode(QLineEdit::Password);
@@ -401,9 +401,9 @@ void InventoryManager::guiUser() {
     ownerButton = new QRadioButton("Owner",view.get());
     managerButton = new QRadioButton("Manager",view.get());
     employeeButton = new QRadioButton("Employee",view.get());
-    ownerButton->move(300,200);
-    managerButton->move(350,200);
-    employeeButton->move(400,200);
+    ownerButton->move(325,300);
+    managerButton->move(425,300);
+    employeeButton->move(525,300);
     ownerButton->show();
     managerButton->show();
     employeeButton->show();
@@ -433,8 +433,73 @@ void InventoryManager::guiUser() {
     gc.push_back(logout_button);
 
     QObject::connect(create_button, &QPushButton::clicked, [&]() {
-        //window->close();
-        //return;
+        QString un = username_line->text();
+        QString pas = password_line->text();
+        QString acc = "";
+
+        QMessageBox box;
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+         if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(pas == "") {
+            //QMessageBox::warning(w,"Didn't create New User", "Password is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Password is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Create User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+         if(current_user->permission == 1) {
+            //QMessageBox::warning(w,"Didn't create New User", "Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.exec();
+            return;
+        }
+        else if(current_user->permission == 3 && (acc == "owner" || acc == "manager")) {
+            //QMessageBox::warning(w,"Didn't create New User", "Managers can only create employee accounts. Please have an owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Managers can only create employee accounts. Please have an owner create the account.");
+            box.exec();
+            return;
+        }
+
+        if(login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString())) {
+        //QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+            box.setWindowTitle("Create User");
+            box.setText("Created user succsessfuly");
+            box.exec();
+        }
+        else {
+            //QMessageBox::warning(w,"Didn't create New User", "The User was unable to be created. Allready Exists");
+            box.setWindowTitle("Create User");
+            box.setText("User was unable to be created.");
+            box.exec();
+        }
+
+        // std::cout << acc.toStdString();
     });
 
     QObject::connect(update_button, &QPushButton::clicked, [&]() {
