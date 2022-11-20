@@ -7,33 +7,29 @@
 #include <string>
 #include <QApplication>
 #include <QIcon>
+#include <QInputDialog>
 #include <QLabel>
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 #include <QToolButton>
+#include <QToolBar>
 #include <QString>
 #include <QStringList>
 #include <QWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QRadioButton>
 
 #include "ActiveInventory.hpp"
+#include "AddDialog.hpp"
 #include "Logger.hpp"
 #include "Login.hpp"
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
 #include "Sales.hpp"
 #include "SalesComparison.hpp"
-
-class QInventoryManager : public QObject {
-public:
-    void itemChanged(QTableWidgetItem *);
-};
 
 class InventoryManager {
    public:
@@ -58,6 +54,8 @@ class InventoryManager {
      * @brief temp function to display inventory.
     */
     int displayInventory();
+
+    void helpScreen();
 
     /*
      * @brief Starts up a Qt application of the IM.
@@ -93,11 +91,6 @@ class InventoryManager {
     void guiLogin();
 
     /*
-     * @breif User view, includes adding user, changing premmisions, and log out
-     */
-    void guiUser();
-
-    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -121,20 +114,34 @@ class InventoryManager {
 
     std::vector<std::shared_ptr<QObject>> view_gc;
     std::vector<QObject*> gc;
-    std::shared_ptr<QApplication> app;
-    std::shared_ptr<QWidget> window;
-    std::shared_ptr<QWidget> view;
-    std::shared_ptr<QTableWidget> table;
+    
+    /* Class wide QObject variables */
+    std::shared_ptr<QApplication> app; // The QApplication context.
+    std::shared_ptr<QWidget> window; // The "main window" widget.
+    std::shared_ptr<QWidget> view; // The "view" -- login, main program view.
+    std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
-    QLineEdit *username_line;
-    QLineEdit *password_line;
-    QRadioButton *ownerButton;
-    QRadioButton *managerButton;
-    QRadioButton *employeeButton;
+    QStringList item_fields;
 
+    /* Specific QWidget objects */
+    std::shared_ptr<QTableWidget> table;
+
+    std::shared_ptr<QWidget> inv_screen;
+    std::shared_ptr<QWidget> help_screen;
+
+    /*
+     * @brief Displays side panel.
+     */
     void initializeSidePanel();
 
-    static void inventoryItemChanged(QTableWidgetItem*);
+    void insertItemIntoTable(std::shared_ptr<Item>, int);
+
+    void redrawTable();
+
+    void hideAllViews();
+
+    /* Other variables for Qt */
+    bool inv_update_debounce;
 };
 
 #endif

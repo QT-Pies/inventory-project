@@ -478,6 +478,33 @@ src/ActiveInventory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.s
 .PHONY : src/ActiveInventory.cpp.s
 
+src/AddDialog.o: src/AddDialog.cpp.o
+.PHONY : src/AddDialog.o
+
+# target to build an object file
+src/AddDialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AddDialog.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/AddDialog.cpp.o
+.PHONY : src/AddDialog.cpp.o
+
+src/AddDialog.i: src/AddDialog.cpp.i
+.PHONY : src/AddDialog.i
+
+# target to preprocess a source file
+src/AddDialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AddDialog.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/AddDialog.cpp.i
+.PHONY : src/AddDialog.cpp.i
+
+src/AddDialog.s: src/AddDialog.cpp.s
+.PHONY : src/AddDialog.s
+
+# target to generate assembly for a file
+src/AddDialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/AddDialog.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/unit_tests.dir/build.make CMakeFiles/unit_tests.dir/src/AddDialog.cpp.s
+.PHONY : src/AddDialog.cpp.s
+
 src/CSVEntry.o: src/CSVEntry.cpp.o
 .PHONY : src/CSVEntry.o
 
@@ -900,6 +927,9 @@ help:
 	@echo "... src/ActiveInventory.o"
 	@echo "... src/ActiveInventory.i"
 	@echo "... src/ActiveInventory.s"
+	@echo "... src/AddDialog.o"
+	@echo "... src/AddDialog.i"
+	@echo "... src/AddDialog.s"
 	@echo "... src/CSVEntry.o"
 	@echo "... src/CSVEntry.i"
 	@echo "... src/CSVEntry.s"

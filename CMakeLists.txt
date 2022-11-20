@@ -50,6 +50,7 @@ add_executable(main
   src/User.cpp
   src/Sales.cpp
   src/SalesComparison.cpp
+  src/AddDialog.cpp
   src/main.cpp
 )
 
@@ -98,6 +99,7 @@ add_executable(unit_tests
   src/Sales.cpp
   src/InventoryManager.cpp
   src/SalesComparison.cpp
+  src/AddDialog.cpp
   src/unit_tests.cpp
 )
 

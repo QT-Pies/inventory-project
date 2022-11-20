@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/main_autogen/mocs_compilation.cpp.o.d"
   "CMakeFiles/main.dir/src/ActiveInventory.cpp.o"
   "CMakeFiles/main.dir/src/ActiveInventory.cpp.o.d"
+  "CMakeFiles/main.dir/src/AddDialog.cpp.o"
+  "CMakeFiles/main.dir/src/AddDialog.cpp.o.d"
   "CMakeFiles/main.dir/src/HelperFunctions.cpp.o"
   "CMakeFiles/main.dir/src/HelperFunctions.cpp.o.d"
   "CMakeFiles/main.dir/src/InventoryManager.cpp.o"

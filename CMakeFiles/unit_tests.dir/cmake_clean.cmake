@@ -4,6 +4,8 @@ file(REMOVE_RECURSE
   "unit_tests_autogen"
   "CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.o"
   "CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.o.d"
+  "CMakeFiles/unit_tests.dir/src/AddDialog.cpp.o"
+  "CMakeFiles/unit_tests.dir/src/AddDialog.cpp.o.d"
   "CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.o"
   "CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.o.d"
   "CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o"

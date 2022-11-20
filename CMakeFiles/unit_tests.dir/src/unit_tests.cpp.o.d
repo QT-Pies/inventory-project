@@ -456,13 +456,20 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qguiapplication_platform.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QIcon \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qicon.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLabel \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlabel.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QInputDialog \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qinputdialog.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qframe.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpicture.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qiodevice.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextcursor.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextdocument.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qurl.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLabel \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlabel.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpicture.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qiodevice.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QPushButton \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qpushbutton.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qabstractbutton.h \
@@ -487,30 +494,30 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QTableWidgetItem \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QToolButton \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtoolbutton.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QToolBar \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qtoolbar.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/QString \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstring.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/QStringList \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QHBoxLayout \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/inventory-project/src/../tests/../include/ActiveInventory.hpp \
+ /home/vbroda/inventory-project/src/../tests/../include/AddDialog.hpp \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qformlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLayout \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayout.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayoutitem.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qboxlayout.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlayout.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qgridlayout.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QVBoxLayout \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextcursor.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpen.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextoption.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
- /home/vbroda/inventory-project/src/../tests/../include/ActiveInventory.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/Login.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/User.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/NonPerishableItem.hpp \

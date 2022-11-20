@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/vbroda/inventory-project/src/ActiveInventory.cpp" "CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.o" "gcc" "CMakeFiles/unit_tests.dir/src/ActiveInventory.cpp.o.d"
+  "/home/vbroda/inventory-project/src/AddDialog.cpp" "CMakeFiles/unit_tests.dir/src/AddDialog.cpp.o" "gcc" "CMakeFiles/unit_tests.dir/src/AddDialog.cpp.o.d"
   "/home/vbroda/inventory-project/src/HelperFunctions.cpp" "CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.o" "gcc" "CMakeFiles/unit_tests.dir/src/HelperFunctions.cpp.o.d"
   "/home/vbroda/inventory-project/src/InventoryManager.cpp" "CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o" "gcc" "CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o.d"
   "/home/vbroda/inventory-project/src/Login.cpp" "CMakeFiles/unit_tests.dir/src/Login.cpp.o" "gcc" "CMakeFiles/unit_tests.dir/src/Login.cpp.o.d"
