@@ -388,6 +388,35 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     std::cout << "line 384" << std::endl;
 }
 
+void InventoryManager::helpScreen() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (help_screen != nullptr) {
+        sub_view = help_screen;
+        sub_view->show();
+        return;
+    }
+
+    help_screen = std::make_shared<QWidget>(view.get());
+    help_screen->setFixedSize(880, 540);
+    help_screen->move(80,0);
+
+
+    auto welcome_text = new QLabel(help_screen.get());
+    welcome_text->setText("Welcome to Inventory Manager!");
+    welcome_text->setFixedSize(480, 270);
+    welcome_text->move(300, 135);
+    welcome_text->show();
+
+    help_screen->show();
+    return;
+}
+
+void InventoryManager::hideAllViews() {
+    if (inv_screen != nullptr) inv_screen->hide();
+    if (help_screen != nullptr) help_screen->hide();
+}
+
 void InventoryManager::redrawTable() {
     table->setRowCount(0);
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
@@ -405,19 +434,35 @@ int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
     int row;
 
-    if (table != nullptr) {
-        table->show();
+    if (sub_view == inv_screen) {
+        std::cout << "Already on inventory screen" << std::endl;
+    } else if (sub_view == help_screen) {
+        std::cout << "On help screen" << std::endl;
+    }
+
+    if (sub_view != nullptr) sub_view->hide();
+    else std::cout << "No active sub view" << std::endl;
+     
+    if (inv_screen != nullptr) {
+        sub_view = inv_screen;
+        inv_screen->show();
         return 0;
     }
 
-    table = std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), view.get());
+    inv_screen = std::make_shared<QWidget>(view.get());
+    inv_screen->setFixedSize(880, 540);
+    inv_screen->move(80, 0);
+
+    table = std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), inv_screen.get());
     table->setHorizontalHeaderLabels(inv_header);
     table->setFixedSize(880, 500);
-    table->move(80, 0);
+    table->move(0, 0);
 
-    auto bar = new QToolBar(view.get());
+    sub_view = inv_screen;
+
+    auto bar = new QToolBar(inv_screen.get());
     bar->setFixedSize(880, 40);
-    bar->move(80, 500);
+    bar->move(0, 500);
     bar->show();
 
     /* Create Add action */
@@ -543,11 +588,7 @@ int InventoryManager::displayInventory() {
         }
 
         if (active_inventory->addItem(new_item) != -1) {
-            std::cout << "Added " << new_item->name << " of type " << category << std::endl;
             Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
-            std::cout << "Adding Item with item, row number = " << table->rowCount() << std::endl;
-            std::cout << "Current rowCount = " << table->rowCount() << std::endl;
-            redrawTable();
         }
     });
 
@@ -574,6 +615,7 @@ int InventoryManager::displayInventory() {
     });
 
     table->show();
+    inv_screen->show();
     return 0;
 }
 
@@ -601,10 +643,14 @@ void InventoryManager::initializeSidePanel() {
 
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
+        hideAllViews();
+        displayInventory();
     });
 
     QObject::connect(help_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the help button and I have been clicked." << std::endl;
+        hideAllViews();
+        helpScreen();
     });
 }
 

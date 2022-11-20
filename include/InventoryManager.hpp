@@ -51,6 +51,8 @@ class InventoryManager {
     */
     int displayInventory();
 
+    void helpScreen();
+
     /*
      * @brief Starts up a Qt application of the IM.
      * @return 0 on success, -1 on failure.
@@ -120,6 +122,9 @@ class InventoryManager {
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
 
+    std::shared_ptr<QWidget> inv_screen;
+    std::shared_ptr<QWidget> help_screen;
+
     /*
      * @brief Displays side panel.
      */
@@ -128,6 +133,8 @@ class InventoryManager {
     void insertItemIntoTable(std::shared_ptr<Item>, int);
 
     void redrawTable();
+
+    void hideAllViews();
 
     /* Other variables for Qt */
     bool inv_update_debounce;
