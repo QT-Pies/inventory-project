@@ -473,12 +473,24 @@ void InventoryManager::initializeSidePanel() {
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
+    /* Add User Button to switch to add user view */
+    auto user_button = new QToolButton(view.get());
+    user_button->setIcon(QIcon("./images/user.png"));
+    user_button->setIconSize(QSize(80, 80));
+    user_button->move(-5, 365);
+    user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    user_button->show();
+
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
     });
 
     QObject::connect(help_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the help button and I have been clicked." << std::endl;
+    });
+
+    QObject::connect(user_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the user button and I have been clicked." << std::endl;
     });
 }
 
