@@ -109,7 +109,27 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         } else if (field == "location") {
             throw std::invalid_argument("You can only set location when creating an Item.");
         } /* Otherwise, all other fields shouldn't need any additional checks. */
-        else {
+        else if (field == "quantity") {
+            int new_val;
+            if (item->backorder != 0) {
+                if (stoi(value) > 0) {
+                    if (item->backorder - stoi(value) >= 0) {
+                        printf("Fulfilling %d backorders\n", stoi(value));
+                        item->backorder = item->backorder - stoi(value);
+                        new_val = 0;
+                    } else {
+                        printf("Fulfilling %lu backorders\n", item->backorder);
+                        item->backorder = 0;
+                        new_val = stoi(value) - item->backorder;
+                    }
+                    item->setValue(field, std::to_string(new_val));
+                } else {
+                    item->setValue(field, value);
+                }
+            } else {
+                item->setValue(field, value);
+            }
+        } else {
             item->setValue(field, value);
         }
     } catch (std::exception& e) {

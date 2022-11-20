@@ -119,9 +119,16 @@ int InventoryManager::userInput() {
         getline(std::cin, value);
 
         if (active_inventory->updateItem(name, category, value) != -1) {
-            std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
-            Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
-                             name.c_str(), value.c_str());
+            if (category != "quantity") {
+                std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
+                                 name.c_str(), value.c_str());
+            } else {
+                std::cout << "Updated " << category << " of " << name << " to " <<
+                    active_inventory->searchByName(name)->quantity << std::endl;
+                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
+                                 name.c_str(), std::to_string(active_inventory->searchByName(name)->quantity).c_str());
+            }
         }
 
     } else if (argument == "c" || argument == "change") {
