@@ -321,7 +321,8 @@ void InventoryManager::guiLogin() {
 
 
     auto login_button = new QPushButton(login_view.get());
-    login_button->setText("Login");
+    login_button->setText("Login");            //QMessageBox::warning([&](),"Login", "Username and/or password is incorrect");
+
     login_button->setFixedSize(256,128);
     login_button->move(352, 340);
     login_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
@@ -329,7 +330,7 @@ void InventoryManager::guiLogin() {
     gc.push_back(login_button);
 
     QObject::connect(login_button, &QPushButton::clicked, [&]() {
-        std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
+        //std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
 
         QString un = username_line->text();
         QString pas = password_line->text();
@@ -338,12 +339,15 @@ void InventoryManager::guiLogin() {
 
         if (user != nullptr) {
             /* Switch to main program view */
-            //QMessageBox::information( "Login", "Login Successful");
             view->hide();
             mainWindow();
         }
         else {
-            //QMessageBox::warning("Login", "Username and/or password is incorrect");
+            /* display error popup if invalid*/
+            QMessageBox box;
+            box.setWindowTitle("Login");
+            box.setText("Username and/or password is incorrect");
+            box.exec();
         }
 
     });
