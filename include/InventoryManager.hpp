@@ -19,6 +19,7 @@
 #include <QWidget>
 
 #include "ActiveInventory.hpp"
+#include "AddDialog.hpp"
 #include "Logger.hpp"
 #include "Login.hpp"
 #include "NonPerishableItem.hpp"

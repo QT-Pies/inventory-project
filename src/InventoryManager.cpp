@@ -493,6 +493,8 @@ int InventoryManager::displayInventory() {
 
     QObject::connect(add_action, &QAction::triggered, [&]() {
         std::cout << "I am adding an item." << std::endl;
+
+        auto input = AddDialog::getStrings(view.get());
     });
 
     QObject::connect(remove_action, &QAction::triggered, [&]() {
