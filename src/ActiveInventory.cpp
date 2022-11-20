@@ -111,16 +111,18 @@ int ActiveInventory::updateItem(std::string item_name, std::string field, std::s
         } /* Otherwise, all other fields shouldn't need any additional checks. */
         else if (field == "quantity") {
             int new_val;
+            unsigned long tmp_val;
             if (item->backorder != 0) {
-                if (stoi(value) > 0) {
-                    if (item->backorder - stoi(value) >= 0) {
-                        printf("Fulfilling %d backorders\n", stoi(value));
-                        item->backorder = item->backorder - stoi(value);
-                        new_val = 0;
+                tmp_val = toUnsignedLong(value);
+                if (tmp_val > 0) {
+                    if (item->backorder <= tmp_val) {
+                        printf("Fulfilling %lu backorders\n", tmp_val);
+                        new_val = tmp_val - item->backorder;
+                        item->backorder = 0;
                     } else {
                         printf("Fulfilling %lu backorders\n", item->backorder);
-                        item->backorder = 0;
-                        new_val = stoi(value) - item->backorder;
+                        item->backorder = item->backorder - tmp_val;
+                        new_val = 0;
                     }
                     item->setValue(field, std::to_string(new_val));
                 } else {

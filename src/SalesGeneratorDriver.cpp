@@ -1,7 +1,8 @@
 #include "SalesGenerator.hpp"
 
 static void printUsage(std::ostream& out) {
-    out << "usage: ./gen-sales inventory.csv MM/DD/YYYY Max number of transactions (not guranteed all of them)" << std::endl;
+    out << "usage: ./gen-sales inventory.csv MM/DD/YYYY Max number of transactions (not guranteed all of them)"
+        << std::endl;
 }
 
 int main(int argc, char** argv) {
