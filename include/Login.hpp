@@ -67,6 +67,7 @@ class Login {
     bool changePermission(std::string, std::string, std::shared_ptr<User>);
 
    private:
+    friend class InventoryManager;
     std::string file_name = "accounts.csv";
     std::map<std::string, std::shared_ptr<User>> users;
 };

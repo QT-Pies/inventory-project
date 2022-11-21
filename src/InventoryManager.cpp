@@ -342,6 +342,7 @@ void InventoryManager::guiLogin() {
 
         if (user != nullptr) {
             /* Switch to main program view */
+            current_user = user;
             view->hide();
             mainWindow();
         }
@@ -434,7 +435,7 @@ void InventoryManager::guiUser() {
         QString un = username_line->text();
         QString pas = password_line->text();
         QString acc = "";
-        std::string acc_string;
+        //std::string acc_string;
 
         QMessageBox box;
 
@@ -484,8 +485,7 @@ void InventoryManager::guiUser() {
             box.exec();
             return;
         }
-        acc_string = acc.toStdString();
-        if(login->createUser(un.toStdString(), pas.toStdString(), acc_string)) {
+        if(login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString())) {
         //QMessageBox::information(w, "Create User", "Created user Succsessfuly");
             box.setWindowTitle("Create User");
             box.setText("Created user succsessfuly");
@@ -494,11 +494,9 @@ void InventoryManager::guiUser() {
         else {
             //QMessageBox::warning(w,"Didn't create New User", "The User was unable to be created. Allready Exists");
             box.setWindowTitle("Create User");
-            box.setText("User was unable to be created.");
+            box.setText("User was unable to be created. User allready exists.");
             box.exec();
         }
-
-        // std::cout << acc.toStdString();
     });
 
     QObject::connect(update_button, &QPushButton::clicked, [&]() {
@@ -510,7 +508,7 @@ void InventoryManager::guiUser() {
         window->close();
         return;
     });
-
+    user_screen->show();
 }
 
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
