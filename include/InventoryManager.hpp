@@ -95,6 +95,15 @@ class InventoryManager {
      */
     void guiUser();
 
+    /* @brief GUI Point of Sale
+    */
+    void guiSale();
+    
+    /*
+     * @breif User view, includes adding user, changing premmisions, and log out
+     */
+    void guiUser();
+
     /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
@@ -139,6 +148,7 @@ class InventoryManager {
     std::shared_ptr<QWidget> inv_screen;
     std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
+    std::shared_ptr<QWidget> pos_screen;
 
     /*
      * @brief Displays side panel.

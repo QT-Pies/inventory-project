@@ -788,6 +788,12 @@ int InventoryManager::displayInventory() {
 
     QObject::connect(add_action, &QAction::triggered, [&]() {
         auto input = AddDialog::getStrings(view.get());
+
+        if (input.size() != 11) {
+            Logger::logTrace("Failed to read in fields.  User probably cancelled adding item.");
+            return;
+        }
+
         auto name = input.at(0).toStdString();
         auto id = input.at(1).toStdString();
         auto category = input.at(2).toStdString();
@@ -829,10 +835,13 @@ int InventoryManager::displayInventory() {
     QObject::connect(remove_action, &QAction::triggered, [&]() {
         auto name = QInputDialog::getText(view.get(), "Remove Item from Inventory", "Name of Item:", QLineEdit::Normal);
 
+        if (name.isEmpty()) return;
+
         auto item = active_inventory->searchByName(name.toStdString());
 
         if (item == nullptr) {
             Logger::logWarn("Could not find item '%s' in the inventory.", name.toStdString().c_str());
+            return;
         }
 
         for (row = 1; row < table->rowCount(); ++row) {
