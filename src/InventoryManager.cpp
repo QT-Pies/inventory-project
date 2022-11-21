@@ -288,7 +288,6 @@ int InventoryManager::userInput() {
 }
 
 void InventoryManager::guiLogin() {
-
     view_gc.clear();
 
     auto login_view = std::make_shared<QWidget>(window.get());
