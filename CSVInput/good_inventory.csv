@@ -1,51 +1,51 @@
 Name,ID,Category,Sub-Category,Location,Quantity,Backorder,Sale Price,Tax,Total Price,Buy Cost,Profit,Expiration Date
-AA Batteries,29,NonPerishable,Battery,Household,1010,0,5.25344,0.0483507,5.50745,2.51069,2.74275,-1
-AAA Batteries,30,NonPerishable,Battery,Household,1003,0,5.5081,0.0499992,5.7835,1.51387,3.99423,-1
-American Cheese,21,Perishable,Cheese,Deli,1030,0,5.50251,0.0484083,5.76888,1.38563,4.11688,1/6/2027
-Axe Bodywash,37,NonPerishable,Bodywash,Hygiene,996,0,5.64865,0.0394916,5.87172,2.17005,3.4786,-1
-Baby Wipes,35,NonPerishable,Cleaning,Cleaning,982,0,5.62606,0.0394099,5.84778,1.60793,4.01813,-1
-Bacon,27,Perishable,Pork,Meat,1014,0,5.39246,0.0422295,5.62018,2.23977,3.15269,1/22/2023
-Banana,5,Perishable,Fruit,Produce,974,0,5.55288,0.0599056,5.88553,2.57671,2.97617,8/22/2025
-Blackberries,4,Perishable,Fruit,Produce,999,0,5.42794,0.0531944,5.71668,2.45249,2.97545,10/26/2023
-Blue Gatorade,16,Perishable,Drink,Drink,1020,0,5.43751,0.0493027,5.70559,1.35061,4.0869,3/20/2026
-Blueberries,6,Perishable,Fruit,Produce,1004,0,5.52344,0.0538504,5.82088,1.13228,4.39116,2/25/2023
-Cheddar Cheese,23,Perishable,Cheese,Deli,1012,0,5.55044,0.0487338,5.82093,1.46715,4.08329,2/19/2027
-Cheetos Puffs,15,Perishable,Chip,Ambient,994,0,5.51239,0.053502,5.80731,1.71526,3.79713,1/7/2025
-Cheez-it,13,Perishable,Cracker,Ambient,1021,0,5.40597,0.0613076,5.7374,2.02533,3.38064,6/19/2023
-Chicken Breast,25,Perishable,Chicken,Meat,1005,0,5.61216,0.0417135,5.84626,1.94296,3.6692,9/13/2024
-Chips Ahoy Cookies,14,Perishable,Cookie,Ambient,996,0,5.58521,0.052756,5.87986,2.47275,3.11246,10/2/2025
-Colgate Toothpaste,31,NonPerishable,Toothpaste,Hygiene,1008,0,5.7191,0.0563333,6.04128,2.17988,3.53922,-1
-Creast Toothpaste,32,NonPerishable,Toothpaste,Hygiene,1008,0,5.46735,0.0545861,5.76579,1.82512,3.64223,-1
-Crest Mouthwash,39,NonPerishable,Mouthwash,Hygiene,988,0,5.50322,0.0428518,5.73904,1.94812,3.5551,-1
-Doritos,10,Perishable,Chip,Ambient,997,0,5.63956,0.0559036,5.95483,2.06005,3.57951,5/11/2024
-Dove Body Lotion,36,NonPerishable,Lotion,Hygiene,1005,0,5.41789,0.048598,5.68119,2.05463,3.36326,-1
-Dove Soap,43,NonPerishable,Soap,Cleaning,1015,0,5.52801,0.0395479,5.74663,2.55626,2.97175,-1
-Dr.Pepper,17,Perishable,Drink,Drink,1011,0,5.33439,0.0367975,5.53068,2.24794,3.08645,1/6/2027
-Gillette Razor,40,NonPerishable,Razor,Hygiene,996,0,5.53597,0.0380705,5.74673,1.28706,4.24891,-1
-Granny Smith Apple,0,Perishable,Fruit,Produce,992,0,5.84389,0.0648083,6.22262,1.91994,3.92395,5/6/2025
-Green Grapes,1,Perishable,Fruit,Produce,1006,0,5.60919,0.0503104,5.89139,2.0955,3.51369,8/7/2025
-Head and Shoulders Shampoo,34,NonPerishable,Shampoo,Hygiene,986,0,5.42441,0.0527934,5.71078,2.60012,2.82429,-1
-Iced Coffee,20,Perishable,Drink,Drink,1003,0,5.48505,0.0427736,5.71967,1.70168,3.78337,8/28/2027
-Lemon,9,Perishable,Fruit,Produce,985,0,5.33961,0.0508004,5.61086,1.34334,3.99627,1/26/2026
-Mandarin Oranges,7,Perishable,Fruit,Produce,1004,0,5.43021,0.0683497,5.80136,2.30354,3.12667,3/23/2027
-Mini Party Cups,45,NonPerishable,Cup,Kitchen,1005,0,5.6496,0.0542351,5.95601,2.23044,3.41916,-1
-Nonstick Griddle,49,NonPerishable,Pan,Kitchen,991,0,5.62863,0.043168,5.87161,2.39974,3.22889,-1
-Nonstick Saute Pan,48,NonPerishable,Pan,Kitchen,1008,0,5.40682,0.0455805,5.65327,2.1493,3.25752,-1
-Oreos,12,Perishable,Cookie,Ambient,1019,0,5.60043,0.0394162,5.82118,2.28273,3.3177,12/25/2023
-Paper Cups,47,NonPerishable,Cup,Kitchen,988,0,5.55449,0.0467609,5.81422,2.64665,2.90784,-1
-Paper Plates,46,NonPerishable,Plate,Kitchen,1016,0,5.41225,0.0464094,5.66343,2.00259,3.40966,-1
-Paper Towels,28,NonPerishable,Cleaning,Cleaning,1009,0,5.64987,0.0477884,5.91987,1.68793,3.96194,-1
-Pineapple,8,Perishable,Fruit,Produce,1017,0,5.35115,0.0458447,5.59647,1.45247,3.89868,12/9/2024
-Pork Tenderloin,26,Perishable,Pork,Meat,1016,0,5.48528,0.0482572,5.74998,0.991154,4.49413,1/3/2024
-Pringles,11,Perishable,Chip,Ambient,999,0,5.50053,0.0604737,5.83317,1.66187,3.83866,10/17/2025
-Red Grapes,2,Perishable,Fruit,Produce,0,190,5.4519,0.0515092,5.73272,2.27954,3.17236,9/7/2028
-Red Raspberries,3,Perishable,Fruit,Produce,1010,0,5.43608,0.0532754,5.72569,1.73989,3.69619,5/25/2024
-Safeguard Soap,42,NonPerishable,Soap,Cleaning,1000,0,5.47279,0.042195,5.70371,2.56764,2.90515,-1
-Sirloin Groundbeef,24,Perishable,Groundbeef,Meat,1005,0,5.40274,0.0451682,5.64677,1.62915,3.77359,5/13/2026
-Sparkling Ice,19,Perishable,Drink,Drink,992,0,5.63291,0.048014,5.90337,1.63937,3.99354,8/27/2028
-Stripe Flex Straws,44,NonPerishable,Straws,Kitchen,988,0,5.55054,0.0437802,5.79354,2.02893,3.52161,-1
-Suave Shampoo,33,NonPerishable,Shampoo,Hygiene,1005,0,5.62998,0.0456994,5.88727,1.66886,3.96112,-1
-Swiss Cheese,22,Perishable,Cheese,Deli,1001,0,5.49019,0.0253631,5.62944,1.95917,3.53102,8/28/2025
-TheraBreath Mouthwash,38,NonPerishable,Mouthwash,Hygiene,1005,0,5.54905,0.0476052,5.81321,2.07942,3.46963,-1
-Venus Razor,41,NonPerishable,Razor,Hygiene,1002,0,5.51189,0.0460929,5.76595,2.05618,3.45571,-1
-Water,18,Perishable,Drink,Drink,1003,0,5.6086,0.0599928,5.94508,2.05164,3.55696,11/9/2023
+AA Batteries,29,NonPerishable,Battery,Household,1010,214,5.25344,0.0483507,5.50745,2.51069,2.74275,-1
+AAA Batteries,30,NonPerishable,Battery,Household,1003,187,5.5081,0.0499992,5.7835,1.51387,3.99423,-1
+American Cheese,21,Perishable,Cheese,Deli,1030,192,5.50251,0.0484083,5.76888,1.38563,4.11688,1/6/2027
+Axe Bodywash,37,NonPerishable,Bodywash,Hygiene,996,194,5.64865,0.0394916,5.87172,2.17005,3.4786,-1
+Baby Wipes,35,NonPerishable,Cleaning,Cleaning,982,185,5.62606,0.0394099,5.84778,1.60793,4.01813,-1
+Bacon,27,Perishable,Pork,Meat,1014,202,5.39246,0.0422295,5.62018,2.23977,3.15269,1/22/2023
+Banana,5,Perishable,Fruit,Produce,974,206,5.55288,0.0599056,5.88553,2.57671,2.97617,8/22/2025
+Blackberries,4,Perishable,Fruit,Produce,999,203,5.42794,0.0531944,5.71668,2.45249,2.97545,10/26/2023
+Blue Gatorade,16,Perishable,Drink,Drink,1020,209,5.43751,0.0493027,5.70559,1.35061,4.0869,3/20/2026
+Blueberries,6,Perishable,Fruit,Produce,1004,198,5.52344,0.0538504,5.82088,1.13228,4.39116,2/25/2023
+Cheddar Cheese,23,Perishable,Cheese,Deli,1012,188,5.55044,0.0487338,5.82093,1.46715,4.08329,2/19/2027
+Cheetos Puffs,15,Perishable,Chip,Ambient,994,193,5.51239,0.053502,5.80731,1.71526,3.79713,1/7/2025
+Cheez-it,13,Perishable,Cracker,Ambient,1021,215,5.40597,0.0613076,5.7374,2.02533,3.38064,6/19/2023
+Chicken Breast,25,Perishable,Chicken,Meat,1005,193,5.61216,0.0417135,5.84626,1.94296,3.6692,9/13/2024
+Chips Ahoy Cookies,14,Perishable,Cookie,Ambient,996,214,5.58521,0.052756,5.87986,2.47275,3.11246,10/2/2025
+Colgate Toothpaste,31,NonPerishable,Toothpaste,Hygiene,1008,195,5.7191,0.0563333,6.04128,2.17988,3.53922,-1
+Creast Toothpaste,32,NonPerishable,Toothpaste,Hygiene,1008,201,5.46735,0.0545861,5.76579,1.82512,3.64223,-1
+Crest Mouthwash,39,NonPerishable,Mouthwash,Hygiene,988,194,5.50322,0.0428518,5.73904,1.94812,3.5551,-1
+Doritos,10,Perishable,Chip,Ambient,997,204,5.63956,0.0559036,5.95483,2.06005,3.57951,5/11/2024
+Dove Body Lotion,36,NonPerishable,Lotion,Hygiene,1005,182,5.41789,0.048598,5.68119,2.05463,3.36326,-1
+Dove Soap,43,NonPerishable,Soap,Cleaning,1015,193,5.52801,0.0395479,5.74663,2.55626,2.97175,-1
+Dr.Pepper,17,Perishable,Drink,Drink,1011,209,5.33439,0.0367975,5.53068,2.24794,3.08645,1/6/2027
+Gillette Razor,40,NonPerishable,Razor,Hygiene,996,190,5.53597,0.0380705,5.74673,1.28706,4.24891,-1
+Granny Smith Apple,0,Perishable,Fruit,Produce,991,225,5.84389,0.0648083,6.22262,1.91994,3.92395,5/6/2025
+Green Grapes,1,Perishable,Fruit,Produce,1006,200,5.60919,0.0503104,5.89139,2.0955,3.51369,8/7/2025
+Head and Shoulders Shampoo,34,NonPerishable,Shampoo,Hygiene,986,201,5.42441,0.0527934,5.71078,2.60012,2.82429,-1
+Iced Coffee,20,Perishable,Drink,Drink,1003,197,5.48505,0.0427736,5.71967,1.70168,3.78337,8/28/2027
+Lemon,9,Perishable,Fruit,Produce,985,221,5.33961,0.0508004,5.61086,1.34334,3.99627,1/26/2026
+Mandarin Oranges,7,Perishable,Fruit,Produce,1004,200,5.43021,0.0683497,5.80136,2.30354,3.12667,3/23/2027
+Mini Party Cups,45,NonPerishable,Cup,Kitchen,1005,201,5.6496,0.0542351,5.95601,2.23044,3.41916,-1
+Nonstick Griddle,49,NonPerishable,Pan,Kitchen,991,213,5.62863,0.043168,5.87161,2.39974,3.22889,-1
+Nonstick Saute Pan,48,NonPerishable,Pan,Kitchen,1008,200,5.40682,0.0455805,5.65327,2.1493,3.25752,-1
+Oreos,12,Perishable,Cookie,Ambient,1019,184,5.60043,0.0394162,5.82118,2.28273,3.3177,12/25/2023
+Paper Cups,47,NonPerishable,Cup,Kitchen,988,188,5.55449,0.0467609,5.81422,2.64665,2.90784,-1
+Paper Plates,46,NonPerishable,Plate,Kitchen,1016,203,5.41225,0.0464094,5.66343,2.00259,3.40966,-1
+Paper Towels,28,NonPerishable,Cleaning,Cleaning,1009,191,5.64987,0.0477884,5.91987,1.68793,3.96194,-1
+Pineapple,8,Perishable,Fruit,Produce,1017,190,5.35115,0.0458447,5.59647,1.45247,3.89868,12/9/2024
+Pork Tenderloin,26,Perishable,Pork,Meat,1016,193,5.48528,0.0482572,5.74998,0.991154,4.49413,1/3/2024
+Pringles,11,Perishable,Chip,Ambient,999,191,5.50053,0.0604737,5.83317,1.66187,3.83866,10/17/2025
+Red Grapes,2,Perishable,Fruit,Produce,1006,200,5.4519,0.0515092,5.73272,2.27954,3.17236,9/7/2028
+Red Raspberries,3,Perishable,Fruit,Produce,1010,195,5.43608,0.0532754,5.72569,1.73989,3.69619,5/25/2024
+Safeguard Soap,42,NonPerishable,Soap,Cleaning,1000,206,5.47279,0.042195,5.70371,2.56764,2.90515,-1
+Sirloin Groundbeef,24,Perishable,Groundbeef,Meat,1005,208,5.40274,0.0451682,5.64677,1.62915,3.77359,5/13/2026
+Sparkling Ice,19,Perishable,Drink,Drink,992,203,5.63291,0.048014,5.90337,1.63937,3.99354,8/27/2028
+Stripe Flex Straws,44,NonPerishable,Straws,Kitchen,988,197,5.55054,0.0437802,5.79354,2.02893,3.52161,-1
+Suave Shampoo,33,NonPerishable,Shampoo,Hygiene,1005,188,5.62998,0.0456994,5.88727,1.66886,3.96112,-1
+Swiss Cheese,22,Perishable,Cheese,Deli,1001,201,5.49019,0.0253631,5.62944,1.95917,3.53102,8/28/2025
+TheraBreath Mouthwash,38,NonPerishable,Mouthwash,Hygiene,1005,199,5.54905,0.0476052,5.81321,2.07942,3.46963,-1
+Venus Razor,41,NonPerishable,Razor,Hygiene,1002,180,5.51189,0.0460929,5.76595,2.05618,3.45571,-1
+Water,18,Perishable,Drink,Drink,1003,199,5.6086,0.0599928,5.94508,2.05164,3.55696,11/9/2023

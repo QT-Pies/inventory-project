@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <string>
 
+#include <QMessageBox>
+
 enum class LogLevel { TRACE, DEBUG, INFO, WARN, ERROR, FATAL };
 
 /*
@@ -235,6 +237,21 @@ class Logger {
             /* Log to stderr if level >= config. CLI level */
             if (level >= config.cli_display) {
                 logMessage(stderr);
+                
+                // Dumb stuff to get formatted string (I hate C++ / C and miss .NET please put me out of my misery)
+                char buffer[384];
+
+                memset(buffer, 0, 384);
+                sprintf(buffer, str.c_str(), args...);
+
+                auto msg = QString::fromUtf8(buffer);
+
+                QMessageBox box;
+                box.setText(msg);
+                box.exec();
+
+                // Create message box
+
             }
 
             /* Log to file if level >= config file level*/

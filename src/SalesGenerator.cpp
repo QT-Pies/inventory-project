@@ -12,10 +12,10 @@ SalesGenerator::SalesGenerator(const std::string& name, const std::string& start
     } else {
         days_in_month = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     }
-
+    
     time_t current_date;
     current_date = time(0);
-    tm* ltm = localtime(&current_date);
+    tm *ltm = localtime(&current_date);
     curr_y = 1900 + ltm->tm_year;
     curr_m = 1 + ltm->tm_mon;
     curr_d = ltm->tm_mday;
@@ -90,9 +90,9 @@ void SalesGenerator::generateTransactions(unsigned long max) {
         transaction->print(p_file);
         nextDate();
 
-        if (last_date.year == curr_y && last_date.month == curr_m && last_date.day > curr_d) {
-            std::cout << "Only able to generate " << i + 1 << " sales" << std::endl;
-            break;
+        if (last_date.year == curr_y && last_date.month == curr_m && last_date.day > curr_d){
+             std::cout << "Only able to generate " << i + 1 << " sales" << std::endl;
+             break;
         }
     }
 
@@ -117,7 +117,7 @@ void SalesGenerator::nextDate() {
     tmp.day++;
 
     /* Move month */
-    if ((int)tmp.day > days_in_month[tmp.month - 1]) {
+    if ((int)tmp.day > days_in_month[tmp.month-1]) {
         tmp.month++;
         tmp.day = 1;
         if (tmp.month > 12) {
@@ -173,13 +173,13 @@ void MockSale::setNumSold() {
     std::random_device rand;
     std::mt19937 gen(rand());
     unsigned long q;
-
-    if (item->quantity / 2 <= 3) {
-        q = item->quantity / 2;
+    
+    if (item->quantity/2 <= 3) {
+        q = item->quantity/2;
     } else {
         q = 3;
     }
-
+    
     std::uniform_int_distribution<unsigned long> distrib_sold(1, q);
 
     num_sold = distrib_sold(gen);

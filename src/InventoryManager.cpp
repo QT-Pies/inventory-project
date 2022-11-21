@@ -5,6 +5,11 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     file_name = file;
     sale_list->loadSales(file);
     sales_comp->setup(sale_list);
+
+    inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
+    item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
+    inv_update_debounce = false;
+
 }
 
 InventoryManager::~InventoryManager() {
@@ -28,12 +33,15 @@ int InventoryManager::userInput() {
 
     std::cout << "\n(A)dd, (R)emove, (U)pdate, (S)ale, (C)hange Permissions, (CS)Compare Sales, (SS)Suggest Sale, "
                  "(P)rint, (L)ogout, or (Q)uit: ";
-    getline(std::cin, argument);
+    std::cin >> argument;
     lowerCaseString(argument);
 
     /* switch on argument specified from user and then prompt them accordingly for
      * further input */
     if (argument == "a" || argument == "add") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to add an Item.",
                             current_user->name.c_str());
@@ -41,27 +49,27 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Enter item name: ";
-        getline(std::cin, name);
+        std::cin >> name;
         std::cout << "Enter item category (Perishable or NonPerishable): ";
-        getline(std::cin, category);
+        std::cin >> category;
         std::cout << "Enter item sub-category: ";
-        getline(std::cin, sub_category);
+        std::cin >> sub_category;
         std::cout << "Enter item location: ";
-        getline(std::cin, location);
+        std::cin >> location;
         std::cout << "Enter item quantity: ";
-        getline(std::cin, quantity);
+        std::cin >> quantity;
         std::cout << "Enter backorder (set to zero unless there is negative stock): ";
-        getline(std::cin, backorder);
+        std::cin >> backorder;
         std::cout << "Enter item id: ";
-        getline(std::cin, id);
+        std::cin >> id;
         std::cout << "Enter sale price: (format xx.xx) $";
-        getline(std::cin, sale_price);
+        std::cin >> sale_price;
         std::cout << "Enter purchase cost: (format xx.xx) $";
-        getline(std::cin, buy_price);
+        std::cin >> buy_price;
         std::cout << "Enter item tax as a decimal value: ";
-        getline(std::cin, tax);
+        std::cin >> tax;
         std::cout << "Enter expiration date (format xx/xx/xxxx) or -1 for NonPerishable: ";
-        getline(std::cin, expiration);
+        std::cin >> expiration;
 
         lowerCaseString(category);
         try {
@@ -88,6 +96,9 @@ int InventoryManager::userInput() {
             Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "r" || argument == "remove") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to remove an Item.",
                             current_user->name.c_str());
@@ -95,13 +106,16 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Name: ";
-        getline(std::cin, name);
+        std::cin >> name;
 
         if (active_inventory->removeItem(name) != -1) {
             std::cout << "Removed " << name << std::endl;
             Logger::logTrace("User %s removed Item '%s'.", current_user->name.c_str(), name.c_str());
         }
     } else if (argument == "u" || argument == "update") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         if (current_user->permission < 3) {
             Logger::logWarn("User %s does not have the required permissions to update an Item.",
                             current_user->name.c_str());
@@ -109,40 +123,39 @@ int InventoryManager::userInput() {
         }
 
         std::cout << "Enter name of item to update: ";
-        getline(std::cin, name);
+        std::cin >> name;
         std::cout << "Enter field to update (e.g. name, id, tax, etc): ";
-        getline(std::cin, category);
+        std::cin >> category;
         std::cout << "Enter new value for " << category << ": ";
-        getline(std::cin, value);
+        std::cin >> value;
 
         if (active_inventory->updateItem(name, category, value) != -1) {
-            if (category != "quantity") {
-                std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
-                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
-                                 name.c_str(), value.c_str());
-            } else {
-                std::cout << "Updated " << category << " of " << name << " to "
-                          << active_inventory->searchByName(name)->quantity << std::endl;
-                Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
-                                 name.c_str(), std::to_string(active_inventory->searchByName(name)->quantity).c_str());
-            }
+            std::cout << "Updated " << category << " of " << name << " to " << value << std::endl;
+            Logger::logTrace("User %s updated %s of Item '%s' to %s.", current_user->name.c_str(), category.c_str(),
+                             name.c_str(), value.c_str());
         }
 
     } else if (argument == "c" || argument == "change") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         std::cout << "Account name: ";
-        getline(std::cin, name);
+        std::cin >> name;
         std::cout << "New account type: ";
-        getline(std::cin, category);
+        std::cin >> category;
 
         if (updatePermission(name, category)) {
             Logger::logTrace("User %s updated account of '%s' to '%s'.", current_user->name.c_str(), name.c_str(),
                              category.c_str());
         }
     } else if (argument == "cs" || argument == "compare") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         std::cout << "\nPlease select a range to compare against.\n";
         std::cout << "(Input your choice as the exact string below as you see it.)\n";
         std::cout << "All_By_Year | All_By_Month | X_Years | Last_Month | Last_7_days | Yesterday | Full\n";
-        getline(std::cin, category);
+        std::cin >> category;
 
         if (category == "Full") {
             sales_comp->printAllComparisons();
@@ -154,15 +167,11 @@ int InventoryManager::userInput() {
             std::cout << "Number of years to compare : ";
             std::cin >> x;
             while (x <= 0) {
-                std::cin.clear();
-                std::cin.ignore(10000, '\n');
                 std::cout << "Invalid number of years. Try again.\n";
                 std::cout << "Number of years to compare : ";
                 std::cin >> x;
             }
             sales_comp->printComparison("LastXYears", x);
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
         } else if (category == "Last_Month") {
             sales_comp->printComparison("LastMonth", 0);
         } else if (category == "Last_7_days") {
@@ -175,55 +184,60 @@ int InventoryManager::userInput() {
         sales_comp->suggestSale();
 
     } else if (argument == "p" || argument == "print") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         std::cout << "\nPlease select a category to print or an item name.\n";
         std::cout << "All | Perishable | NonPerishable | Location | Item Name : ";
-        getline(std::cin, category);
+        std::cin >> category;
         if (category == "Location") {
             std::cout << "Location: ";
-            getline(std::cin, location);
+            std::cin >> location;
             active_inventory->printItems(category, location);
         } else {
             active_inventory->printItems("", category);
         }
         Logger::logTrace("User %s viewed the inventory.", current_user->name.c_str());
     } else if (argument == "s" || argument == "sales") {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
         valid_transaction = false;
 
         std::cout << "\nCustomer name: ";
-        getline(std::cin, buyer);
+        std::cin >> buyer;
         std::cout << "Seller name (you): ";
-        getline(std::cin, seller);
+        std::cin >> seller;
 
         do {
             unsigned long tmp_quantity;
             sale_list->userTransaction(sale_list->curr_sale_id, buyer, seller);
 
             std::cout << "\nItem Name: ";
-            getline(std::cin, name);
-
-            while (1) {
-                try {
-                    std::cout << "Quantity Sold: ";
-                    getline(std::cin, quantity);
-                    tmp_quantity = toUnsignedLong(quantity);
-                    if (tmp_quantity == 0) {
-                        throw std::invalid_argument("Quantity can't be zero.");
-                    }
-                    break;
-                } catch (std::exception& e) {
-                    Logger::logDebug(e.what());
-                    std::cout << "Invalid quantity. Try again.\n";
+            std::cin >> name;
+ 
+        while (1) {
+            try {
+                std::cout << "Quantity Sold: ";
+                std::cin >> quantity;
+                tmp_quantity = toUnsignedLong(quantity);
+                if (tmp_quantity == 0) {
+                    throw std::invalid_argument("Quantity can't be zero.");
                 }
+                break;
+            } catch (std::exception& e) {
+                Logger::logDebug(e.what());
+                std::cout << "Invalid quantity. Try again.\n";
             }
-
+        }
+           
             auto item_ptr = active_inventory->searchByName(name);
 
             if (item_ptr != NULL) {
                 sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(
                     sale_list->curr_sale_id, item_ptr->id, tmp_quantity, item_ptr->sale_price);
                 valid_transaction = true;
-            } else
-                valid_transaction = false;
+            } else valid_transaction = false;
 
             /* if no valid sales are added to the transaction, then it is deleted */
             if (valid_transaction == false) {
@@ -231,19 +245,19 @@ int InventoryManager::userInput() {
                 sale_list->transaction_by_order.pop_back();
                 sale_list->curr_transaction--;
             } else {
-                std::cout << "\n" << quantity << " " << name << "(s) sold.\n";
+                std::cout << "\n" << quantity << " " << name << "(s) sold.\n"; 
                 std::cout << "End of transaction. Thank you!\n\n";
                 sale_list->curr_sale_id++;
                 makeTransaction();
                 Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
             }
             std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
-            getline(std::cin, arg);
+            std::cin >> arg;
             lowerCaseString(arg);
 
-            while (arg != "y" && arg != "n") {
+            while (arg != "y" && arg != "n" ) {
                 std::cout << "Would customer \"" << buyer << "\" like to make another transaction? (Y/N): ";
-                getline(std::cin, arg);
+                std::cin >> arg;
                 lowerCaseString(arg);
             }
         } while (arg != "n");
@@ -267,6 +281,653 @@ int InventoryManager::userInput() {
             << std::endl;
     }
 
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+
+    return 0;
+}
+
+void InventoryManager::guiLogin() {
+    view_gc.clear();
+
+    auto login_view = std::make_shared<QWidget>(window.get());
+    login_view->setFixedSize(960, 540);
+    view = login_view;
+
+    auto logo = new QLabel(login_view.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(256,256,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+
+    auto user_label = new QLabel(login_view.get());
+    user_label->setText("Username:");
+    user_label->move(352,260);
+    username_line = new QLineEdit(login_view.get());
+    username_line->move(440,256);
+    gc.push_back(user_label);
+    gc.push_back(username_line);
+
+    auto password_label = new QLabel(login_view.get());
+    password_label->setText("Password:");
+    password_label->move(352,300);
+    password_line = new QLineEdit(login_view.get());
+    password_line->move(440,296);
+    password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+    gc.push_back(password_line);
+
+
+    auto login_button = new QPushButton(login_view.get());
+    login_button->setText("Login");
+    login_button->setFixedSize(256,64);
+    login_button->move(352, 340);
+    login_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(login_button);
+
+    auto quit_button = new QPushButton(login_view.get());
+    quit_button->setText("Quit");
+    quit_button->setFixedSize(256,64);
+    quit_button->move(352, 400);
+    quit_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(quit_button);
+
+    QObject::connect(login_button, &QPushButton::clicked, [&]() {
+        //std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
+
+        QString un = username_line->text();
+        QString pas = password_line->text();
+
+        auto user = login->verifyUser(un.toStdString(), pas.toStdString());
+
+        if (user != nullptr) {
+            /* Switch to main program view */
+            current_user = user;
+            view->hide();
+            mainWindow();
+        }
+        else {
+            /* display error popup if invalid*/
+            QMessageBox box;
+            box.setWindowTitle("Login");
+            box.setText("Username and/or password is incorrect");
+            box.exec();
+        }
+    });
+
+    QObject::connect(quit_button, &QPushButton::clicked, [&]() {
+        window->close();
+        return;
+    });
+
+    login_view->show();
+}
+
+void InventoryManager::guiUser() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (user_screen != nullptr) {
+        sub_view = user_screen;
+        sub_view->show();
+        return;
+    }
+
+    user_screen = std::make_shared<QWidget>(view.get());
+    user_screen->setFixedSize(880, 540);
+    user_screen->move(80,0);
+
+    auto user_label = new QLabel(user_screen.get());
+    user_label->setText("Username:");
+    user_label->move(352,160);
+    username_line = new QLineEdit(user_screen.get());
+    username_line->move(440,156);
+    user_label->show();
+    username_line->show();
+    gc.push_back(user_label);
+    gc.push_back(username_line);
+
+    auto password_label = new QLabel(user_screen.get());
+    password_label->setText("Password:");
+    password_label->move(352,200);
+    password_line = new QLineEdit(user_screen.get());
+    password_line->move(440,196);
+    password_label->show();
+    password_line->show();
+    // password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+    gc.push_back(password_line);
+
+    ownerButton = new QRadioButton("Owner",user_screen.get());
+    managerButton = new QRadioButton("Manager",user_screen.get());
+    employeeButton = new QRadioButton("Employee",user_screen.get());
+    ownerButton->move(325,300);
+    managerButton->move(425,300);
+    employeeButton->move(525,300);
+    ownerButton->show();
+    managerButton->show();
+    employeeButton->show();
+
+    auto create_button = new QPushButton(user_screen.get());
+    create_button->setText("Create User");
+    create_button->setFixedSize(256,64);
+    create_button->move(352, 340);
+    create_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    create_button->show();
+    gc.push_back(create_button);
+
+    auto update_button = new QPushButton(user_screen.get());
+    update_button->setText("Update User");
+    update_button->setFixedSize(256,64);
+    update_button->move(352, 410);
+    update_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    update_button->show();
+    gc.push_back(update_button);
+
+    auto logout_button = new QPushButton(user_screen.get());
+    logout_button->setText("Logout");
+    logout_button->setFixedSize(256,64);
+    logout_button->move(352, 480);
+    logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    logout_button->show();
+    gc.push_back(logout_button);
+
+    QObject::connect(create_button, &QPushButton::clicked, [&]() {
+        QString un = username_line->text();
+        QString pas = password_line->text();
+        QString acc = "";
+        //std::string acc_string;
+
+        QMessageBox box;
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+         if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(pas == "") {
+            //QMessageBox::warning(w,"Didn't create New User", "Password is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Password is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Create User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+         if(current_user->permission == 1) {
+            //QMessageBox::warning(w,"Didn't create New User", "Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.exec();
+            return;
+        }
+        else if(current_user->permission == 3 && (acc == "owner" || acc == "manager")) {
+            //QMessageBox::warning(w,"Didn't create New User", "Managers can only create employee accounts. Please have an owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Managers can only create employee accounts. Please have an owner create the account.");
+            box.exec();
+            return;
+        }
+        if(login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString())) {
+        //QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+            box.setWindowTitle("Create User");
+            box.setText("Created user succsessfuly");
+            box.exec();
+        }
+        else {
+            //QMessageBox::warning(w,"Didn't create New User", "The User was unable to be created. Allready Exists");
+            box.setWindowTitle("Create User");
+            box.setText("User was unable to be created. User allready exists.");
+            box.exec();
+        }
+    });
+
+    QObject::connect(update_button, &QPushButton::clicked, [&]() {
+        QString un = username_line->text();
+        QString acc = "";
+        QMessageBox box;
+
+        if(current_user->permission != 5) {
+            box.setWindowTitle("Update User");
+            box.setText("Only Owners can update users.");
+            box.exec();
+            return;
+        }
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+        if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Update User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Update User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+        if(updatePermission(un.toStdString(), acc.toStdString())) {
+            box.setWindowTitle("Update User");
+            box.setText("Updated user succsessfuly.");
+            box.exec();
+        }
+        else {
+            box.setWindowTitle("Update User");
+            box.setText("Unable to update user.");
+            box.exec();
+        }
+    });
+
+    QObject::connect(logout_button, &QPushButton::clicked, [&]() {
+        window->close();
+        return;
+    });
+    user_screen->show();
+}
+
+void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
+
+    std::cout << "line 328" << std::endl;
+
+    auto name = QString::fromStdString(item->name);
+    auto id = QString::number(item->id);
+    auto category = QString::fromStdString(item->category);
+    auto subcategory = QString::fromStdString(item->sub_category);
+    auto location = QString::fromStdString(item->location);
+    auto quantity = QString::number(item->quantity);
+    auto backorder = QString::number(item->backorder);
+    auto sale_price = QString::number(item->sale_price);
+    auto tax = QString::number(item->tax);
+    auto total_price = QString::number(item->total_price);
+    auto buy_cost = QString::number(item->buy_cost);
+    auto profit = QString::number(item->profit);
+    QString expiration_date;
+
+    std::cout << "line 344" << std::endl;
+
+    /* Special expiration date logic. */
+    if (item->category == "Perishable") {
+        PerishableItem *tmp = (PerishableItem*) item.get();
+        expiration_date = QString::fromStdString(tmp->expiration_date.string_date);
+    } else expiration_date = "-1";
+
+    /* Create QTableWidgetItem for each field */
+    auto name_entry = new QTableWidgetItem(name, 0);
+    auto id_entry = new QTableWidgetItem(id, 0);
+    auto cat_entry = new QTableWidgetItem(category, 0);
+    auto sub_entry = new QTableWidgetItem(subcategory, 0);
+    auto location_entry = new QTableWidgetItem(location, 0);
+    auto quantity_entry = new QTableWidgetItem(quantity, 0);
+    auto backorder_entry = new QTableWidgetItem(backorder, 0);
+    auto sale_entry = new QTableWidgetItem(sale_price, 0);
+    auto tax_entry = new QTableWidgetItem(tax, 0);
+    auto total_entry = new QTableWidgetItem(total_price, 0);
+    auto buy_entry = new QTableWidgetItem(buy_cost, 0);
+    auto profit_entry = new QTableWidgetItem(profit, 0);
+    auto exp_entry = new QTableWidgetItem(expiration_date, 0);
+
+    std::cout << "line 367" << std::endl;
+    std::cout << "rowCount == " << table->rowCount() << std::endl;
+
+    if (table == nullptr) {
+        std::cout << "Table has become null somehow." << std::endl;
+    }
+
+    /* Insert each item into table */
+    table->setItem(row, 0, name_entry);
+    table->setItem(row, 1, id_entry);
+    table->setItem(row, 2, cat_entry);
+    table->setItem(row, 3, sub_entry);
+    table->setItem(row, 4, location_entry);
+    table->setItem(row, 5, quantity_entry);
+    table->setItem(row, 6, backorder_entry);
+    table->setItem(row, 7, sale_entry);
+    table->setItem(row, 8, tax_entry);
+    table->setItem(row, 9, total_entry);
+    table->setItem(row, 10, buy_entry);
+    table->setItem(row, 11, profit_entry);
+    table->setItem(row, 12, exp_entry);
+
+    std::cout << "line 384" << std::endl;
+}
+
+void InventoryManager::helpScreen() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (help_screen != nullptr) {
+        sub_view = help_screen;
+        sub_view->show();
+        return;
+    }
+
+    help_screen = std::make_shared<QWidget>(view.get());
+    help_screen->setFixedSize(880, 540);
+    help_screen->move(80,0);
+
+
+    auto welcome_text = new QLabel(help_screen.get());
+    welcome_text->setText("Welcome to Inventory Manager!");
+    welcome_text->setFixedSize(480, 270);
+    welcome_text->move(300, 135);
+    welcome_text->show();
+
+    help_screen->show();
+    return;
+}
+
+void InventoryManager::hideAllViews() {
+    if (inv_screen != nullptr) inv_screen->hide();
+    if (help_screen != nullptr) help_screen->hide();
+    if (user_screen != nullptr) user_screen->hide();
+}
+
+void InventoryManager::redrawTable() {
+    table->setRowCount(0);
+    auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
+    table->setRowCount(item_count);
+
+    int row = 0;
+    for (auto it = active_inventory->inv_by_id.begin(); it != active_inventory->inv_by_id.end(); ++it, ++row) {
+        std::cout << "Calling insertItem with item, row number = " << row << std::endl;
+        std::cout << "Current rowCount = " << table->rowCount() << std::endl;
+        insertItemIntoTable(it->second, row);
+    }
+}
+
+int InventoryManager::displayInventory() {
+    auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
+    int row;
+
+    if (sub_view == inv_screen) {
+        std::cout << "Already on inventory screen" << std::endl;
+    } else if (sub_view == help_screen) {
+        std::cout << "On help screen" << std::endl;
+    }
+
+    if (sub_view != nullptr) sub_view->hide();
+    else std::cout << "No active sub view" << std::endl;
+     
+    if (inv_screen != nullptr) {
+        sub_view = inv_screen;
+        inv_screen->show();
+        return 0;
+    }
+
+    inv_screen = std::make_shared<QWidget>(view.get());
+    inv_screen->setFixedSize(880, 540);
+    inv_screen->move(80, 0);
+
+    table = std::make_shared<QTableWidget>(item_count + 1, static_cast<int>(inv_header.size()), inv_screen.get());
+    table->setHorizontalHeaderLabels(inv_header);
+    table->setFixedSize(880, 500);
+    table->move(0, 0);
+
+    sub_view = inv_screen;
+
+    auto bar = new QToolBar(inv_screen.get());
+    bar->setFixedSize(880, 40);
+    bar->move(0, 500);
+    bar->show();
+
+    /* Create Add action */
+    auto add_action = new QAction(bar);
+    add_action->setIcon(QIcon("./images/add.png"));
+    bar->addAction(add_action);
+
+    auto remove_action = new QAction(bar);
+    remove_action->setIcon(QIcon("./images/remove.png"));
+    bar->addAction(remove_action);
+
+    redrawTable();
+
+    /* Field was changed; attempt to update it. */
+    QObject::connect(table.get(), &QTableWidget::itemChanged, [&](QTableWidgetItem* item) {
+        auto item_name = table->item(item->row(), 0)->text().toStdString();
+        auto cat = item_fields.at(item->column()).toStdString();
+        auto val = item->text().toStdString();
+
+        /* Skip updating anything if we were called from a manual setText() */
+        if (inv_update_debounce) {
+            inv_update_debounce = false;
+            return;
+        }
+
+        /* So, ActiveInventory::updateItem() takes the item name. 
+         * Currently, we grab the item name by checking the first column of this row.
+         * However, if we're updating the name, we can't use that.\
+         * Instead, grab ID, get item with that ID, then get name from that.
+        */
+        if (item->column() == 0) {
+            try {
+                auto id = toUnsignedLong(table->item(item->row(), 1)->text().toStdString());
+                auto item = active_inventory->searchById(id);
+
+                if (item == nullptr) {
+                    throw std::invalid_argument("Failed to find the item.");
+                }
+
+                item_name = item->name;
+            } catch (std::exception& e) {
+                Logger::logWarn(e.what());
+                return;
+            }
+        }
+
+        /* If failed to update, revert the text to the actual current value. */
+        if (active_inventory->updateItem(item_name, cat, val)) {       
+            auto inv_item = active_inventory->searchByName(item_name);
+            Logger::logTrace("Failed to update Item '%s' field '%s' to value '%s'.", item_name.c_str(), cat.c_str(), val.c_str());
+
+            QString q_string;
+
+            if (cat == "Name") {
+                q_string = QString::fromStdString(inv_item->name);
+            } else if (cat == "ID") {
+                q_string = QString::number(inv_item->id);
+            } else if (cat == "Category") {
+                q_string = QString::fromStdString(inv_item->category);
+            } else if (cat == "Sub_Category") {
+                q_string = QString::fromStdString(inv_item->sub_category);
+            } else if (cat == "Location") {
+                q_string = QString::fromStdString(inv_item->location);
+            } else if (cat == "Quantity") {
+                q_string = QString::number(inv_item->quantity);
+            } else if (cat == "Backorder") {
+                q_string = QString::number(inv_item->backorder);
+            } else if (cat == "Sale_Price") {
+                q_string = QString::number(inv_item->sale_price);
+            } else if (cat == "Tax") {
+                q_string = QString::number(inv_item->tax);
+            } else if (cat == "Buy Cost") {
+                q_string = QString::number(inv_item->buy_cost);
+            } else if (cat == "Profit") {
+                q_string = QString::number(inv_item->profit);
+            } else if (cat == "Expiration_Date") {
+                if (inv_item->category == "NonPerishable") {
+                    q_string = "-1";
+                } else {
+                    auto per_item = (PerishableItem*) inv_item.get();
+                    q_string = QString::fromStdString(per_item->expiration_date.string_date);
+                }
+            }
+
+            inv_update_debounce = true;
+            item->setText(q_string);
+        }
+    });
+
+    QObject::connect(add_action, &QAction::triggered, [&]() {
+        auto input = AddDialog::getStrings(view.get());
+        auto name = input.at(0).toStdString();
+        auto id = input.at(1).toStdString();
+        auto category = input.at(2).toStdString();
+        auto sub_category = input.at(3).toStdString();
+        auto location = input.at(4).toStdString();
+        auto quantity = input.at(5).toStdString();
+        auto backorder = input.at(6).toStdString();
+        auto sale_price = input.at(7).toStdString();
+        auto tax = input.at(8).toStdString();
+        auto buy_cost = input.at(9).toStdString();
+        auto expiration_date = input.at(10).toStdString();
+        std::shared_ptr<Item> new_item;
+
+        lowerCaseString(category);
+        try {
+            if (category == "perishable") {
+                new_item = std::make_shared<PerishableItem>(name, "Perishable", sub_category, location, quantity,
+                                                            backorder, id, sale_price, buy_cost, tax, expiration_date);
+            } else if (category == "nonperishable") {
+                new_item = std::make_shared<NonPerishableItem>(name, "NonPerishable", sub_category, location, quantity,
+                                                               backorder, id, sale_price, buy_cost, tax);
+            } else {
+                throw std::runtime_error("Invalid category.");
+                return;
+            }
+        } catch (std::exception& e) {
+            /* Catch exception, print out its message, but continue to run as normal. */
+            Logger::logError(e.what());
+            Logger::logWarn("Item %s has not been added to the inventory. Please correct the input and try again.",
+                            name.c_str());
+            return;
+        }
+
+        if (active_inventory->addItem(new_item) != -1) {
+            Logger::logTrace("User %s added Item '%s'.", current_user->name.c_str(), name.c_str());
+        }
+    });
+
+    QObject::connect(remove_action, &QAction::triggered, [&]() {
+        auto name = QInputDialog::getText(view.get(), "Remove Item from Inventory", "Name of Item:", QLineEdit::Normal);
+
+        auto item = active_inventory->searchByName(name.toStdString());
+
+        if (item == nullptr) {
+            Logger::logWarn("Could not find item '%s' in the inventory.", name.toStdString().c_str());
+        }
+
+        for (row = 1; row < table->rowCount(); ++row) {
+            auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+            if (row_id == item->id) {
+                table->removeRow(row);
+                active_inventory->removeItem(item->name);
+                Logger::logTrace("User %s remove Item '%s'.", current_user->name.c_str(), name.toStdString().c_str());
+                return;
+            }
+        }
+
+    });
+
+    table->show();
+    inv_screen->show();
+    return 0;
+}
+
+void InventoryManager::initializeSidePanel() {
+    /* Clear out current gc collection */
+    view_gc.clear();
+
+    /* Set up side panel buttons */
+
+    /* Inventory Button to switch to inventory view */
+    auto inv_button = new QToolButton(view.get());
+    inv_button->setIcon(QIcon("./images/inventory-button.png"));
+    inv_button->setIconSize(QSize(80, 80));
+    inv_button->move(-5,0);
+    inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    inv_button->show();
+
+    /* Help Button to switch to help view */
+    auto help_button = new QToolButton(view.get());
+    help_button->setIcon(QIcon("./images/about.png"));
+    help_button->setIconSize(QSize(80, 80));
+    help_button->move(-5, 455);
+    help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    help_button->show();
+
+    /* Add User Button to switch to add user view */
+    auto user_button = new QToolButton(view.get());
+    user_button->setIcon(QIcon("./images/user.png"));
+    user_button->setIconSize(QSize(80, 80));
+    user_button->move(-5, 365);
+    user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    user_button->show();
+
+    QObject::connect(inv_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the inventory button and I have been clicked." << std::endl;
+        hideAllViews();
+        displayInventory();
+    });
+
+    QObject::connect(help_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the help button and I have been clicked." << std::endl;
+        hideAllViews();
+        helpScreen();
+    });
+
+    QObject::connect(user_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the user button and I have been clicked." << std::endl;
+        hideAllViews();
+        guiUser();
+    });
+}
+
+void InventoryManager::mainWindow() {
+    auto main_view = std::make_shared<QWidget>(window.get());
+
+    main_view->setFixedSize(960, 540);
+    view = main_view;
+
+    initializeSidePanel();
+
+    // Open up inventory view on program login.
+    displayInventory();
+
+    main_view->show();
+}
+
+int InventoryManager::guiInput(int argc, char** argv) {
+    app = std::make_shared<QApplication>(argc, argv);
+    window = std::make_shared<QWidget>();
+
+    window->resize(960, 540);
+    window->setFixedSize(960, 540);
+    window->setWindowTitle(QApplication::translate("InventoryManager", "Inventory Manager"));
+
+    guiLogin();
+
+    window->show();
+    app->exec();
     return 0;
 }
 
@@ -400,21 +1061,5 @@ bool InventoryManager::updatePermission(std::string name, std::string account) {
 }
 
 void InventoryManager::makeTransaction() {
-    unsigned int i;
-
-    auto transaction_data = sale_list->transaction_by_order[sale_list->curr_transaction];
-
-    sales_comp->current_year_sales += transaction_data->total_price;
-    sales_comp->current_month_sales += transaction_data->total_price;
-    sales_comp->current_day_sales += transaction_data->total_price;
-    sales_comp->sales_by_year[sales_comp->curr_y] += transaction_data->total_price;
-    sales_comp->sales_by_month[sales_comp->curr_m] += transaction_data->total_price;
-
-    for (i = 0; i < transaction_data->sales.size(); i++) {
-        auto sale = transaction_data->sales[i];
-        sales_comp->current_month_item_ids[sale->item_id] += (sale->num_sold * sale->sale_price);
-        sales_comp->item_ids_by_month[sales_comp->curr_m][sale->item_id] += (sale->num_sold * sale->sale_price);
-    }
-
-    transaction_data->processTransaction(active_inventory);
+    sale_list->transaction_by_order[sale_list->curr_transaction]->processTransaction(active_inventory);
 }
