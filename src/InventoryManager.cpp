@@ -694,7 +694,6 @@ void InventoryManager::processTransactionVisually() {
         */
 
         auto row_count = table->rowCount();
-
         for (int row = 0; row < row_count; ++row) {
             try {
                 auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
@@ -815,6 +814,23 @@ void InventoryManager::guiSale() {
         } catch (std::exception& e) {
             Logger::logWarn(e.what());
             return;
+        }
+
+        /* Item doesn't have enough quantity to complete transaction */
+        if (tmp_quantity > item->quantity) {
+            auto difference = tmp_quantity - item->quantity;
+
+            QString message = "You tried to sell " + QString::number(tmp_quantity) + " items, but there are only ";
+            message += QString::number(item->quantity);
+            message += " in stock.  Add the remaining ";
+            message += QString::number(difference);
+            message += " to backorder?";
+
+            auto prompt = QMessageBox::question(window.get(), "Low stock", message);
+
+            if (prompt == QMessageBox::StandardButton::No) return;
+
+            /* Otherwise, sell what we can and update backorder.*/
         }
 
         /* If execution reaches here, we successfully read in an item, and the quantity we want to sell. */
