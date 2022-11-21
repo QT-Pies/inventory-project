@@ -98,7 +98,7 @@ class InventoryManager {
     /* @brief GUI Point of Sale
     */
     void guiSale();
-    
+
     /*
      * @breif User view, includes adding user, changing premmisions, and log out
      */
@@ -141,9 +141,11 @@ class InventoryManager {
     QRadioButton *ownerButton;
     QRadioButton *managerButton;
     QRadioButton *employeeButton;
+    QStringList sale_header;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
+    std::shared_ptr<QTableWidget> sale_table;
 
     std::shared_ptr<QWidget> inv_screen;
     std::shared_ptr<QWidget> user_screen;

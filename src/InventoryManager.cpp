@@ -8,6 +8,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
 
     inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
     item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
+    sale_header = {"ID", "Name", "Cost", "Quantity"};
     inv_update_debounce = false;
 
 }
@@ -675,10 +676,34 @@ void InventoryManager::guiSale() {
     }
 
     /* Otherwise, create it for the first time. */
-
     pos_screen = std::make_shared<QWidget>(view.get());
     pos_screen->setFixedSize(880, 540);
     pos_screen->move(80, 0);
+
+    /* QLabel for name of view */
+    auto title = new QLabel(pos_screen.get());
+    title->setText("Current Transaction");
+    title->setFixedSize(440, 80);
+    title->move(20, 0);
+    title->setStyleSheet("font: 24pt;");
+    title->show();
+
+ //   sale_table = std::make_shared<QTableWidget>(pos_screen.get());
+
+    /* Add Toolbar */
+    auto bar = new QToolBar(pos_screen.get());
+    bar->setFixedSize(80, 540);
+    bar->setOrientation(Qt::Vertical);
+    bar->move(800, 0);
+    bar->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    bar->show();
+
+    /* Add Item to Sale Button */
+    auto add_action = new QAction(bar);
+    add_action->setIcon(QIcon("./images/add.png"));
+    bar->addAction(add_action);
+
+    pos_screen->show(); 
 }
 
 int InventoryManager::displayInventory() {
@@ -923,6 +948,8 @@ void InventoryManager::initializeSidePanel() {
 
     QObject::connect(sale_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the sale button" << std::endl;
+        hideAllViews();
+        guiSale();
     });
 
     QObject::connect(user_button, &QToolButton::clicked, [&]() {
