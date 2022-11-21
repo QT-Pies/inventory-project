@@ -649,6 +649,7 @@ void InventoryManager::hideAllViews() {
     if (inv_screen != nullptr) inv_screen->hide();
     if (help_screen != nullptr) help_screen->hide();
     if (user_screen != nullptr) user_screen->hide();
+    if (pos_screen != nullptr) pos_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -664,18 +665,27 @@ void InventoryManager::redrawTable() {
     }
 }
 
+void InventoryManager::guiSale() {
+
+    /* Show POS screen if we've already created it. */
+    if (pos_screen != nullptr) {
+        sub_view = pos_screen;
+        pos_screen->show();
+        return;
+    }
+
+    /* Otherwise, create it for the first time. */
+
+    pos_screen = std::make_shared<QWidget>(view.get());
+    pos_screen->setFixedSize(880, 540);
+    pos_screen->move(80, 0);
+}
+
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
     int row;
 
-    if (sub_view == inv_screen) {
-        std::cout << "Already on inventory screen" << std::endl;
-    } else if (sub_view == help_screen) {
-        std::cout << "On help screen" << std::endl;
-    }
-
     if (sub_view != nullptr) sub_view->hide();
-    else std::cout << "No active sub view" << std::endl;
      
     if (inv_screen != nullptr) {
         sub_view = inv_screen;
@@ -884,6 +894,13 @@ void InventoryManager::initializeSidePanel() {
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
+    auto sale_button = new QToolButton(view.get());
+    sale_button->setIcon(QIcon("./images/sale.png"));
+    sale_button->setIconSize(QSize(80, 80));
+    sale_button->move(-5, 80);
+    sale_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    sale_button->show();
+
     /* Add User Button to switch to add user view */
     auto user_button = new QToolButton(view.get());
     user_button->setIcon(QIcon("./images/user.png"));
@@ -902,6 +919,10 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the help button and I have been clicked." << std::endl;
         hideAllViews();
         helpScreen();
+    });
+
+    QObject::connect(sale_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the sale button" << std::endl;
     });
 
     QObject::connect(user_button, &QToolButton::clicked, [&]() {
