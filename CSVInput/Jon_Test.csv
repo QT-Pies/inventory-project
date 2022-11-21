@@ -1,4 +1,0 @@
-Name,ID,Category,Sub-Category,Location,Quantity,Backorder,Sale Price,Tax,Total Price,Buy Cost,Profit,Expiration Date
- Apple,1,Perishable,None,2,100,0,3.99,0.1,4.389,1,2.99,12/12/2022
- Orange,2,Perishable,None,2,100,0,3.99,0.1,4.389,1,2.99,12/12/2022
- Pomegranate,3,Perishable,None,2,100,0,3.99,0.1,4.389,1,2.99,12/12/2022

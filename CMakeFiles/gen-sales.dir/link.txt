@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -Werror -Wno-format-security  CMakeFiles/gen-sales.dir/gen-sales_autogen/mocs_compilation.cpp.o CMakeFiles/gen-sales.dir/src/CSVEntry.cpp.o CMakeFiles/gen-sales.dir/src/Date.cpp.o CMakeFiles/gen-sales.dir/src/SalesGenerator.cpp.o CMakeFiles/gen-sales.dir/src/SalesGeneratorDriver.cpp.o -o bin/gen-sales 
