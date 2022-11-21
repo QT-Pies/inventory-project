@@ -500,8 +500,52 @@ void InventoryManager::guiUser() {
     });
 
     QObject::connect(update_button, &QPushButton::clicked, [&]() {
-        //window->close();
-        //return;
+        QString un = username_line->text();
+        QString acc = "";
+        QMessageBox box;
+
+        if(current_user->permission != 5) {
+            box.setWindowTitle("Update User");
+            box.setText("Only Owners can update users.");
+            box.exec();
+            return;
+        }
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+        if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Update User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Update User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+        if(updatePermission(un.toStdString(), acc.toStdString())) {
+            box.setWindowTitle("Update User");
+            box.setText("Updated user succsessfuly.");
+            box.exec();
+        }
+        else {
+            box.setWindowTitle("Update User");
+            box.setText("Unable to update user.");
+            box.exec();
+        }
     });
 
     QObject::connect(logout_button, &QPushButton::clicked, [&]() {
