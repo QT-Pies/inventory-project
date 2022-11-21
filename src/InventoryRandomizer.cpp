@@ -26,7 +26,7 @@ void Entry::print(std::ofstream &of)
     of << location << ",";
     of << quantity << ",";
     of << backorder << ",";
-    of << sale_price << ",";
+    of << std::setprecision(2) << std::fixed << std::showpoint << sale_price << ",";
     of << tax << ",";
     of << total_price << ",";
     of << buy_cost << ",";

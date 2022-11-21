@@ -69,6 +69,12 @@ add_executable(gen-inventory
   src/InventoryGeneratorDriver.cpp
 )
 
+# Add source files for bin/randomize-inventory
+add_executable(randomize-inventory
+  src/InventoryRandomizer.cpp
+  src/InventoryRandomizerMain.cpp
+)
+
 # Add source files for bin/gen-sales
 add_executable(gen-sales
   src/CSVEntry.cpp
