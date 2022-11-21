@@ -141,6 +141,16 @@ class InventoryManager {
     QRadioButton *employeeButton;
     /* used in Sales Comparison */
     QLineEdit *years_line;
+    QLabel *ya_label;
+    QLabel *ys_label;
+    QLabel *yg_label;
+    QLabel *ma_label;
+    QLabel *ms_label;
+    QLabel *mg_label;
+    QLabel *lmc_label;
+    QLabel *l7dc_label;
+    QLabel *yc_label;
+    QLabel *xy_label;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;

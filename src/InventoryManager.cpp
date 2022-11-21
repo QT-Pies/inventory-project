@@ -568,6 +568,51 @@ void InventoryManager::guiSaleComparison() {
     sc_screen->setFixedSize(880, 540);
     sc_screen->move(80,0);
 
+    // lables that will be changed based on the pressed button
+    ya_label = new QLabel(sc_screen.get());
+    ys_label = new QLabel(sc_screen.get());
+    yg_label = new QLabel(sc_screen.get());
+    ma_label = new QLabel(sc_screen.get());
+    ms_label = new QLabel(sc_screen.get());
+    mg_label = new QLabel(sc_screen.get());
+    lmc_label = new QLabel(sc_screen.get());
+    l7dc_label = new QLabel(sc_screen.get());
+    yc_label = new QLabel(sc_screen.get());
+    xy_label = new QLabel(sc_screen.get());
+
+    ya_label->setText("TEST");
+    ys_label->setText("TEST");
+    yg_label->setText("TEST");
+    ma_label->setText("TEST");
+    ms_label->setText("TEST");
+    mg_label->setText("TEST");
+    lmc_label->setText("TEST");
+    l7dc_label->setText("TEST");
+    yc_label->setText("TEST");
+    xy_label->setText("TEST");
+
+    ya_label->move(400,20);
+    ys_label->move(400,40);
+    yg_label->move(400,60);
+    ma_label->move(400,80);
+    ms_label->move(400,100);
+    mg_label->move(400,120);
+    lmc_label->move(400,140);
+    l7dc_label->move(440,160);
+    yc_label->move(400,180);
+    xy_label->move(80,200);
+
+    ya_label->hide();
+    ys_label->hide();
+    yg_label->hide();
+    ma_label->hide();
+    ms_label->hide();
+    mg_label->hide();
+    lmc_label->hide();
+    l7dc_label->hide();
+    yc_label->hide();
+    xy_label->hide();
+
     auto year_average_label = new QLabel(sc_screen.get());
     year_average_label->setText("Average Sales Per Year:");
     year_average_label->move(80, 20);
@@ -617,7 +662,7 @@ void InventoryManager::guiSaleComparison() {
     gc.push_back(last_7_days_comparison_label);
 
     auto yesterday_comparison_label = new QLabel(sc_screen.get());
-    yesterday_comparison_label->setText("*Sales Over The Last 7 days Compared To Today (%):");
+    yesterday_comparison_label->setText("*Sales Yesterday Compared To Today (%):");
     yesterday_comparison_label->move(80, 180);
     yesterday_comparison_label->show();
     gc.push_back(yesterday_comparison_label);
@@ -686,7 +731,7 @@ void InventoryManager::guiSaleComparison() {
     gc.push_back(last_7_days_button);
 
     auto yesterday_button = new QPushButton(sc_screen.get());
-    yesterday_button->setText("Full");
+    yesterday_button->setText("Yesterday");
     yesterday_button->setFixedSize(200,60);
     yesterday_button->move(680, 420);
     yesterday_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
@@ -694,20 +739,67 @@ void InventoryManager::guiSaleComparison() {
     gc.push_back(yesterday_button);
 
     auto full_button = new QPushButton(sc_screen.get());
-    full_button->setText("Yesterday");
+    full_button->setText("Full");
     full_button->setFixedSize(200,60);
     full_button->move(80, 420);
     full_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
     full_button->show();
     gc.push_back(full_button);
+    // ya_label->
+    // ys_label->
+    // yg_label->
+    // ma_label->
+    // ms_label->
+    // mg_label->
+    // lmc_label->
+    // l7dc_label->
+    // yc_label->
+    // xy_label->
 
-    // auto logout_button = new QPushButton(sc_screen.get());
-    // logout_button->setText("Logout");
-    // logout_button->setFixedSize(256,64);
-    // logout_button->move(352, 480);
-    // logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
-    // logout_button->show();
-    // gc.push_back(logout_button);
+    // ya_label->hide();
+    // ys_label->hide();
+    // yg_label->hide();
+    // ma_label->hide();
+    // ms_label->hide();
+    // mg_label->hide();
+    // lmc_label->hide();
+    // l7dc_label->hide();
+    // yc_label->hide();
+    // xy_label->hide();
+
+QObject::connect(full_button, &QToolButton::clicked, [&]() {
+    std::cout << "I am the Full button and I have been clicked." << std::endl;
+    // ya_label->
+    // ys_label->
+    // yg_label->
+    // ma_label->
+    // ms_label->
+    // mg_label->
+    // lmc_label->
+    // l7dc_label->
+    yc_label->show();
+    // xy_label->
+        
+});
+
+QObject::connect(yesterday_button, &QToolButton::clicked, [&]() {
+    std::cout << "I am the Yesterday button and I have been clicked." << std::endl;
+    ya_label->hide();
+    ys_label->hide();
+    yg_label->hide();
+    ma_label->hide();
+    ms_label->hide();
+    mg_label->hide();
+    lmc_label->hide();
+    l7dc_label->hide();
+    // yc_label->hide();
+    xy_label->hide();
+    // yc_label->setText("TEST");
+    yc_label->show();
+    //hideAllViews();
+    //sc_screen->show();
+        
+});
 
     sc_screen->show();
 }
