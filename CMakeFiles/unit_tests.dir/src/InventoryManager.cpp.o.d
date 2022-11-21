@@ -405,6 +405,14 @@ CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
  /home/vbroda/inventory-project/./include/ActiveInventory.hpp \
  /home/vbroda/inventory-project/./include/Item.hpp \
  /usr/include/c++/11/iomanip /usr/include/c++/11/locale \
@@ -417,13 +425,9 @@ CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o: \
  /usr/include/c++/11/bits/sstream.tcc \
  /home/vbroda/inventory-project/./include/HelperFunctions.hpp \
  /home/vbroda/inventory-project/./include/Logger.hpp \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
  /home/vbroda/inventory-project/./include/AddDialog.hpp \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \

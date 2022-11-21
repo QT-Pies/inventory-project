@@ -137,6 +137,7 @@ class InventoryManager {
     std::shared_ptr<QTableWidget> table;
 
     std::shared_ptr<QWidget> inv_screen;
+    std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
 
     /*

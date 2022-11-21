@@ -1462,6 +1462,14 @@ CMakeFiles/main.dir/src/InventoryManager.cpp.o: src/InventoryManager.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/Item.hpp \
   /usr/include/c++/11/iomanip \
@@ -1477,13 +1485,9 @@ CMakeFiles/main.dir/src/InventoryManager.cpp.o: src/InventoryManager.cpp \
   /usr/include/c++/11/bits/sstream.tcc \
   include/HelperFunctions.hpp \
   include/Logger.hpp \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
   include/AddDialog.hpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
@@ -3631,6 +3635,14 @@ CMakeFiles/main.dir/src/main.cpp.o: src/main.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/Item.hpp \
   /usr/include/c++/11/iomanip \
@@ -3646,13 +3658,9 @@ CMakeFiles/main.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/11/bits/sstream.tcc \
   include/HelperFunctions.hpp \
   include/Logger.hpp \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
   include/AddDialog.hpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
@@ -3801,6 +3809,8 @@ src/Date.cpp:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qobject_impl.h:
 
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h:
+
 /usr/include/c++/11/bits/list.tcc:
 
 /usr/include/c++/11/list:
@@ -3884,6 +3894,8 @@ include/Date.hpp:
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qarraydataops.h:
 
 /usr/include/c++/11/bits/unordered_map.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qmap.h:
 
@@ -3982,6 +3994,8 @@ include/Sales.hpp:
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qgenericatomic.h:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qatomic.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qtextformat.h:
 

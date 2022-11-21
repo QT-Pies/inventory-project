@@ -1459,6 +1459,14 @@ CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o: src/InventoryManager.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/Item.hpp \
   /usr/include/c++/11/iomanip \
@@ -1474,13 +1482,9 @@ CMakeFiles/unit_tests.dir/src/InventoryManager.cpp.o: src/InventoryManager.cpp \
   /usr/include/c++/11/bits/sstream.tcc \
   include/HelperFunctions.hpp \
   include/Logger.hpp \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QMessageBox \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qmessagebox.h \
   include/AddDialog.hpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
@@ -3737,12 +3741,16 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: src/unit_tests.cpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
   include/ActiveInventory.hpp \
   include/AddDialog.hpp \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
-  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
   /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
@@ -3845,7 +3853,15 @@ _deps/googletest-src/googletest/include/gtest/gtest-death-test.h:
 
 /usr/include/c++/11/bits/std_mutex.h:
 
+_deps/googletest-src/googletest/include/gtest/internal/custom/gtest-printers.h:
+
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
+
+/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
+
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qcompare_impl.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton:
 
 /usr/include/c++/11/bits/enable_special_members.h:
 
@@ -4159,6 +4175,10 @@ src/SalesComparison.cpp:
 
 /usr/include/asm-generic/bitsperlong.h:
 
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
+
+/usr/include/c++/11/bits/functexcept.h:
+
 /usr/include/c++/11/iomanip:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qobjectdefs_impl.h:
@@ -4273,8 +4293,6 @@ src/ActiveInventory.cpp:
 
 /usr/include/time.h:
 
-/usr/include/x86_64-linux-gnu/bits/getopt_posix.h:
-
 /usr/include/c++/11/bits/streambuf.tcc:
 
 /usr/include/c++/11/bits/stl_iterator_base_funcs.h:
@@ -4384,10 +4402,6 @@ _deps/googletest-src/googletest/include/gtest/gtest_pred_impl.h:
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/c++/11/bits/functional_hash.h:
-
-/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qcolor.h:
-
-/usr/include/c++/11/bits/postypes.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
 
@@ -4613,6 +4627,8 @@ include/Sales.hpp:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qmap.h:
 
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap:
+
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
 /usr/include/wchar.h:
@@ -4752,6 +4768,12 @@ include/InventoryManager.hpp:
 /usr/include/x86_64-linux-gnu/c++/11/bits/gthr.h:
 
 /usr/include/c++/11/bits/list.tcc:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qcolor.h:
+
+/usr/include/c++/11/bits/postypes.h:
+
+/home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h:
 
 /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qbytearrayalgorithms.h:
 
@@ -4964,11 +4986,3 @@ _deps/googletest-src/googletest/include/gtest/internal/custom/gtest-port.h:
 /usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/x86_64-linux-gnu/bits/confname.h:
-
-/usr/include/c++/11/bits/functexcept.h:
-
-/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
-
-_deps/googletest-src/googletest/include/gtest/internal/custom/gtest-printers.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:

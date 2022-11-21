@@ -502,12 +502,16 @@ CMakeFiles/unit_tests.dir/src/unit_tests.cpp.o: \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtCore/qstringlist.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QWidget \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qwidget.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/QPixmap \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtGui/qpixmap.h \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QRadioButton \
+ /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qradiobutton.h \
  /home/vbroda/inventory-project/src/../tests/../include/ActiveInventory.hpp \
  /home/vbroda/inventory-project/src/../tests/../include/AddDialog.hpp \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialog \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialog.h \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QLineEdit \
- /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qlineedit.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QDialogButtonBox \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/qdialogbuttonbox.h \
  /home/vbroda/Qt/6.4.0/gcc_64/include/QtWidgets/QFormLayout \
