@@ -132,11 +132,15 @@ class InventoryManager {
     std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
     QStringList item_fields;
+    /* used for login and in user screen */
     QLineEdit *username_line;
     QLineEdit *password_line;
+    /* used in user screen */
     QRadioButton *ownerButton;
     QRadioButton *managerButton;
     QRadioButton *employeeButton;
+    /* used in Sales Comparison */
+    QLineEdit *years_line;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;

@@ -568,13 +568,80 @@ void InventoryManager::guiSaleComparison() {
     sc_screen->setFixedSize(880, 540);
     sc_screen->move(80,0);
 
-    auto logout_button = new QPushButton(sc_screen.get());
-    logout_button->setText("Logout");
-    logout_button->setFixedSize(256,64);
-    logout_button->move(352, 480);
-    logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
-    logout_button->show();
-    gc.push_back(logout_button);
+    auto all_by_year_button = new QPushButton(sc_screen.get());
+    all_by_year_button->setText("All By Year");
+    all_by_year_button->setFixedSize(200,60);
+    all_by_year_button->move(480, 480);
+    all_by_year_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    all_by_year_button->show();
+    gc.push_back(all_by_year_button);
+
+    auto all_by_month_button = new QPushButton(sc_screen.get());
+    all_by_month_button->setText("All By Month");
+    all_by_month_button->setFixedSize(200,60);
+    all_by_month_button->move(680, 480);
+    all_by_month_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    all_by_month_button->show();
+    gc.push_back(all_by_month_button);
+
+    auto years_label = new QLabel(sc_screen.get());
+    years_label->setText("X:");
+    years_label->move(80,500);
+    years_label->show();
+    gc.push_back(years_label);
+
+    years_line = new QLineEdit(sc_screen.get());
+    years_line->move(95,500);
+    years_line->show();
+    gc.push_back(years_line);
+
+    auto x_years_button = new QPushButton(sc_screen.get());
+    x_years_button->setText("X Years");
+    x_years_button->setFixedSize(200,60);
+    x_years_button->move(280, 480);
+    x_years_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    x_years_button->show();
+    gc.push_back(x_years_button);
+
+    auto last_month_button = new QPushButton(sc_screen.get());
+    last_month_button->setText("Last Month");
+    last_month_button->setFixedSize(200,60);
+    last_month_button->move(280, 420);
+    last_month_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    last_month_button->show();
+    gc.push_back(last_month_button);
+
+    auto last_7_days_button = new QPushButton(sc_screen.get());
+    last_7_days_button->setText("Last 7 Days");
+    last_7_days_button->setFixedSize(200,60);
+    last_7_days_button->move(480, 420);
+    last_7_days_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    last_7_days_button->show();
+    gc.push_back(last_7_days_button);
+
+    auto yesterday_button = new QPushButton(sc_screen.get());
+    yesterday_button->setText("Full");
+    yesterday_button->setFixedSize(200,60);
+    yesterday_button->move(680, 420);
+    yesterday_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    yesterday_button->show();
+    gc.push_back(yesterday_button);
+
+    auto full_button = new QPushButton(sc_screen.get());
+    full_button->setText("Yesterday");
+    full_button->setFixedSize(200,60);
+    full_button->move(80, 420);
+    full_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    full_button->show();
+    gc.push_back(full_button);
+
+    // auto logout_button = new QPushButton(sc_screen.get());
+    // logout_button->setText("Logout");
+    // logout_button->setFixedSize(256,64);
+    // logout_button->move(352, 480);
+    // logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    // logout_button->show();
+    // gc.push_back(logout_button);
 
     sc_screen->show();
 }
