@@ -688,20 +688,30 @@ void InventoryManager::guiSale() {
     title->setStyleSheet("font: 24pt;");
     title->show();
 
- //   sale_table = std::make_shared<QTableWidget>(pos_screen.get());
+    sale_table = new QTableWidget(0, sale_header.size(), pos_screen.get());
+    sale_table->setHorizontalHeaderLabels(sale_header);
+    sale_table->setFixedSize(600, 400);
+    sale_table->move(25, 85);
+    sale_table->setColumnWidth(0, 100);
+    sale_table->setColumnWidth(1, 300);
+    sale_table->setColumnWidth(2, 100);
+    sale_table->setColumnWidth(3, 100);
+    sale_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sale_table->show();
 
-    /* Add Toolbar */
-    auto bar = new QToolBar(pos_screen.get());
-    bar->setFixedSize(80, 540);
-    bar->setOrientation(Qt::Vertical);
-    bar->move(800, 0);
-    bar->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
-    bar->show();
+    auto add_button = new QToolButton(pos_screen.get());
+    add_button->setIcon(QIcon("./images/add.png"));
+    add_button->setIconSize(QSize(80, 80));
+    add_button->move(800, 0);
+    add_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    add_button->show();
 
-    /* Add Item to Sale Button */
-    auto add_action = new QAction(bar);
-    add_action->setIcon(QIcon("./images/add.png"));
-    bar->addAction(add_action);
+    auto end_button = new QPushButton(pos_screen.get());
+    end_button->setText("Pay");
+    end_button->setFixedSize(80, 80);
+    end_button->move(800, 460);
+    end_button->setStyleSheet("background-color: rgba(0, 0, 0, 0); font: 24pt; color: green;");
+    end_button->show();
 
     pos_screen->show(); 
 }
