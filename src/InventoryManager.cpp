@@ -769,17 +769,44 @@ void InventoryManager::guiSaleComparison() {
 
 QObject::connect(full_button, &QToolButton::clicked, [&]() {
     std::cout << "I am the Full button and I have been clicked." << std::endl;
-    // ya_label->
-    // ys_label->
-    // yg_label->
-    // ma_label->
-    // ms_label->
-    // mg_label->
-    // lmc_label->
-    // l7dc_label->
+    ya_label->show();
+    ys_label->show();
+    yg_label->show();
+    ma_label->show();
+    ms_label->show();
+    mg_label->show();
+    lmc_label->show();
+    l7dc_label->show();
     yc_label->show();
-    // xy_label->
-        
+    xy_label->hide();   
+});
+
+QObject::connect(last_month_button, &QToolButton::clicked, [&]() {
+    std::cout << "I am the Last Month button and I have been clicked." << std::endl;
+    ya_label->hide();
+    ys_label->hide();
+    yg_label->hide();
+    ma_label->hide();
+    ms_label->hide();
+    mg_label->hide();
+    lmc_label->show();
+    l7dc_label->hide();
+    yc_label->hide();
+    xy_label->hide();
+});
+
+QObject::connect(last_7_days_button, &QToolButton::clicked, [&]() {
+    std::cout << "I am the Last 7 days button and I have been clicked." << std::endl;
+    ya_label->hide();
+    ys_label->hide();
+    yg_label->hide();
+    ma_label->hide();
+    ms_label->hide();
+    mg_label->hide();
+    lmc_label->hide();
+    l7dc_label->show();
+    yc_label->hide();
+    xy_label->hide();
 });
 
 QObject::connect(yesterday_button, &QToolButton::clicked, [&]() {
@@ -799,6 +826,20 @@ QObject::connect(yesterday_button, &QToolButton::clicked, [&]() {
     //hideAllViews();
     //sc_screen->show();
         
+});
+
+QObject::connect(x_years_button, &QToolButton::clicked, [&]() {
+    std::cout << "I am the X years button and I have been clicked." << std::endl;
+    // ya_label->hide();
+    // ys_label->hide();
+    // yg_label->hide();
+    // ma_label->hide();
+    // ms_label->hide();
+    // mg_label->hide();
+    // lmc_label->hide();
+    // l7dc_label->hide();
+    // yc_label->hide();
+    xy_label->show();
 });
 
     sc_screen->show();
