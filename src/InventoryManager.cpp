@@ -939,7 +939,6 @@ void InventoryManager::hideAllViews() {
     if (inv_screen != nullptr) inv_screen->hide();
     if (help_screen != nullptr) help_screen->hide();
     if (user_screen != nullptr) user_screen->hide();
-    if (sc_screen != nullptr) sc_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -1174,14 +1173,6 @@ void InventoryManager::initializeSidePanel() {
     user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     user_button->show();
 
-    /* Add SaleComparison Button to switch to add user view */
-    auto sc_button = new QToolButton(view.get());
-    sc_button->setIcon(QIcon("./images/salecomparison.png"));
-    sc_button->setIconSize(QSize(80, 80));
-    sc_button->move(-5, 275);
-    sc_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
-    sc_button->show();
-
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
         hideAllViews();
@@ -1198,12 +1189,6 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
         hideAllViews();
         guiUser();
-    });
-
-    QObject::connect(sc_button, &QToolButton::clicked, [&]() {
-        std::cout << "I am the sale comparison button and I have been clicked." << std::endl;
-        hideAllViews();
-        guiSaleComparison();
     });
 }
 

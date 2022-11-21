@@ -173,6 +173,43 @@ class InventoryManager {
 
     /* Other variables for Qt */
     bool inv_update_debounce;
+
+    std::vector<std::shared_ptr<QObject>> view_gc;
+    std::vector<QObject*> gc;
+    
+    /* Class wide QObject variables */
+    std::shared_ptr<QApplication> app; // The QApplication context.
+    std::shared_ptr<QWidget> window; // The "main window" widget.
+    std::shared_ptr<QWidget> view; // The "view" -- login, main program view.
+    std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
+    QStringList inv_header;
+    QStringList item_fields;
+    QLineEdit *username_line;
+    QLineEdit *password_line;
+    QRadioButton *ownerButton;
+    QRadioButton *managerButton;
+    QRadioButton *employeeButton;
+
+    /* Specific QWidget objects */
+    std::shared_ptr<QTableWidget> table;
+
+    std::shared_ptr<QWidget> inv_screen;
+    std::shared_ptr<QWidget> user_screen;
+    std::shared_ptr<QWidget> help_screen;
+
+    /*
+     * @brief Displays side panel.
+     */
+    void initializeSidePanel();
+
+    void insertItemIntoTable(std::shared_ptr<Item>, int);
+
+    void redrawTable();
+
+    void hideAllViews();
+
+    /* Other variables for Qt */
+    bool inv_update_debounce;
 };
 
 #endif
