@@ -74,7 +74,6 @@ std::shared_ptr<User> Login::userInput() {
             default:
                 break;
         }
-
     }
     return NULL;
 }
