@@ -28,6 +28,7 @@
 #include "Login.hpp"
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
+#include "TransactionDialog.hpp"
 #include "Sales.hpp"
 #include "SalesComparison.hpp"
 

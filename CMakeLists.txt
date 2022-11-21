@@ -51,6 +51,7 @@ add_executable(main
   src/Sales.cpp
   src/SalesComparison.cpp
   src/AddDialog.cpp
+  src/TransactionDialog.cpp
   src/main.cpp
 )
 
@@ -100,6 +101,7 @@ add_executable(unit_tests
   src/InventoryManager.cpp
   src/SalesComparison.cpp
   src/AddDialog.cpp
+  src/TransactionDialog.cpp
   src/unit_tests.cpp
 )
 

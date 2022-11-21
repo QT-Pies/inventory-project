@@ -706,12 +706,17 @@ void InventoryManager::guiSale() {
     add_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     add_button->show();
 
-    auto end_button = new QPushButton(pos_screen.get());
+    auto end_button = new QToolButton(pos_screen.get());
     end_button->setText("Pay");
     end_button->setFixedSize(80, 80);
     end_button->move(800, 460);
     end_button->setStyleSheet("background-color: rgba(0, 0, 0, 0); font: 24pt; color: green;");
     end_button->show();
+
+    QObject::connect(add_button, &QToolButton::clicked, [&]() {
+        std::cout << "im da giant rat dat makes all of da rulez" << std::endl;
+        auto item = TransactionDialog::getStrings(view.get());
+    });
 
     pos_screen->show(); 
 }
