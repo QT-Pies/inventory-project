@@ -151,12 +151,12 @@ class InventoryManager {
     /* POS Variables*/
     bool transaction_started;
     QLabel *sale_sub_total;
-//    QLabel *sale_tax;
-//    QLabel *sale_total;
+    QLabel *sale_tax;
+    QLabel *sale_total;
     QLabel *sale_title;
- //   double sub_total;
- //   double tax;
-  //  double total;
+    double sub_total;
+    double tax;
+    double total;
 
     /*
      * @brief Displays side panel.
@@ -168,6 +168,8 @@ class InventoryManager {
     void redrawTable();
 
     void hideAllViews();
+
+    void updateSaleLabels(double, double, double);
 
     /* Other variables for Qt */
     bool inv_update_debounce;
