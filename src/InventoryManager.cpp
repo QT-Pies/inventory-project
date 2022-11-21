@@ -652,6 +652,20 @@ void InventoryManager::redrawTable() {
     }
 }
 
+void InventoryManager::updateSaleLabels(double x, double y, double z) {
+    QString sub_total_str = "Subtotal: $";
+    QString total_str = "Total: $";
+    QString tax_str = "Tax: $";
+
+    sub_total_str += QString::number(x);
+    tax_str += QString::number(y);
+    total_str += QString::number(z);
+
+    sale_sub_total->setText(sub_total_str);
+    sale_tax->setText(tax_str);
+    sale_total->setText(total_str);
+}
+
 void InventoryManager::guiSale() {
 
     /* Show POS screen if we've already created it. */
@@ -678,8 +692,25 @@ void InventoryManager::guiSale() {
     sale_sub_total = new QLabel(pos_screen.get());
     sale_sub_total->setText("Subtotal: ");
     sale_sub_total->setFixedSize(200, 80);
-    sale_sub_total->move(20, 460);
+    sale_sub_total->move(40, 460);
+    sale_sub_total->setStyleSheet("font: 24pt;");
     sale_sub_total->show();
+
+    sale_tax = new QLabel(pos_screen.get());
+    sale_tax->setText("Tax: ");
+    sale_tax->setFixedSize(200, 80);
+    sale_tax->move(300, 460);
+    sale_tax->setStyleSheet("font: 24pt;");
+    sale_tax->show();
+
+    sale_total = new QLabel(pos_screen.get());
+    sale_total->setText("Total: ");
+    sale_total->setFixedSize(200, 80);
+    sale_total->move(440, 460);
+    sale_total->setStyleSheet("font: 24pt;");
+    sale_total->show();
+
+    updateSaleLabels(0, 0, 0);
 
     sale_table = new QTableWidget(0, sale_header.size(), pos_screen.get());
     sale_table->setHorizontalHeaderLabels(sale_header);
@@ -741,6 +772,12 @@ void InventoryManager::guiSale() {
         if (transaction_started == false) {
             transaction_started = true;
             sale_list->userTransaction(sale_list->curr_sale_id, current_user->name, "Unknown");
+
+            /* Reset transaction info */
+            sub_total = 0.0;
+            total = 0.0;
+            tax = 0.0;
+
         }
 
         /* Add item to transaction */
@@ -765,12 +802,23 @@ void InventoryManager::guiSale() {
         sale_table->setItem(row, 2, cost_entry);
         sale_table->setItem(row, 3, qty_entry);
 
+        /* Update calculations */
+        // Sales just has total price, so I'm gonna do this math here bc I'm lazy.
+        sub_total += (item->sale_price * tmp_quantity);
+        sub_total = (std::ceil(sub_total * 100.0)) / 100.0;
+        tax = sub_total * 0.1;
+        tax = std::ceil(tax * 100.0) / 100.0;
+        total = sub_total + tax;
+        total = std::ceil(total * 100.0) / 100.0;
+
         /* Update Transaction Info on Screen */
         QString new_title = "Current Transaction: ";
         auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
         new_title += QString::number(transaction->sales.size());
         new_title += " item(s)";
         sale_title->setText(new_title);
+
+        updateSaleLabels(sub_total, tax, total);
 
         /* Increment current sale ID. */
         sale_list->curr_sale_id++;
@@ -787,6 +835,7 @@ void InventoryManager::guiSale() {
 
             /* Update on screen information: */
             sale_title->setText("Enter a Transaction");
+            updateSaleLabels(0, 0, 0);
         }
     });
 
