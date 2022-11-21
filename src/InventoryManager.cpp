@@ -794,6 +794,11 @@ void InventoryManager::guiSale() {
         auto cost_entry = new QTableWidgetItem(cost, 0);
         auto qty_entry = new QTableWidgetItem(qty, 0);
 
+        id_entry->setTextAlignment(Qt::AlignCenter);
+        name_entry->setTextAlignment(Qt::AlignCenter);
+        cost_entry->setTextAlignment(Qt::AlignCenter);
+        qty_entry->setTextAlignment(Qt::AlignCenter);
+
         int row = sale_table->rowCount();
 
         sale_table->setRowCount(row + 1);
