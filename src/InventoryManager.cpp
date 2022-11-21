@@ -568,6 +568,72 @@ void InventoryManager::guiSaleComparison() {
     sc_screen->setFixedSize(880, 540);
     sc_screen->move(80,0);
 
+    auto year_average_label = new QLabel(sc_screen.get());
+    year_average_label->setText("Average Sales Per Year:");
+    year_average_label->move(80, 20);
+    year_average_label->show();
+    gc.push_back(year_average_label);
+
+    auto year_sales_label = new QLabel(sc_screen.get());
+    year_sales_label->setText("Sales So Far This Year:");
+    year_sales_label->move(80, 40);
+    year_sales_label->show();
+    gc.push_back(year_sales_label);
+
+    auto year_gain_label = new QLabel(sc_screen.get());
+    year_gain_label->setText("Gain This Year vs Average (%):");
+    year_gain_label->move(80, 60);
+    year_gain_label->show();
+    gc.push_back(year_gain_label);
+
+    auto month_average_label = new QLabel(sc_screen.get());
+    month_average_label->setText("Average Sales Per Month:");
+    month_average_label->move(80, 80);
+    month_average_label->show();
+    gc.push_back(month_average_label);
+
+    auto month_sales_label = new QLabel(sc_screen.get());
+    month_sales_label->setText("Sales So Far This Month:");
+    month_sales_label->move(80, 100);
+    month_sales_label->show();
+    gc.push_back(month_sales_label);
+
+    auto month_gain_label = new QLabel(sc_screen.get());
+    month_gain_label->setText("Gain This Month vs Average (%):");
+    month_gain_label->move(80, 120);
+    month_gain_label->show();
+    gc.push_back(month_gain_label);
+
+    auto last_month_comparison_label = new QLabel(sc_screen.get());
+    last_month_comparison_label->setText("Sales This Month Compared To Last Month (%):");
+    last_month_comparison_label->move(80, 140);
+    last_month_comparison_label->show();
+    gc.push_back(last_month_comparison_label);
+
+    auto last_7_days_comparison_label = new QLabel(sc_screen.get());
+    last_7_days_comparison_label->setText("*Sales Over The Last 7 days Compared To Today (%):");
+    last_7_days_comparison_label->move(80, 160);
+    last_7_days_comparison_label->show();
+    gc.push_back(last_7_days_comparison_label);
+
+    auto yesterday_comparison_label = new QLabel(sc_screen.get());
+    yesterday_comparison_label->setText("*Sales Over The Last 7 days Compared To Today (%):");
+    yesterday_comparison_label->move(80, 180);
+    yesterday_comparison_label->show();
+    gc.push_back(yesterday_comparison_label);
+
+    auto x_years_label = new QLabel(sc_screen.get());
+    x_years_label->setText("Sales So Far This Year Compared To The Average Over The Past X Years:");
+    x_years_label->move(80, 200);
+    x_years_label->show();
+    gc.push_back(x_years_label);
+
+    auto comparison_warning_label = new QLabel(sc_screen.get());
+    comparison_warning_label->setText("* These Numbers Will Be Lower Earlier In The Day And Only Show Accurate Comparisons At The End Of the Day.");
+    comparison_warning_label->move(80, 400);
+    comparison_warning_label->show();
+    gc.push_back(comparison_warning_label);
+
     auto all_by_year_button = new QPushButton(sc_screen.get());
     all_by_year_button->setText("All By Year");
     all_by_year_button->setFixedSize(200,60);
