@@ -883,14 +883,6 @@ void InventoryManager::initializeSidePanel() {
     user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     user_button->show();
 
-    /* Add SaleComparison Button to switch to add user view */
-    auto sc_button = new QToolButton(view.get());
-    sc_button->setIcon(QIcon("./images/salecomparison.png"));
-    sc_button->setIconSize(QSize(80, 80));
-    sc_button->move(-5, 275);
-    sc_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
-    sc_button->show();
-
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
         hideAllViews();
