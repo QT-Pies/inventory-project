@@ -555,6 +555,30 @@ void InventoryManager::guiUser() {
     user_screen->show();
 }
 
+void InventoryManager::guiSaleComparison() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (sc_screen != nullptr) {
+        sub_view = sc_screen;
+        sub_view->show();
+        return;
+    }
+
+    sc_screen = std::make_shared<QWidget>(view.get());
+    sc_screen->setFixedSize(880, 540);
+    sc_screen->move(80,0);
+
+    auto logout_button = new QPushButton(sc_screen.get());
+    logout_button->setText("Logout");
+    logout_button->setFixedSize(256,64);
+    logout_button->move(352, 480);
+    logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    logout_button->show();
+    gc.push_back(logout_button);
+
+    sc_screen->show();
+}
+
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
 
     std::cout << "line 328" << std::endl;
@@ -649,6 +673,7 @@ void InventoryManager::hideAllViews() {
     if (inv_screen != nullptr) inv_screen->hide();
     if (help_screen != nullptr) help_screen->hide();
     if (user_screen != nullptr) user_screen->hide();
+    if (sc_screen != nullptr) sc_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -883,6 +908,14 @@ void InventoryManager::initializeSidePanel() {
     user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     user_button->show();
 
+    /* Add SaleComparison Button to switch to add user view */
+    auto sc_button = new QToolButton(view.get());
+    sc_button->setIcon(QIcon("./images/salecomparison.png"));
+    sc_button->setIconSize(QSize(80, 80));
+    sc_button->move(-5, 275);
+    sc_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    sc_button->show();
+
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
         hideAllViews();
@@ -899,6 +932,12 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
         hideAllViews();
         guiUser();
+    });
+
+    QObject::connect(sc_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the sale comparison button and I have been clicked." << std::endl;
+        hideAllViews();
+        guiSaleComparison();
     });
 }
 
