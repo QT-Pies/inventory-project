@@ -173,6 +173,8 @@ class InventoryManager {
 
     void processTransactionVisually();
 
+    int getRowForItem(std::shared_ptr<Item>);
+
     /* Other variables for Qt */
     bool inv_update_debounce;
 };

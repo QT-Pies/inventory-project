@@ -666,6 +666,25 @@ void InventoryManager::updateSaleLabels(double x, double y, double z) {
     sale_total->setText(total_str);
 }
 
+int InventoryManager::getRowForItem(std::shared_ptr<Item> item) {
+    auto row_count = table->rowCount();
+    for (int row = 0; row < row_count; ++row) {
+        try {
+            auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+            /* We found the row with the matching item ID. */
+            if (row_id == item->id) {
+                return row;
+            }
+
+        } catch (std::exception& e) {
+            Logger::logTrace("Row %d has a bad ID column.", row);
+        }
+    }
+
+    return -1;
+}
+
 void InventoryManager::processTransactionVisually() {
     auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
     bool error_encountered;
@@ -693,12 +712,18 @@ void InventoryManager::processTransactionVisually() {
          * And only nerds care about time complexity.  Are you a nerd?
         */
 
+        auto row = getRowForItem(item);
+        inv_update_debounce = true;
+        auto quantity_field = table->item(row, 5);
+        quantity_field->setText(QString::number(item->quantity));
+        inv_update_debounce = false;
+
+/*
         auto row_count = table->rowCount();
         for (int row = 0; row < row_count; ++row) {
             try {
                 auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
 
-                /* We found the row with the matching item ID. */
                 if (row_id == item->id) {
                     inv_update_debounce = true;
                     auto quantity_field = table->item(row, 5);
@@ -709,7 +734,8 @@ void InventoryManager::processTransactionVisually() {
             } catch (std::exception& e) {
                 Logger::logTrace("Row %d has a bad ID column.", row);
             }
-        }
+        }\
+*/
     }
 
     /* Let user know not all items were updated correctly. */
@@ -831,6 +857,18 @@ void InventoryManager::guiSale() {
             if (prompt == QMessageBox::StandardButton::No) return;
 
             /* Otherwise, sell what we can and update backorder.*/
+            tmp_quantity = item->quantity;
+
+            active_inventory->updateItem(item->name, "backorder", std::to_string(item->backorder + difference));
+            auto row = getRowForItem(item);
+
+            if (row == -1) {
+                Logger::logTrace("This should never happen.");
+                return;
+            }
+
+            auto backorder_item = table->item(row, 6);
+            backorder_item->setText(QString::number(item->backorder));
         }
 
         /* If execution reaches here, we successfully read in an item, and the quantity we want to sell. */
