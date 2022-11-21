@@ -148,7 +148,15 @@ class InventoryManager {
     std::shared_ptr<QWidget> help_screen;
     std::shared_ptr<QWidget> pos_screen;
 
+    /* POS Variables*/
     bool transaction_started;
+    QLabel *sale_sub_total;
+//    QLabel *sale_tax;
+//    QLabel *sale_total;
+    QLabel *sale_title;
+ //   double sub_total;
+ //   double tax;
+  //  double total;
 
     /*
      * @brief Displays side panel.

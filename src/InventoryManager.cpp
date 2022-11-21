@@ -667,12 +667,19 @@ void InventoryManager::guiSale() {
     pos_screen->move(80, 0);
 
     /* QLabel for name of view */
-    auto title = new QLabel(pos_screen.get());
-    title->setText("Current Transaction");
-    title->setFixedSize(440, 80);
-    title->move(20, 0);
-    title->setStyleSheet("font: 24pt;");
-    title->show();
+    sale_title = new QLabel(pos_screen.get());
+    sale_title->setText("Start a Transaction");
+    sale_title->setFixedSize(440, 80);
+    sale_title->move(20, 0);
+    sale_title->setStyleSheet("font: 24pt;");
+    sale_title->show();
+
+    /* QLabel for Subtotal */
+    sale_sub_total = new QLabel(pos_screen.get());
+    sale_sub_total->setText("Subtotal: ");
+    sale_sub_total->setFixedSize(200, 80);
+    sale_sub_total->move(20, 460);
+    sale_sub_total->show();
 
     sale_table = new QTableWidget(0, sale_header.size(), pos_screen.get());
     sale_table->setHorizontalHeaderLabels(sale_header);
@@ -758,6 +765,12 @@ void InventoryManager::guiSale() {
         sale_table->setItem(row, 2, cost_entry);
         sale_table->setItem(row, 3, qty_entry);
 
+        /* Update Transaction Info on Screen */
+        QString new_title = "Current Transaction: ";
+        auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
+        new_title += QString::number(transaction->sales.size());
+        new_title += " item(s)";
+        sale_title->setText(new_title);
 
         /* Increment current sale ID. */
         sale_list->curr_sale_id++;
@@ -771,6 +784,9 @@ void InventoryManager::guiSale() {
             makeTransaction();
             Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
             sale_table->setRowCount(0);
+
+            /* Update on screen information: */
+            sale_title->setText("Enter a Transaction");
         }
     });
 

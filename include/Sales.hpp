@@ -86,7 +86,8 @@ class Transaction {
    private:
     friend class SaleList;
     friend class SalesComparison;
-
+    friend class InventoryManager;
+    
    protected:
     unsigned long sale_id, num_sales;
     unsigned int month, day, year;
