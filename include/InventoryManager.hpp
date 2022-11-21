@@ -96,6 +96,11 @@ class InventoryManager {
     void guiUser();
 
     /*
+     * @brief GUI sale comparison view
+     */
+    void guiSaleComparison();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -139,6 +144,7 @@ class InventoryManager {
     std::shared_ptr<QWidget> inv_screen;
     std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
+    std::shared_ptr<QWidget> sc_screen;
 
     /*
      * @brief Displays side panel.
