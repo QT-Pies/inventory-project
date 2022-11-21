@@ -666,6 +666,57 @@ void InventoryManager::updateSaleLabels(double x, double y, double z) {
     sale_total->setText(total_str);
 }
 
+void InventoryManager::processTransactionVisually() {
+    auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
+    bool error_encountered;
+
+    error_encountered = false;
+
+    /* User hasn't opened that view yet -- nothing to update. */
+    if (table == nullptr) return;
+
+    /* For each sale in the transaction, update its Item over in the inventory table */
+    for (auto& sale : transaction->sales) {
+        auto item = active_inventory->searchById(sale->item_id);
+
+        /* Skip this item if we couldn't find it. */
+        if (item == nullptr) {
+            error_encountered = true;
+            continue;
+        }
+
+        /* Find corresponding QTableWidgetItem row. */
+
+        /* This is O(N) where N is the amount of table entries.
+         * We could logically make this much better because we know that the ID is likely near the row number, if not it exactly.
+         * However, the user could screw this up, and this is easier to implement.
+         * And only nerds care about time complexity.  Are you a nerd?
+        */
+
+        auto row_count = table->rowCount();
+
+        for (int row = 0; row < row_count; ++row) {
+            try {
+                auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+                /* We found the row with the matching item ID. */
+                if (row_id == item->id) {
+                    inv_update_debounce = true;
+                    auto quantity_field = table->item(row, 5);
+                    quantity_field->setText(QString::number(item->quantity));
+                    inv_update_debounce = false;
+                }
+
+            } catch (std::exception& e) {
+                Logger::logTrace("Row %d has a bad ID column.", row);
+            }
+        }
+    }
+
+    /* Let user know not all items were updated correctly. */
+    if (error_encountered) Logger::logError("Something went wrong when updating item count -- the quantity you see in the inventory may not be accurate!");
+}
+
 void InventoryManager::guiSale() {
 
     /* Show POS screen if we've already created it. */
@@ -691,22 +742,22 @@ void InventoryManager::guiSale() {
     /* QLabel for Subtotal */
     sale_sub_total = new QLabel(pos_screen.get());
     sale_sub_total->setText("Subtotal: ");
-    sale_sub_total->setFixedSize(200, 80);
+    sale_sub_total->setFixedSize(250, 80);
     sale_sub_total->move(40, 460);
     sale_sub_total->setStyleSheet("font: 24pt;");
     sale_sub_total->show();
 
     sale_tax = new QLabel(pos_screen.get());
     sale_tax->setText("Tax: ");
-    sale_tax->setFixedSize(200, 80);
-    sale_tax->move(300, 460);
+    sale_tax->setFixedSize(250, 80);
+    sale_tax->move(290, 460);
     sale_tax->setStyleSheet("font: 24pt;");
     sale_tax->show();
 
     sale_total = new QLabel(pos_screen.get());
     sale_total->setText("Total: ");
-    sale_total->setFixedSize(200, 80);
-    sale_total->move(440, 460);
+    sale_total->setFixedSize(250, 80);
+    sale_total->move(540, 460);
     sale_total->setStyleSheet("font: 24pt;");
     sale_total->show();
 
@@ -835,6 +886,7 @@ void InventoryManager::guiSale() {
         if (transaction_started) {
             transaction_started = false;
             makeTransaction();
+            processTransactionVisually();
             Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
             sale_table->setRowCount(0);
 

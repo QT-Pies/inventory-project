@@ -171,6 +171,8 @@ class InventoryManager {
 
     void updateSaleLabels(double, double, double);
 
+    void processTransactionVisually();
+
     /* Other variables for Qt */
     bool inv_update_debounce;
 };
