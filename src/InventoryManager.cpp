@@ -288,38 +288,271 @@ int InventoryManager::userInput() {
 }
 
 void InventoryManager::guiLogin() {
-    // Pretty sure Vincent has an implementation of login already, this is just here as a place holder.
     view_gc.clear();
 
     auto login_view = std::make_shared<QWidget>(window.get());
     login_view->setFixedSize(960, 540);
     view = login_view;
 
-    auto text = new QLabel(login_view.get());
-    text->setText("Please login");
+    auto logo = new QLabel(login_view.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(256,256,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+
+    auto user_label = new QLabel(login_view.get());
+    user_label->setText("Username:");
+    user_label->move(352,260);
+    username_line = new QLineEdit(login_view.get());
+    username_line->move(440,256);
+    gc.push_back(user_label);
+    gc.push_back(username_line);
+
+    auto password_label = new QLabel(login_view.get());
+    password_label->setText("Password:");
+    password_label->move(352,300);
+    password_line = new QLineEdit(login_view.get());
+    password_line->move(440,296);
+    password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+    gc.push_back(password_line);
+
 
     auto login_button = new QPushButton(login_view.get());
-    login_button->setText("I'm an admin, trust me");
-    login_button->setFixedSize(256,128);
-    login_button->move(352, 206);
+    login_button->setText("Login");
+    login_button->setFixedSize(256,64);
+    login_button->move(352, 340);
     login_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
-    login_button->show();
     gc.push_back(login_button);
 
+    auto quit_button = new QPushButton(login_view.get());
+    quit_button->setText("Quit");
+    quit_button->setFixedSize(256,64);
+    quit_button->move(352, 400);
+    quit_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    gc.push_back(quit_button);
+
     QObject::connect(login_button, &QPushButton::clicked, [&]() {
-        std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
+        //std::cout << "Hello, I am a QPushButton and I have been pressed." << std::endl;
 
-        current_user = login->verifyUser("admin", "admin");
+        QString un = username_line->text();
+        QString pas = password_line->text();
 
-        if (current_user != nullptr) {
+        auto user = login->verifyUser(un.toStdString(), pas.toStdString());
+
+        if (user != nullptr) {
             /* Switch to main program view */
+            current_user = user;
             view->hide();
             mainWindow();
         }
+        else {
+            /* display error popup if invalid*/
+            QMessageBox box;
+            box.setWindowTitle("Login");
+            box.setText("Username and/or password is incorrect");
+            box.exec();
+        }
+    });
 
+    QObject::connect(quit_button, &QPushButton::clicked, [&]() {
+        window->close();
+        return;
     });
 
     login_view->show();
+}
+
+void InventoryManager::guiUser() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (user_screen != nullptr) {
+        sub_view = user_screen;
+        sub_view->show();
+        return;
+    }
+
+    user_screen = std::make_shared<QWidget>(view.get());
+    user_screen->setFixedSize(880, 540);
+    user_screen->move(80,0);
+
+    auto user_label = new QLabel(user_screen.get());
+    user_label->setText("Username:");
+    user_label->move(352,160);
+    username_line = new QLineEdit(user_screen.get());
+    username_line->move(440,156);
+    user_label->show();
+    username_line->show();
+    gc.push_back(user_label);
+    gc.push_back(username_line);
+
+    auto password_label = new QLabel(user_screen.get());
+    password_label->setText("Password:");
+    password_label->move(352,200);
+    password_line = new QLineEdit(user_screen.get());
+    password_line->move(440,196);
+    password_label->show();
+    password_line->show();
+    // password_line->setEchoMode(QLineEdit::Password);
+    gc.push_back(password_label);
+    gc.push_back(password_line);
+
+    ownerButton = new QRadioButton("Owner",user_screen.get());
+    managerButton = new QRadioButton("Manager",user_screen.get());
+    employeeButton = new QRadioButton("Employee",user_screen.get());
+    ownerButton->move(325,300);
+    managerButton->move(425,300);
+    employeeButton->move(525,300);
+    ownerButton->show();
+    managerButton->show();
+    employeeButton->show();
+
+    auto create_button = new QPushButton(user_screen.get());
+    create_button->setText("Create User");
+    create_button->setFixedSize(256,64);
+    create_button->move(352, 340);
+    create_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    create_button->show();
+    gc.push_back(create_button);
+
+    auto update_button = new QPushButton(user_screen.get());
+    update_button->setText("Update User");
+    update_button->setFixedSize(256,64);
+    update_button->move(352, 410);
+    update_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    update_button->show();
+    gc.push_back(update_button);
+
+    auto logout_button = new QPushButton(user_screen.get());
+    logout_button->setText("Logout");
+    logout_button->setFixedSize(256,64);
+    logout_button->move(352, 480);
+    logout_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    logout_button->show();
+    gc.push_back(logout_button);
+
+    QObject::connect(create_button, &QPushButton::clicked, [&]() {
+        QString un = username_line->text();
+        QString pas = password_line->text();
+        QString acc = "";
+        //std::string acc_string;
+
+        QMessageBox box;
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+         if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(pas == "") {
+            //QMessageBox::warning(w,"Didn't create New User", "Password is blank.");
+            box.setWindowTitle("Create User");
+            box.setText("Password is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Create User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+         if(current_user->permission == 1) {
+            //QMessageBox::warning(w,"Didn't create New User", "Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Employees cannot create accounts. Please have a manager or owner create the account.");
+            box.exec();
+            return;
+        }
+        else if(current_user->permission == 3 && (acc == "owner" || acc == "manager")) {
+            //QMessageBox::warning(w,"Didn't create New User", "Managers can only create employee accounts. Please have an owner create the account.");
+            box.setWindowTitle("Create User");
+            box.setText("Managers can only create employee accounts. Please have an owner create the account.");
+            box.exec();
+            return;
+        }
+        if(login->createUser(un.toStdString(), pas.toStdString(), acc.toStdString())) {
+        //QMessageBox::information(w, "Create User", "Created user Succsessfuly");
+            box.setWindowTitle("Create User");
+            box.setText("Created user succsessfuly");
+            box.exec();
+        }
+        else {
+            //QMessageBox::warning(w,"Didn't create New User", "The User was unable to be created. Allready Exists");
+            box.setWindowTitle("Create User");
+            box.setText("User was unable to be created. User allready exists.");
+            box.exec();
+        }
+    });
+
+    QObject::connect(update_button, &QPushButton::clicked, [&]() {
+        QString un = username_line->text();
+        QString acc = "";
+        QMessageBox box;
+
+        if(current_user->permission != 5) {
+            box.setWindowTitle("Update User");
+            box.setText("Only Owners can update users.");
+            box.exec();
+            return;
+        }
+
+        if(ownerButton->isChecked()) {
+            acc = "owner";
+        }
+        else if(managerButton->isChecked()) {
+            acc = "manager";
+        }
+        else if(employeeButton->isChecked()) {
+            acc = "employee";
+        }
+
+        if(un == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Username is blank.");
+            box.setWindowTitle("Update User");
+            box.setText("Username is blank.");
+            box.exec();
+            return;
+        }
+        else if(acc == "") {
+            // QMessageBox::warning(w,"Didn't create New User", "Plesase select an account type.");
+            box.setWindowTitle("Update User");
+            box.setText("Please select an account type.");
+            box.exec();
+            return;
+        }
+
+        if(updatePermission(un.toStdString(), acc.toStdString())) {
+            box.setWindowTitle("Update User");
+            box.setText("Updated user succsessfuly.");
+            box.exec();
+        }
+        else {
+            box.setWindowTitle("Update User");
+            box.setText("Unable to update user.");
+            box.exec();
+        }
+    });
+
+    QObject::connect(logout_button, &QPushButton::clicked, [&]() {
+        window->close();
+        return;
+    });
+    user_screen->show();
 }
 
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
@@ -415,6 +648,7 @@ void InventoryManager::helpScreen() {
 void InventoryManager::hideAllViews() {
     if (inv_screen != nullptr) inv_screen->hide();
     if (help_screen != nullptr) help_screen->hide();
+    if (user_screen != nullptr) user_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -641,6 +875,14 @@ void InventoryManager::initializeSidePanel() {
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
+    /* Add User Button to switch to add user view */
+    auto user_button = new QToolButton(view.get());
+    user_button->setIcon(QIcon("./images/user.png"));
+    user_button->setIconSize(QSize(80, 80));
+    user_button->move(-5, 365);
+    user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    user_button->show();
+
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
         hideAllViews();
@@ -651,6 +893,12 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the help button and I have been clicked." << std::endl;
         hideAllViews();
         helpScreen();
+    });
+
+    QObject::connect(user_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the user button and I have been clicked." << std::endl;
+        hideAllViews();
+        guiUser();
     });
 }
 

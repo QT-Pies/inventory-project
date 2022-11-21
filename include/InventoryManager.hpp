@@ -17,6 +17,10 @@
 #include <QString>
 #include <QStringList>
 #include <QWidget>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QRadioButton>
 
 #include "ActiveInventory.hpp"
 #include "AddDialog.hpp"
@@ -87,6 +91,11 @@ class InventoryManager {
     void guiLogin();
 
     /*
+     * @breif User view, includes adding user, changing premmisions, and log out
+     */
+    void guiUser();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -118,11 +127,17 @@ class InventoryManager {
     std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
     QStringList item_fields;
+    QLineEdit *username_line;
+    QLineEdit *password_line;
+    QRadioButton *ownerButton;
+    QRadioButton *managerButton;
+    QRadioButton *employeeButton;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
 
     std::shared_ptr<QWidget> inv_screen;
+    std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
 
     /*

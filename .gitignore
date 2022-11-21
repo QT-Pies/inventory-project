@@ -22,3 +22,4 @@ main_autogen/mocs_compilation.cpp
 unit_tests_autogen/moc_predefs.h
 unit_tests_autogen/mocs_compilation.cpp
 .gitignore
+.qt/*
