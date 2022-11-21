@@ -2,7 +2,6 @@ obj/*
 bin/*
 .vscode/settings.json
 .DS_Store
-accounts.csv
 logging.cfg
 logs.txt
 cmake_install.cmake

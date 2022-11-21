@@ -10,7 +10,7 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
     item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
     sale_header = {"ID", "Name", "Cost", "Quantity"};
     inv_update_debounce = false;
-
+    transaction_started = false;
 }
 
 InventoryManager::~InventoryManager() {
@@ -557,9 +557,6 @@ void InventoryManager::guiUser() {
 }
 
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
-
-    std::cout << "line 328" << std::endl;
-
     auto name = QString::fromStdString(item->name);
     auto id = QString::number(item->id);
     auto category = QString::fromStdString(item->category);
@@ -573,8 +570,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     auto buy_cost = QString::number(item->buy_cost);
     auto profit = QString::number(item->profit);
     QString expiration_date;
-
-    std::cout << "line 344" << std::endl;
 
     /* Special expiration date logic. */
     if (item->category == "Perishable") {
@@ -597,13 +592,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     auto profit_entry = new QTableWidgetItem(profit, 0);
     auto exp_entry = new QTableWidgetItem(expiration_date, 0);
 
-    std::cout << "line 367" << std::endl;
-    std::cout << "rowCount == " << table->rowCount() << std::endl;
-
-    if (table == nullptr) {
-        std::cout << "Table has become null somehow." << std::endl;
-    }
-
     /* Insert each item into table */
     table->setItem(row, 0, name_entry);
     table->setItem(row, 1, id_entry);
@@ -618,8 +606,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     table->setItem(row, 10, buy_entry);
     table->setItem(row, 11, profit_entry);
     table->setItem(row, 12, exp_entry);
-
-    std::cout << "line 384" << std::endl;
 }
 
 void InventoryManager::helpScreen() {
@@ -715,7 +701,77 @@ void InventoryManager::guiSale() {
 
     QObject::connect(add_button, &QToolButton::clicked, [&]() {
         std::cout << "im da giant rat dat makes all of da rulez" << std::endl;
-        auto item = TransactionDialog::getStrings(view.get());
+        auto input = TransactionDialog::getStrings(view.get());
+        unsigned long tmp_quantity;
+
+        if (input.isEmpty()) return;
+
+        /* Support searching by name or ID */
+        auto by_name = active_inventory->searchByName(input.at(0).toStdString());
+        std::shared_ptr<Item> by_id, item;
+
+        try {
+            tmp_quantity = toUnsignedLong(input.at(2).toStdString());
+
+            /* Invalid transaction if quantity <= 0 */
+            if (tmp_quantity == 0) throw std::invalid_argument("Quantity sold must be greater than 0.");
+
+            /* But only search by ID if we couldn't find it by name. */
+            if (by_name == nullptr) {
+                auto id = toUnsignedLong(input.at(1).toStdString());
+                auto by_id = active_inventory->searchById(id);
+                if (by_id == nullptr) throw std::invalid_argument("Couldn't find item by name or ID.");
+                item = by_id;
+            } else item = by_name;
+        } catch (std::exception& e) {
+            Logger::logWarn(e.what());
+            return;
+        }
+
+        /* If execution reaches here, we successfully read in an item, and the quantity we want to sell. */
+
+        /* Create a new transaction if we aren't already in one */
+        if (transaction_started == false) {
+            transaction_started = true;
+            sale_list->userTransaction(sale_list->curr_sale_id, current_user->name, "Unknown");
+        }
+
+        /* Add item to transaction */
+        sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item->id, tmp_quantity, item->sale_price);
+
+        /* Visually add Item to transaction */
+        auto id = QString::number(item->id);
+        auto name = QString::fromStdString(item->name);
+        auto cost = QString::number(item->sale_price * tmp_quantity);
+        auto qty = QString::number(tmp_quantity);
+
+        auto id_entry = new QTableWidgetItem(id, 0);
+        auto name_entry = new QTableWidgetItem(name, 0);
+        auto cost_entry = new QTableWidgetItem(cost, 0);
+        auto qty_entry = new QTableWidgetItem(qty, 0);
+
+        int row = sale_table->rowCount();
+
+        sale_table->setRowCount(row + 1);
+        sale_table->setItem(row, 0, id_entry);
+        sale_table->setItem(row, 1, name_entry);
+        sale_table->setItem(row, 2, cost_entry);
+        sale_table->setItem(row, 3, qty_entry);
+
+
+        /* Increment current sale ID. */
+        sale_list->curr_sale_id++;
+    });
+
+    QObject::connect(end_button, &QToolButton::clicked, [&]() {
+        std::cout << "its money time!!" << std::endl;
+
+        if (transaction_started) {
+            transaction_started = false;
+            makeTransaction();
+            Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+            sale_table->setRowCount(0);
+        }
     });
 
     pos_screen->show(); 

@@ -101,11 +101,6 @@ class InventoryManager {
     void guiSale();
 
     /*
-     * @breif User view, includes adding user, changing premmisions, and log out
-     */
-    void guiUser();
-
-    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -152,6 +147,8 @@ class InventoryManager {
     std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
     std::shared_ptr<QWidget> pos_screen;
+
+    bool transaction_started;
 
     /*
      * @brief Displays side panel.
