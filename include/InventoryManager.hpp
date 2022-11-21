@@ -28,6 +28,7 @@
 #include "Login.hpp"
 #include "NonPerishableItem.hpp"
 #include "PerishableItem.hpp"
+#include "TransactionDialog.hpp"
 #include "Sales.hpp"
 #include "SalesComparison.hpp"
 
@@ -95,6 +96,10 @@ class InventoryManager {
      */
     void guiUser();
 
+    /* @brief GUI Point of Sale
+    */
+    void guiSale();
+
     /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
@@ -132,13 +137,26 @@ class InventoryManager {
     QRadioButton *ownerButton;
     QRadioButton *managerButton;
     QRadioButton *employeeButton;
+    QStringList sale_header;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
+    QTableWidget *sale_table;
 
     std::shared_ptr<QWidget> inv_screen;
     std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
+    std::shared_ptr<QWidget> pos_screen;
+
+    /* POS Variables*/
+    bool transaction_started;
+    QLabel *sale_sub_total;
+    QLabel *sale_tax;
+    QLabel *sale_total;
+    QLabel *sale_title;
+    double sub_total;
+    double tax;
+    double total;
 
     /*
      * @brief Displays side panel.
@@ -150,6 +168,12 @@ class InventoryManager {
     void redrawTable();
 
     void hideAllViews();
+
+    void updateSaleLabels(double, double, double);
+
+    void processTransactionVisually();
+
+    int getRowForItem(std::shared_ptr<Item>);
 
     /* Other variables for Qt */
     bool inv_update_debounce;

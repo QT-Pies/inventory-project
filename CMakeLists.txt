@@ -51,6 +51,7 @@ add_executable(main
   src/Sales.cpp
   src/SalesComparison.cpp
   src/AddDialog.cpp
+  src/TransactionDialog.cpp
   src/main.cpp
 )
 
@@ -66,6 +67,12 @@ add_executable(gen-inventory
   src/CSVEntry.cpp
   src/InventoryGenerator.cpp
   src/InventoryGeneratorDriver.cpp
+)
+
+# Add source files for bin/randomize-inventory
+add_executable(randomize-inventory
+  src/InventoryRandomizer.cpp
+  src/InventoryRandomizerMain.cpp
 )
 
 # Add source files for bin/gen-sales
@@ -100,6 +107,7 @@ add_executable(unit_tests
   src/InventoryManager.cpp
   src/SalesComparison.cpp
   src/AddDialog.cpp
+  src/TransactionDialog.cpp
   src/unit_tests.cpp
 )
 

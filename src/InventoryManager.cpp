@@ -8,8 +8,9 @@ InventoryManager::InventoryManager(const bool cli, const std::string file) {
 
     inv_header = {"Name", "ID", "Category", "Sub-Category", "Location", "Quantity", "Backorder", "Sale Price", "Tax", "Total Price", "Buy Cost", "Profit", "Expiration Date"};
     item_fields = {"Name", "ID", "Category", "Sub_Category", "Location", "Quantity", "Backorder", "Sale_Price", "Tax", "Total Price", "Buy_Cost", "Profit", "Expiration_Date"};
+    sale_header = {"ID", "Name", "Cost", "Quantity"};
     inv_update_debounce = false;
-
+    transaction_started = false;
 }
 
 InventoryManager::~InventoryManager() {
@@ -556,9 +557,6 @@ void InventoryManager::guiUser() {
 }
 
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
-
-    std::cout << "line 328" << std::endl;
-
     auto name = QString::fromStdString(item->name);
     auto id = QString::number(item->id);
     auto category = QString::fromStdString(item->category);
@@ -572,8 +570,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     auto buy_cost = QString::number(item->buy_cost);
     auto profit = QString::number(item->profit);
     QString expiration_date;
-
-    std::cout << "line 344" << std::endl;
 
     /* Special expiration date logic. */
     if (item->category == "Perishable") {
@@ -596,13 +592,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     auto profit_entry = new QTableWidgetItem(profit, 0);
     auto exp_entry = new QTableWidgetItem(expiration_date, 0);
 
-    std::cout << "line 367" << std::endl;
-    std::cout << "rowCount == " << table->rowCount() << std::endl;
-
-    if (table == nullptr) {
-        std::cout << "Table has become null somehow." << std::endl;
-    }
-
     /* Insert each item into table */
     table->setItem(row, 0, name_entry);
     table->setItem(row, 1, id_entry);
@@ -617,8 +606,6 @@ void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) 
     table->setItem(row, 10, buy_entry);
     table->setItem(row, 11, profit_entry);
     table->setItem(row, 12, exp_entry);
-
-    std::cout << "line 384" << std::endl;
 }
 
 void InventoryManager::helpScreen() {
@@ -649,6 +636,7 @@ void InventoryManager::hideAllViews() {
     if (inv_screen != nullptr) inv_screen->hide();
     if (help_screen != nullptr) help_screen->hide();
     if (user_screen != nullptr) user_screen->hide();
+    if (pos_screen != nullptr) pos_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -664,18 +652,312 @@ void InventoryManager::redrawTable() {
     }
 }
 
+void InventoryManager::updateSaleLabels(double x, double y, double z) {
+    QString sub_total_str = "Subtotal: $";
+    QString total_str = "Total: $";
+    QString tax_str = "Tax: $";
+
+    sub_total_str += QString::number(x);
+    tax_str += QString::number(y);
+    total_str += QString::number(z);
+
+    sale_sub_total->setText(sub_total_str);
+    sale_tax->setText(tax_str);
+    sale_total->setText(total_str);
+}
+
+int InventoryManager::getRowForItem(std::shared_ptr<Item> item) {
+    auto row_count = table->rowCount();
+    for (int row = 0; row < row_count; ++row) {
+        try {
+            auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+            /* We found the row with the matching item ID. */
+            if (row_id == item->id) {
+                return row;
+            }
+
+        } catch (std::exception& e) {
+            Logger::logTrace("Row %d has a bad ID column.", row);
+        }
+    }
+
+    return -1;
+}
+
+void InventoryManager::processTransactionVisually() {
+    auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
+    bool error_encountered;
+
+    error_encountered = false;
+
+    /* User hasn't opened that view yet -- nothing to update. */
+    if (table == nullptr) return;
+
+    /* For each sale in the transaction, update its Item over in the inventory table */
+    for (auto& sale : transaction->sales) {
+        auto item = active_inventory->searchById(sale->item_id);
+
+        /* Skip this item if we couldn't find it. */
+        if (item == nullptr) {
+            error_encountered = true;
+            continue;
+        }
+
+        /* Find corresponding QTableWidgetItem row. */
+
+        /* This is O(N) where N is the amount of table entries.
+         * We could logically make this much better because we know that the ID is likely near the row number, if not it exactly.
+         * However, the user could screw this up, and this is easier to implement.
+         * And only nerds care about time complexity.  Are you a nerd?
+        */
+
+        auto row = getRowForItem(item);
+        inv_update_debounce = true;
+        auto quantity_field = table->item(row, 5);
+        quantity_field->setText(QString::number(item->quantity));
+        inv_update_debounce = false;
+
+/*
+        auto row_count = table->rowCount();
+        for (int row = 0; row < row_count; ++row) {
+            try {
+                auto row_id = toUnsignedLong(table->item(row, 1)->text().toStdString());
+
+                if (row_id == item->id) {
+                    inv_update_debounce = true;
+                    auto quantity_field = table->item(row, 5);
+                    quantity_field->setText(QString::number(item->quantity));
+                    inv_update_debounce = false;
+                }
+
+            } catch (std::exception& e) {
+                Logger::logTrace("Row %d has a bad ID column.", row);
+            }
+        }\
+*/
+    }
+
+    /* Let user know not all items were updated correctly. */
+    if (error_encountered) Logger::logError("Something went wrong when updating item count -- the quantity you see in the inventory may not be accurate!");
+}
+
+void InventoryManager::guiSale() {
+
+    /* Show POS screen if we've already created it. */
+    if (pos_screen != nullptr) {
+        sub_view = pos_screen;
+        pos_screen->show();
+        return;
+    }
+
+    /* Otherwise, create it for the first time. */
+    pos_screen = std::make_shared<QWidget>(view.get());
+    pos_screen->setFixedSize(880, 540);
+    pos_screen->move(80, 0);
+
+    /* QLabel for name of view */
+    sale_title = new QLabel(pos_screen.get());
+    sale_title->setText("Start a Transaction");
+    sale_title->setFixedSize(440, 80);
+    sale_title->move(20, 0);
+    sale_title->setStyleSheet("font: 24pt;");
+    sale_title->show();
+
+    /* QLabel for Subtotal */
+    sale_sub_total = new QLabel(pos_screen.get());
+    sale_sub_total->setText("Subtotal: ");
+    sale_sub_total->setFixedSize(250, 80);
+    sale_sub_total->move(40, 460);
+    sale_sub_total->setStyleSheet("font: 24pt;");
+    sale_sub_total->show();
+
+    sale_tax = new QLabel(pos_screen.get());
+    sale_tax->setText("Tax: ");
+    sale_tax->setFixedSize(250, 80);
+    sale_tax->move(290, 460);
+    sale_tax->setStyleSheet("font: 24pt;");
+    sale_tax->show();
+
+    sale_total = new QLabel(pos_screen.get());
+    sale_total->setText("Total: ");
+    sale_total->setFixedSize(250, 80);
+    sale_total->move(540, 460);
+    sale_total->setStyleSheet("font: 24pt;");
+    sale_total->show();
+
+    updateSaleLabels(0, 0, 0);
+
+    sale_table = new QTableWidget(0, sale_header.size(), pos_screen.get());
+    sale_table->setHorizontalHeaderLabels(sale_header);
+    sale_table->setFixedSize(600, 400);
+    sale_table->move(25, 85);
+    sale_table->setColumnWidth(0, 100);
+    sale_table->setColumnWidth(1, 300);
+    sale_table->setColumnWidth(2, 100);
+    sale_table->setColumnWidth(3, 100);
+    sale_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    sale_table->show();
+
+    auto add_button = new QToolButton(pos_screen.get());
+    add_button->setIcon(QIcon("./images/add.png"));
+    add_button->setIconSize(QSize(80, 80));
+    add_button->move(800, 0);
+    add_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    add_button->show();
+
+    auto end_button = new QToolButton(pos_screen.get());
+    end_button->setText("Pay");
+    end_button->setFixedSize(80, 80);
+    end_button->move(800, 460);
+    end_button->setStyleSheet("background-color: rgba(0, 0, 0, 0); font: 24pt; color: green;");
+    end_button->show();
+
+    QObject::connect(add_button, &QToolButton::clicked, [&]() {
+        std::cout << "im da giant rat dat makes all of da rulez" << std::endl;
+        auto input = TransactionDialog::getStrings(view.get());
+        unsigned long tmp_quantity;
+
+        if (input.isEmpty()) return;
+
+        /* Support searching by name or ID */
+        auto by_name = active_inventory->searchByName(input.at(0).toStdString());
+        std::shared_ptr<Item> by_id, item;
+
+        try {
+            tmp_quantity = toUnsignedLong(input.at(2).toStdString());
+
+            /* Invalid transaction if quantity <= 0 */
+            if (tmp_quantity == 0) throw std::invalid_argument("Quantity sold must be greater than 0.");
+
+            /* But only search by ID if we couldn't find it by name. */
+            if (by_name == nullptr) {
+                auto id = toUnsignedLong(input.at(1).toStdString());
+                auto by_id = active_inventory->searchById(id);
+                if (by_id == nullptr) throw std::invalid_argument("Couldn't find item by name or ID.");
+                item = by_id;
+            } else item = by_name;
+        } catch (std::exception& e) {
+            Logger::logWarn(e.what());
+            return;
+        }
+
+        /* Item doesn't have enough quantity to complete transaction */
+        if (tmp_quantity > item->quantity) {
+            auto difference = tmp_quantity - item->quantity;
+
+            QString message = "You tried to sell " + QString::number(tmp_quantity) + " items, but there are only ";
+            message += QString::number(item->quantity);
+            message += " in stock.  Add the remaining ";
+            message += QString::number(difference);
+            message += " to backorder?";
+
+            auto prompt = QMessageBox::question(window.get(), "Low stock", message);
+
+            if (prompt == QMessageBox::StandardButton::No) return;
+
+            /* Otherwise, sell what we can and update backorder.*/
+            tmp_quantity = item->quantity;
+
+            active_inventory->updateItem(item->name, "backorder", std::to_string(item->backorder + difference));
+            auto row = getRowForItem(item);
+
+            if (row == -1) {
+                Logger::logTrace("This should never happen.");
+                return;
+            }
+
+            auto backorder_item = table->item(row, 6);
+            backorder_item->setText(QString::number(item->backorder));
+        }
+
+        /* If execution reaches here, we successfully read in an item, and the quantity we want to sell. */
+
+        /* Create a new transaction if we aren't already in one */
+        if (transaction_started == false) {
+            transaction_started = true;
+            sale_list->userTransaction(sale_list->curr_sale_id, current_user->name, "Unknown");
+
+            /* Reset transaction info */
+            sub_total = 0.0;
+            total = 0.0;
+            tax = 0.0;
+
+        }
+
+        /* Add item to transaction */
+        sale_list->transaction_by_order[sale_list->curr_transaction]->addSale(sale_list->curr_sale_id, item->id, tmp_quantity, item->sale_price);
+
+        /* Visually add Item to transaction */
+        auto id = QString::number(item->id);
+        auto name = QString::fromStdString(item->name);
+        auto cost = QString::number(item->sale_price * tmp_quantity);
+        auto qty = QString::number(tmp_quantity);
+
+        auto id_entry = new QTableWidgetItem(id, 0);
+        auto name_entry = new QTableWidgetItem(name, 0);
+        auto cost_entry = new QTableWidgetItem(cost, 0);
+        auto qty_entry = new QTableWidgetItem(qty, 0);
+
+        id_entry->setTextAlignment(Qt::AlignCenter);
+        name_entry->setTextAlignment(Qt::AlignCenter);
+        cost_entry->setTextAlignment(Qt::AlignCenter);
+        qty_entry->setTextAlignment(Qt::AlignCenter);
+
+        int row = sale_table->rowCount();
+
+        sale_table->setRowCount(row + 1);
+        sale_table->setItem(row, 0, id_entry);
+        sale_table->setItem(row, 1, name_entry);
+        sale_table->setItem(row, 2, cost_entry);
+        sale_table->setItem(row, 3, qty_entry);
+
+        /* Update calculations */
+        // Sales just has total price, so I'm gonna do this math here bc I'm lazy.
+        sub_total += (item->sale_price * tmp_quantity);
+        sub_total = (std::ceil(sub_total * 100.0)) / 100.0;
+        tax = sub_total * 0.1;
+        tax = std::ceil(tax * 100.0) / 100.0;
+        total = sub_total + tax;
+        total = std::ceil(total * 100.0) / 100.0;
+
+        /* Update Transaction Info on Screen */
+        QString new_title = "Current Transaction: ";
+        auto transaction = sale_list->transaction_by_order[sale_list->curr_transaction];
+        new_title += QString::number(transaction->sales.size());
+        new_title += " item(s)";
+        sale_title->setText(new_title);
+
+        updateSaleLabels(sub_total, tax, total);
+
+        /* Increment current sale ID. */
+        sale_list->curr_sale_id++;
+    });
+
+    QObject::connect(end_button, &QToolButton::clicked, [&]() {
+        std::cout << "its money time!!" << std::endl;
+
+        if (transaction_started) {
+            transaction_started = false;
+            makeTransaction();
+            processTransactionVisually();
+            Logger::logTrace("User %s entered a transaction.", current_user->name.c_str());
+            sale_table->setRowCount(0);
+
+            /* Update on screen information: */
+            sale_title->setText("Enter a Transaction");
+            updateSaleLabels(0, 0, 0);
+        }
+    });
+
+    pos_screen->show(); 
+}
+
 int InventoryManager::displayInventory() {
     auto item_count = static_cast<int>(active_inventory->inv_by_id.size());
     int row;
 
-    if (sub_view == inv_screen) {
-        std::cout << "Already on inventory screen" << std::endl;
-    } else if (sub_view == help_screen) {
-        std::cout << "On help screen" << std::endl;
-    }
-
     if (sub_view != nullptr) sub_view->hide();
-    else std::cout << "No active sub view" << std::endl;
      
     if (inv_screen != nullptr) {
         sub_view = inv_screen;
@@ -788,6 +1070,12 @@ int InventoryManager::displayInventory() {
 
     QObject::connect(add_action, &QAction::triggered, [&]() {
         auto input = AddDialog::getStrings(view.get());
+
+        if (input.size() != 11) {
+            Logger::logTrace("Failed to read in fields.  User probably cancelled adding item.");
+            return;
+        }
+
         auto name = input.at(0).toStdString();
         auto id = input.at(1).toStdString();
         auto category = input.at(2).toStdString();
@@ -829,10 +1117,13 @@ int InventoryManager::displayInventory() {
     QObject::connect(remove_action, &QAction::triggered, [&]() {
         auto name = QInputDialog::getText(view.get(), "Remove Item from Inventory", "Name of Item:", QLineEdit::Normal);
 
+        if (name.isEmpty()) return;
+
         auto item = active_inventory->searchByName(name.toStdString());
 
         if (item == nullptr) {
             Logger::logWarn("Could not find item '%s' in the inventory.", name.toStdString().c_str());
+            return;
         }
 
         for (row = 1; row < table->rowCount(); ++row) {
@@ -875,6 +1166,13 @@ void InventoryManager::initializeSidePanel() {
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
+    auto sale_button = new QToolButton(view.get());
+    sale_button->setIcon(QIcon("./images/sale.png"));
+    sale_button->setIconSize(QSize(80, 80));
+    sale_button->move(-5, 80);
+    sale_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    sale_button->show();
+
     /* Add User Button to switch to add user view */
     auto user_button = new QToolButton(view.get());
     user_button->setIcon(QIcon("./images/user.png"));
@@ -893,6 +1191,12 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the help button and I have been clicked." << std::endl;
         hideAllViews();
         helpScreen();
+    });
+
+    QObject::connect(sale_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the sale button" << std::endl;
+        hideAllViews();
+        guiSale();
     });
 
     QObject::connect(user_button, &QToolButton::clicked, [&]() {

@@ -2,7 +2,6 @@ obj/*
 bin/*
 .vscode/settings.json
 .DS_Store
-accounts.csv
 logging.cfg
 logs.txt
 cmake_install.cmake
@@ -23,3 +22,5 @@ unit_tests_autogen/moc_predefs.h
 unit_tests_autogen/mocs_compilation.cpp
 .gitignore
 .qt/*
+randomize-inventory_autogen/moc_predefs.h
+randomize-inventory_autogen/mocs_compilation.cpp
