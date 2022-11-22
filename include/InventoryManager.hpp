@@ -144,6 +144,7 @@ class InventoryManager {
     QRadioButton *ownerButton;
     QRadioButton *managerButton;
     QRadioButton *employeeButton;
+    QStringList sale_header;
 
     QStringList sale_header;
     /* used in Sales Comparison */
