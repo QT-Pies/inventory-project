@@ -146,7 +146,6 @@ class InventoryManager {
     QRadioButton *employeeButton;
     QStringList sale_header;
 
-    QStringList sale_header;
     /* used in Sales Comparison */
     QLineEdit *years_line;
     QLabel *ya_label;
