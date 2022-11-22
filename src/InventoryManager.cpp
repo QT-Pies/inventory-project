@@ -377,11 +377,17 @@ void InventoryManager::guiUser() {
     user_screen->setFixedSize(880, 540);
     user_screen->move(80,0);
 
+    auto logo = new QLabel(user_screen.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(200,200,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+
     auto user_label = new QLabel(user_screen.get());
     user_label->setText("Username:");
-    user_label->move(352,160);
+    user_label->move(352,230);
     username_line = new QLineEdit(user_screen.get());
-    username_line->move(440,156);
+    username_line->move(440,226);
     user_label->show();
     username_line->show();
     gc.push_back(user_label);
@@ -389,9 +395,9 @@ void InventoryManager::guiUser() {
 
     auto password_label = new QLabel(user_screen.get());
     password_label->setText("Password:");
-    password_label->move(352,200);
+    password_label->move(352,270);
     password_line = new QLineEdit(user_screen.get());
-    password_line->move(440,196);
+    password_line->move(440,266);
     password_label->show();
     password_line->show();
     // password_line->setEchoMode(QLineEdit::Password);
