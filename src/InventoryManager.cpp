@@ -377,11 +377,17 @@ void InventoryManager::guiUser() {
     user_screen->setFixedSize(880, 540);
     user_screen->move(80,0);
 
+    auto logo = new QLabel(user_screen.get());
+    QPixmap logo_image("./images/logo.png");
+    logo->setPixmap(logo_image.scaled(200,200,Qt::KeepAspectRatio));
+    logo->move(352,0);
+    gc.push_back(logo);
+
     auto user_label = new QLabel(user_screen.get());
     user_label->setText("Username:");
-    user_label->move(352,160);
+    user_label->move(352,230);
     username_line = new QLineEdit(user_screen.get());
-    username_line->move(440,156);
+    username_line->move(440,226);
     user_label->show();
     username_line->show();
     gc.push_back(user_label);
@@ -389,9 +395,9 @@ void InventoryManager::guiUser() {
 
     auto password_label = new QLabel(user_screen.get());
     password_label->setText("Password:");
-    password_label->move(352,200);
+    password_label->move(352,270);
     password_line = new QLineEdit(user_screen.get());
-    password_line->move(440,196);
+    password_line->move(440,266);
     password_label->show();
     password_line->show();
     // password_line->setEchoMode(QLineEdit::Password);
@@ -556,6 +562,421 @@ void InventoryManager::guiUser() {
     user_screen->show();
 }
 
+void InventoryManager::guiSaleComparison() {
+    if (sub_view != nullptr) sub_view->hide();
+
+    if (sc_screen != nullptr) {
+        sub_view = sc_screen;
+        sub_view->show();
+        return;
+    }
+
+    sc_screen = std::make_shared<QWidget>(view.get());
+    sc_screen->setFixedSize(880, 540);
+    sc_screen->move(80,0);
+
+    // sale comparison text
+    auto s_label = new QLabel(sc_screen.get());
+    s_label->setText("S");
+    s_label->setStyleSheet("font: 60pt;");
+    s_label->move(83,20);
+    s_label->show();
+    auto c_label = new QLabel(sc_screen.get());
+    c_label->setText("C");
+    c_label->setStyleSheet("font: 60pt;");
+    c_label->move(80,100);
+    c_label->show();
+
+    // sale suggestion text
+    auto ss1_label = new QLabel(sc_screen.get());
+    ss1_label->setText("S");
+    ss1_label->setStyleSheet("font: 60pt;");
+    ss1_label->move(83,225);
+    ss1_label->show();
+    auto ss2_label = new QLabel(sc_screen.get());
+    ss2_label->setText("S");
+    ss2_label->setStyleSheet("font: 60pt;");
+    ss2_label->move(83,305);
+    ss2_label->show();
+
+    sales_comp->suggestSaleGUI();
+    if(sales_comp->any_ss){
+        // std::cout << "SALES Sugestions FOUND\n";
+        auto id_label = new QLabel(sc_screen.get());
+        id_label->setText("ID#");
+        id_label->setStyleSheet("font: 30pt;");
+        id_label->move(200,228);
+        id_label->show();
+        auto avg_label = new QLabel(sc_screen.get());
+        avg_label->setText("Average Compared \nTo Previous Years");
+        avg_label->setStyleSheet("font: 15pt;");
+        avg_label->move(500,230);
+        avg_label->show();
+
+        // sale suggestion one
+        auto ss1_id_label = new QLabel(sc_screen.get());
+        ss1_id_label->setText(QString::number(sales_comp->ss1));
+        ss1_id_label->setStyleSheet("font: 20pt;");
+        ss1_id_label->move(200,285);
+        ss1_id_label->show();
+        auto ss1_avg_label = new QLabel(sc_screen.get());
+        ss1_avg_label->setText(QString::number(sales_comp->ss1_avg));
+        ss1_avg_label->setStyleSheet("font: 20pt;");
+        ss1_avg_label->move(500,285);
+        ss1_avg_label->show();
+
+        auto ss2_id_label = new QLabel(sc_screen.get());
+        auto ss2_avg_label = new QLabel(sc_screen.get());
+        //ss2_id_label->setText(QString::number(sales_comp->ss1));
+        if(sales_comp->ss2_avg != -1){
+            ss2_id_label->setText(QString::number(sales_comp->ss2));
+            ss2_avg_label->setText(QString::number(sales_comp->ss2_avg));
+        }
+        else {
+            ss2_id_label->setText("Na");
+            ss2_avg_label->setText("Na");
+        }
+        ss2_id_label->setStyleSheet("font: 20pt;");
+        ss2_id_label->move(200,315);
+        ss2_id_label->show();
+        ss2_avg_label->setStyleSheet("font: 20pt;");
+        ss2_avg_label->move(500,315);
+        ss2_avg_label->show();
+
+        auto ss3_id_label = new QLabel(sc_screen.get());
+        auto ss3_avg_label = new QLabel(sc_screen.get());
+        //ss3_id_label->setText(QString::number(sales_comp->ss1));
+        if(sales_comp->ss3_avg != -1){
+            ss3_id_label->setText(QString::number(sales_comp->ss3));
+            ss3_avg_label->setText(QString::number(sales_comp->ss3_avg));
+        }
+        else {
+            ss3_id_label->setText("Na");
+            ss3_avg_label->setText("Na");
+        }
+        ss3_id_label->setStyleSheet("font: 20pt;");
+        ss3_id_label->move(200,345);
+        ss3_id_label->show();
+        ss3_avg_label->setStyleSheet("font: 20pt;");
+        ss3_avg_label->move(500,345);
+        ss3_avg_label->show();
+    }
+    else {
+        // std::cout << "Test\n";
+        auto na_label = new QLabel(sc_screen.get());
+        na_label->setText("No Sales Suggestions Avaliable");
+        na_label->setStyleSheet("font: 30pt;");
+        na_label->move(160,285);
+        na_label->show();
+    }
+
+    // lables that will be changed based on the pressed button
+    ya_label = new QLabel(sc_screen.get());
+    ys_label = new QLabel(sc_screen.get());
+    yg_label = new QLabel(sc_screen.get());
+    ma_label = new QLabel(sc_screen.get());
+    ms_label = new QLabel(sc_screen.get());
+    mg_label = new QLabel(sc_screen.get());
+    lmc_label = new QLabel(sc_screen.get());
+    l7dc_label = new QLabel(sc_screen.get());
+    yc_label = new QLabel(sc_screen.get());
+    xy_label = new QLabel(sc_screen.get());
+
+    double result_y = sales_comp->compareByYear();
+    double result_m = sales_comp->compareByMonth();
+
+    QString ya = QString::number(sales_comp->avg_by_year);
+    QString ys = QString::number(sales_comp->current_year_sales);
+    QString yg = QString::number(result_y - 100);
+    QString ma = QString::number(sales_comp->avg_by_month[sales_comp->curr_m] * (1 - sales_comp->days_left_month));
+    QString ms = QString::number(sales_comp->current_month_sales);
+    QString mg = QString::number(result_m - 100);
+    QString lmc = QString::number(sales_comp->compareLastMonth() - 100);
+    QString l7dc = QString::number(sales_comp->compareLast7Days() - 100);
+    QString yc = QString::number(sales_comp->compareYesterday() - 100);
+
+    ya_label->setText(ya);
+    ys_label->setText(ys);
+    yg_label->setText(yg);
+    ma_label->setText(ma);
+    ms_label->setText(ms);
+    mg_label->setText(mg);
+    lmc_label->setText(lmc);
+    l7dc_label->setText(l7dc);
+    yc_label->setText(yc);
+    xy_label->setText("Na");
+
+    ya_label->move(365,20);
+    ys_label->move(355,40);
+    yg_label->move(385,60);
+    ma_label->move(380,80);
+    ms_label->move(375,100);
+    mg_label->move(400,120);
+    lmc_label->move(500,140);
+    l7dc_label->move(540,160);
+    yc_label->move(465,180);
+    xy_label->move(700,200);
+
+    ya_label->hide();
+    ys_label->hide();
+    yg_label->hide();
+    ma_label->hide();
+    ms_label->hide();
+    mg_label->hide();
+    lmc_label->hide();
+    l7dc_label->hide();
+    yc_label->hide();
+    xy_label->hide();
+
+    auto year_average_label = new QLabel(sc_screen.get());
+    year_average_label->setText("Average Sales Per Year ($):");
+    year_average_label->move(180, 20);
+    year_average_label->show();
+    gc.push_back(year_average_label);
+
+    auto year_sales_label = new QLabel(sc_screen.get());
+    year_sales_label->setText("Sales So Far This Year ($):");
+    year_sales_label->move(180, 40);
+    year_sales_label->show();
+    gc.push_back(year_sales_label);
+
+    auto year_gain_label = new QLabel(sc_screen.get());
+    year_gain_label->setText("Gain This Year vs Average (%):");
+    year_gain_label->move(180, 60);
+    year_gain_label->show();
+    gc.push_back(year_gain_label);
+
+    auto month_average_label = new QLabel(sc_screen.get());
+    month_average_label->setText("Average Sales Per Month ($):");
+    month_average_label->move(180, 80);
+    month_average_label->show();
+    gc.push_back(month_average_label);
+
+    auto month_sales_label = new QLabel(sc_screen.get());
+    month_sales_label->setText("Sales So Far This Month ($):");
+    month_sales_label->move(180, 100);
+    month_sales_label->show();
+    gc.push_back(month_sales_label);
+
+    auto month_gain_label = new QLabel(sc_screen.get());
+    month_gain_label->setText("Gain This Month vs Average (%):");
+    month_gain_label->move(180, 120);
+    month_gain_label->show();
+    gc.push_back(month_gain_label);
+
+    auto last_month_comparison_label = new QLabel(sc_screen.get());
+    last_month_comparison_label->setText("Sales This Month Compared To Last Month (%):");
+    last_month_comparison_label->move(180, 140);
+    last_month_comparison_label->show();
+    gc.push_back(last_month_comparison_label);
+
+    auto last_7_days_comparison_label = new QLabel(sc_screen.get());
+    last_7_days_comparison_label->setText("*Sales Over The Last 7 days Compared To Today (%):");
+    last_7_days_comparison_label->move(180, 160);
+    last_7_days_comparison_label->show();
+    gc.push_back(last_7_days_comparison_label);
+
+    auto yesterday_comparison_label = new QLabel(sc_screen.get());
+    yesterday_comparison_label->setText("*Sales Yesterday Compared To Today (%):");
+    yesterday_comparison_label->move(180, 180);
+    yesterday_comparison_label->show();
+    gc.push_back(yesterday_comparison_label);
+
+    auto x_years_label = new QLabel(sc_screen.get());
+    x_years_label->setText("Sales So Far This Year Compared To The Average Over The Past X Years (%):");
+    x_years_label->move(180, 200);
+    x_years_label->show();
+    gc.push_back(x_years_label);
+
+    auto comparison_warning_label = new QLabel(sc_screen.get());
+    comparison_warning_label->setText("* These Numbers Will Be Lower Earlier In The Day And Only Show Accurate Comparisons At The End Of the Day.");
+    comparison_warning_label->move(80, 400);
+    comparison_warning_label->show();
+    gc.push_back(comparison_warning_label);
+
+    auto all_by_year_button = new QPushButton(sc_screen.get());
+    all_by_year_button->setText("All By Year");
+    all_by_year_button->setFixedSize(200,60);
+    all_by_year_button->move(480, 480);
+    all_by_year_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    all_by_year_button->show();
+    gc.push_back(all_by_year_button);
+
+    auto all_by_month_button = new QPushButton(sc_screen.get());
+    all_by_month_button->setText("All By Month");
+    all_by_month_button->setFixedSize(200,60);
+    all_by_month_button->move(680, 480);
+    all_by_month_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    all_by_month_button->show();
+    gc.push_back(all_by_month_button);
+
+    auto years_label = new QLabel(sc_screen.get());
+    years_label->setText("X:");
+    years_label->move(80,503);
+    years_label->show();
+    gc.push_back(years_label);
+
+    years_line = new QLineEdit(sc_screen.get());
+    years_line->setValidator( new QIntValidator(0, 100, sc_screen.get()) );
+    years_line->move(95,500);
+    years_line->show();
+    gc.push_back(years_line);
+
+    auto x_years_button = new QPushButton(sc_screen.get());
+    x_years_button->setText("X Years");
+    x_years_button->setFixedSize(200,60);
+    x_years_button->move(280, 480);
+    x_years_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    x_years_button->show();
+    gc.push_back(x_years_button);
+
+    auto last_month_button = new QPushButton(sc_screen.get());
+    last_month_button->setText("Last Month");
+    last_month_button->setFixedSize(200,60);
+    last_month_button->move(280, 420);
+    last_month_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    last_month_button->show();
+    gc.push_back(last_month_button);
+
+    auto last_7_days_button = new QPushButton(sc_screen.get());
+    last_7_days_button->setText("Last 7 Days");
+    last_7_days_button->setFixedSize(200,60);
+    last_7_days_button->move(480, 420);
+    last_7_days_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    last_7_days_button->show();
+    gc.push_back(last_7_days_button);
+
+    auto yesterday_button = new QPushButton(sc_screen.get());
+    yesterday_button->setText("Yesterday");
+    yesterday_button->setFixedSize(200,60);
+    yesterday_button->move(680, 420);
+    yesterday_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    yesterday_button->show();
+    gc.push_back(yesterday_button);
+
+    auto full_button = new QPushButton(sc_screen.get());
+    full_button->setText("Full");
+    full_button->setFixedSize(200,60);
+    full_button->move(80, 420);
+    full_button->setStyleSheet("background-color: rgba(178, 255, 158, 255); color: #000000;");
+    full_button->show();
+    gc.push_back(full_button);
+
+    QObject::connect(full_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the Full button and I have been clicked." << std::endl;
+        ya_label->show();
+        ys_label->show();
+        yg_label->show();
+        ma_label->show();
+        ms_label->show();
+        mg_label->show();
+        lmc_label->show();
+        l7dc_label->show();
+        yc_label->show();
+        xy_label->show();   
+    });
+
+    QObject::connect(last_month_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the Last Month button and I have been clicked." << std::endl;
+        ya_label->hide();
+        ys_label->hide();
+        yg_label->hide();
+        ma_label->hide();
+        ms_label->hide();
+        mg_label->hide();
+        lmc_label->show();
+        l7dc_label->hide();
+        yc_label->hide();
+        xy_label->hide();
+    });
+
+    QObject::connect(last_7_days_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the Last 7 days button and I have been clicked." << std::endl;
+        ya_label->hide();
+        ys_label->hide();
+        yg_label->hide();
+        ma_label->hide();
+        ms_label->hide();
+        mg_label->hide();
+        lmc_label->hide();
+        l7dc_label->show();
+        yc_label->hide();
+        xy_label->hide();
+    });
+
+    QObject::connect(yesterday_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the Yesterday button and I have been clicked." << std::endl;
+        ya_label->hide();
+        ys_label->hide();
+        yg_label->hide();
+        ma_label->hide();
+        ms_label->hide();
+        mg_label->hide();
+        lmc_label->hide();
+        l7dc_label->hide();
+        xy_label->hide();
+        yc_label->show();       
+    });
+
+    QObject::connect(all_by_year_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the all by year button and I have been clicked." << std::endl;
+        ya_label->show();
+        ys_label->show();
+        yg_label->show();
+        ma_label->hide();
+        ms_label->hide();
+        mg_label->hide();
+        lmc_label->hide();
+        l7dc_label->hide();
+        xy_label->hide();
+        yc_label->hide();       
+    });
+
+    QObject::connect(all_by_month_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the All By Month button and I have been clicked." << std::endl;
+        ya_label->hide();
+        ys_label->hide();
+        yg_label->hide();
+        ma_label->show();
+        ms_label->show();
+        mg_label->show();
+        lmc_label->hide();
+        l7dc_label->hide();
+        xy_label->hide();
+        yc_label->hide();       
+    });
+
+    QObject::connect(x_years_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the X years button and I have been clicked." << std::endl;
+        QString years_string = years_line->text();
+        if(years_string == "") {
+            xy_label->setText("Na");
+            QMessageBox box;
+            box.setWindowTitle("Sales Comparison");
+            box.setText("Please enter amount of years to compare.");
+            box.exec();
+        }
+        else {
+            int x = years_string.toInt();
+            QString xy = QString::number(sales_comp->compareLastXYears(x) - 100);
+            xy_label->setText(xy);
+        }
+
+        ya_label->hide();
+        ys_label->hide();
+        yg_label->hide();
+        ma_label->hide();
+        ms_label->hide();
+        mg_label->hide();
+        lmc_label->hide();
+        l7dc_label->hide();
+        yc_label->hide();
+        xy_label->show();
+    });
+
+    sc_screen->show();
+}
+
 void InventoryManager::insertItemIntoTable(std::shared_ptr<Item> item, int row) {
     auto name = QString::fromStdString(item->name);
     auto id = QString::number(item->id);
@@ -637,6 +1058,7 @@ void InventoryManager::hideAllViews() {
     if (help_screen != nullptr) help_screen->hide();
     if (user_screen != nullptr) user_screen->hide();
     if (pos_screen != nullptr) pos_screen->hide();
+    if (sc_screen != nullptr) sc_screen->hide();
 }
 
 void InventoryManager::redrawTable() {
@@ -1154,7 +1576,7 @@ void InventoryManager::initializeSidePanel() {
     auto inv_button = new QToolButton(view.get());
     inv_button->setIcon(QIcon("./images/inventory-button.png"));
     inv_button->setIconSize(QSize(80, 80));
-    inv_button->move(-5,0);
+    inv_button->move(-5,10);
     inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     inv_button->show();
 
@@ -1162,24 +1584,41 @@ void InventoryManager::initializeSidePanel() {
     auto help_button = new QToolButton(view.get());
     help_button->setIcon(QIcon("./images/about.png"));
     help_button->setIconSize(QSize(80, 80));
-    help_button->move(-5, 455);
+    help_button->move(-5, 335);
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
+    /* Sale Button to switch to sale view */
     auto sale_button = new QToolButton(view.get());
     sale_button->setIcon(QIcon("./images/sale.png"));
     sale_button->setIconSize(QSize(80, 80));
-    sale_button->move(-5, 80);
+    sale_button->move(-5, 90);
     sale_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     sale_button->show();
+
+    /* Add SaleComparison Button to switch to add user view */
+    auto sc_button = new QToolButton(view.get());
+    sc_button->setIcon(QIcon("./images/salecomparison.png"));
+    sc_button->setIconSize(QSize(80, 80));
+    sc_button->move(-5, 170);
+    sc_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    sc_button->show();
 
     /* Add User Button to switch to add user view */
     auto user_button = new QToolButton(view.get());
     user_button->setIcon(QIcon("./images/user.png"));
     user_button->setIconSize(QSize(80, 80));
-    user_button->move(-5, 365);
+    user_button->move(-5, 250);
     user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     user_button->show();
+
+    /* Add Exit Button to switch to add user view */
+    auto exit_button = new QToolButton(view.get());
+    exit_button->setIcon(QIcon("./images/exit.png"));
+    exit_button->setIconSize(QSize(80, 80));
+    exit_button->move(-5, 420);
+    exit_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    exit_button->show();
 
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
@@ -1199,10 +1638,21 @@ void InventoryManager::initializeSidePanel() {
         guiSale();
     });
 
+    QObject::connect(sc_button, &QToolButton::clicked, [&]() {
+        std::cout << "I am the sale comparison button and I have been clicked." << std::endl;
+        hideAllViews();
+        guiSaleComparison();
+    });
+
     QObject::connect(user_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
         hideAllViews();
         guiUser();
+    });
+
+    QObject::connect(exit_button, &QToolButton::clicked, [&]() {
+        std::cout << "Exiting" << std::endl;
+        window->close();
     });
 }
 

@@ -498,3 +498,49 @@ void SalesComparison::suggestSale() {
         printf("All items are selling well.\nNo sale suggested.\n");
     }
 }
+
+void SalesComparison::suggestSaleGUI() {
+    double worst_perc;
+    unsigned long worst_id;
+    std::string ret;
+    std::map<unsigned long, double>::iterator it;
+    std::vector<std::pair<unsigned long, double> > worst_vector;
+
+    worst_perc = 1000000000000000000000.0;
+    worst_id = -1;
+    for (it = current_month_item_ids.begin(); it != current_month_item_ids.end(); it++) {
+        if (it->second / (item_ids_by_month[curr_m][it->first] * (1 - days_left_month)) < worst_perc) {
+            worst_perc = it->second / (item_ids_by_month[curr_m][it->first] * (1 - days_left_month));
+            worst_id = it->first;
+            if (worst_perc <= 0.85) worst_vector.push_back(std::make_pair(worst_id, worst_perc));
+        }
+    }
+
+    if (worst_vector.size() != 0) {
+        any_ss = true;
+        ss1_avg = -1;
+        ss2_avg = -1;
+        ss3_avg = -1;
+        if(worst_vector.size() >= 1) {
+            ss1 = worst_vector[0].first;
+            ss1_avg = worst_vector[0].second;
+        }
+        if(worst_vector.size() >= 2) {
+            ss2 = worst_vector[1].first;
+            ss2_avg = worst_vector[1].second;
+        }
+        if(worst_vector.size() >= 3) {
+            ss3 = worst_vector[2].first;
+            ss3_avg = worst_vector[2].second;
+        }
+        //for (size_t i = 0; i < worst_vector.size(); i++) {
+            // printf(
+            //     "We suggest a sale on item id %lu.\n"
+            //     "Yours sales this month are %.2f%% of the average from this month in previous years.\n",
+            //     worst_vector[i].first, worst_vector[i].second);
+        // }
+    } else {
+        any_ss = false;
+        // printf("All items are selling well.\nNo sale suggested.\n");
+    }
+}

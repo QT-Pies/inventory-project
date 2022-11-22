@@ -38,7 +38,15 @@ class SalesComparison {
      */
     void suggestSale();
 
+    /*
+     * @brief The suggestSale function will compare all items sold this month compared to the average sales of
+     *  that item in that month and offer a suggested sale if one of them is below a certain threshold.
+     *  For the GUI, it will only display up to the first three in the vector
+     */
+    void suggestSaleGUI();
+
    private:
+   friend class InventoryManager;
     /*
      * @brief The compareBy functions will compare sales from your current year or month with data from all
      *  previous ones.
@@ -73,6 +81,15 @@ class SalesComparison {
     double days_left_year;
     double days_left_month;
     std::vector<int> days_in_month;
+
+    // for GUI SS
+    bool any_ss;
+    unsigned long ss1;
+    unsigned long ss2;
+    unsigned long ss3;
+    double ss1_avg;
+    double ss2_avg;
+    double ss3_avg;
 };
 
 #endif /* SALES_COMPARISON_HPP */

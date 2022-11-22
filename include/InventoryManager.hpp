@@ -101,6 +101,11 @@ class InventoryManager {
     void guiSale();
 
     /*
+     * @breif Sale Comparison view
+     */
+    void guiSaleComparison();
+
+    /*
      * @brief call updateUser in User class
      * @return return true if successful and false if not
      * @param std::string username
@@ -132,12 +137,27 @@ class InventoryManager {
     std::shared_ptr<QWidget> sub_view; // The "sub-view" -- inventory, users, help, etc.
     QStringList inv_header;
     QStringList item_fields;
+    /* used for login and in user screen */
     QLineEdit *username_line;
     QLineEdit *password_line;
+    /* used in user screen */
     QRadioButton *ownerButton;
     QRadioButton *managerButton;
     QRadioButton *employeeButton;
     QStringList sale_header;
+
+    /* used in Sales Comparison */
+    QLineEdit *years_line;
+    QLabel *ya_label;
+    QLabel *ys_label;
+    QLabel *yg_label;
+    QLabel *ma_label;
+    QLabel *ms_label;
+    QLabel *mg_label;
+    QLabel *lmc_label;
+    QLabel *l7dc_label;
+    QLabel *yc_label;
+    QLabel *xy_label;
 
     /* Specific QWidget objects */
     std::shared_ptr<QTableWidget> table;
@@ -147,6 +167,7 @@ class InventoryManager {
     std::shared_ptr<QWidget> user_screen;
     std::shared_ptr<QWidget> help_screen;
     std::shared_ptr<QWidget> pos_screen;
+    std::shared_ptr<QWidget> sc_screen;
 
     /* POS Variables*/
     bool transaction_started;

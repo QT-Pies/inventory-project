@@ -2047,3 +2047,4 @@ Sale_ID, Date, Total_Price, Quantity_of_Items, Buyer, Seller
 1,11/7/2024,1.32177e+20,9,Joe,Dave-Dog
 2,11/7/2024,8560.96,5,Dave-Dog,Noah
 3,11/7/2024,4022.61,4,Jen,Michael
+2,11/21/2022,1085.64,1,admin,Unknown
