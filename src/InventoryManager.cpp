@@ -1570,7 +1570,7 @@ void InventoryManager::initializeSidePanel() {
     auto inv_button = new QToolButton(view.get());
     inv_button->setIcon(QIcon("./images/inventory-button.png"));
     inv_button->setIconSize(QSize(80, 80));
-    inv_button->move(-5,0);
+    inv_button->move(-5,10);
     inv_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     inv_button->show();
 
@@ -1578,7 +1578,7 @@ void InventoryManager::initializeSidePanel() {
     auto help_button = new QToolButton(view.get());
     help_button->setIcon(QIcon("./images/about.png"));
     help_button->setIconSize(QSize(80, 80));
-    help_button->move(-5, 455);
+    help_button->move(-5, 335);
     help_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     help_button->show();
 
@@ -1586,7 +1586,7 @@ void InventoryManager::initializeSidePanel() {
     auto sale_button = new QToolButton(view.get());
     sale_button->setIcon(QIcon("./images/sale.png"));
     sale_button->setIconSize(QSize(80, 80));
-    sale_button->move(-5, 80);
+    sale_button->move(-5, 90);
     sale_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     sale_button->show();
 
@@ -1594,7 +1594,7 @@ void InventoryManager::initializeSidePanel() {
     auto sc_button = new QToolButton(view.get());
     sc_button->setIcon(QIcon("./images/salecomparison.png"));
     sc_button->setIconSize(QSize(80, 80));
-    sc_button->move(-5, 275);
+    sc_button->move(-5, 170);
     sc_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     sc_button->show();
 
@@ -1602,9 +1602,17 @@ void InventoryManager::initializeSidePanel() {
     auto user_button = new QToolButton(view.get());
     user_button->setIcon(QIcon("./images/user.png"));
     user_button->setIconSize(QSize(80, 80));
-    user_button->move(-5, 365);
+    user_button->move(-5, 250);
     user_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
     user_button->show();
+
+    /* Add Exit Button to switch to add user view */
+    auto exit_button = new QToolButton(view.get());
+    exit_button->setIcon(QIcon("./images/exit.png"));
+    exit_button->setIconSize(QSize(80, 80));
+    exit_button->move(-5, 420);
+    exit_button->setStyleSheet("background-color: rgba(0, 0, 0, 0);");
+    exit_button->show();
 
     QObject::connect(inv_button, &QToolButton::clicked, [&]() {
         std::cout << "I am the inventory button and I have been clicked." << std::endl;
@@ -1634,6 +1642,11 @@ void InventoryManager::initializeSidePanel() {
         std::cout << "I am the user button and I have been clicked." << std::endl;
         hideAllViews();
         guiUser();
+    });
+
+    QObject::connect(exit_button, &QToolButton::clicked, [&]() {
+        std::cout << "Exiting" << std::endl;
+        window->close();
     });
 }
 
