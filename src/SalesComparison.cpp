@@ -361,11 +361,10 @@ double SalesComparison::compareLast7Days() {
                 if (sales_list->transaction_by_date[12][days_in_month[11] - days_in_last_month].find(curr_y - 1) !=
                     sales_list->transaction_by_date[12][days_in_month[11] - days_in_last_month].end()) {
                     dit = sales_list->transaction_by_date[12].find(days_in_month[11] - days_in_last_month);
-                    for (int j = 0; j < days_in_last_month; j++) {
+                    for (dit = dit; dit != sales_list->transaction_by_date[12].end(); dit++) {
                         for (long unsigned int i = 0; i < dit->second[curr_y - 1].size(); i++) {
                             last_week += dit->second[curr_y - 1][i]->total_price;
                         }
-                        dit++;
                     }
                     return 100.0 * (current_day_sales / ((last_week + current_month_sales - current_day_sales) / 7));
                 }
@@ -379,11 +378,10 @@ double SalesComparison::compareLast7Days() {
                     sales_list->transaction_by_date[curr_m - 1][days_in_month[curr_m - 2] - days_in_last_month].end()) {
                     dit = sales_list->transaction_by_date[curr_m - 1].find(days_in_month[curr_m - 2] -
                                                                            days_in_last_month);
-                    for (int j = 0; j < days_in_last_month; j++) {
+                    for (dit = dit; dit != sales_list->transaction_by_date[curr_m - 1].end(); dit++) {
                         for (long unsigned int i = 0; i < dit->second[curr_y].size(); i++) {
                             last_week += dit->second[curr_y][i]->total_price;
                         }
-                        dit++;
                     }
                     return 100.0 * (current_day_sales / ((last_week + current_month_sales - current_day_sales) / 7));
                 }
@@ -396,11 +394,10 @@ double SalesComparison::compareLast7Days() {
             if (sales_list->transaction_by_date[curr_m][curr_d - 7].find(curr_y) !=
                 sales_list->transaction_by_date[curr_m][curr_d - 7].end()) {
                 dit = sales_list->transaction_by_date[curr_m].find(curr_d - 7);
-                for (int j = 0; j < 7; j++) {
+                for (dit = dit; dit != sales_list->transaction_by_date[curr_m].find(curr_d); dit++) {
                     for (long unsigned int i = 0; i < dit->second[curr_y].size(); i++) {
                         last_week += dit->second[curr_y][i]->total_price;
                     }
-                    dit++;
                 }
                 return 100.0 * (current_day_sales / (last_week / 7));
             }
