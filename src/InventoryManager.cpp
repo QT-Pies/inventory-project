@@ -1068,8 +1068,6 @@ void InventoryManager::redrawTable() {
 
     int row = 0;
     for (auto it = active_inventory->inv_by_id.begin(); it != active_inventory->inv_by_id.end(); ++it, ++row) {
-        std::cout << "Calling insertItem with item, row number = " << row << std::endl;
-        std::cout << "Current rowCount = " << table->rowCount() << std::endl;
         insertItemIntoTable(it->second, row);
     }
 }
@@ -1236,7 +1234,7 @@ void InventoryManager::guiSale() {
     end_button->show();
 
     QObject::connect(add_button, &QToolButton::clicked, [&]() {
-        std::cout << "im da giant rat dat makes all of da rulez" << std::endl;
+        std::cout << "Add to transaction button clicked" << std::endl;
         auto input = TransactionDialog::getStrings(view.get());
         unsigned long tmp_quantity;
 
