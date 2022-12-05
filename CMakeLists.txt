@@ -14,7 +14,7 @@ include_directories("./include")
 
 # If macOS / Ubuntu, run with these g++ flags -- not supported by MSVC.
 if (UNIX)
-  string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security ")
+  string(APPEND CMAKE_CXX_FLAGS " -Wall -Werror -Wno-format-security -Wno-self-assign-overloaded")
 endif()
 
 # Linux Qt Path
