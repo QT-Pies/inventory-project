@@ -30,6 +30,8 @@ sudo apt install libxkbcommon libvulkan1 mesa-vulkan-drivers vulkan-utils libvul
 ```
 
 ### Download
+You'll need to have added a SSH key to github before you can clone our repo.
+Everyone should have permission to clone, but if there's any permission issue email me and I will fix.
 - Clone this repo: ```git clone git@github.com:QT-Pies/inventory-project.git```
 - Checkout gui-main: ```git checkout gui-main```
 
