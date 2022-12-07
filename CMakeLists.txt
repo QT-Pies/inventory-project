@@ -19,12 +19,12 @@ endif()
 
 # Linux Qt Path
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/gcc_64")
+  set(CMAKE_PREFIX_PATH "~/Qt/6.4.1/gcc_64")
 endif()
 
 # macOS Qt Path
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/macos")
+  set(CMAKE_PREFIX_PATH "~/Qt/6.4.1/macos")
 endif()
 
 # Semi-functional Windows support.
