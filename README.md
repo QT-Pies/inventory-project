@@ -15,6 +15,20 @@ A built in point of sale system is also provided so that businesses don't have t
 
 ## Download, Install, and Run
 
+## These installation instructions are for Ubuntu.
+I'm on macOS, but I tested these instructions in a Ubuntu VM and was able to successfully get our project built.
+If you run into any issues, just email me at nshoap@vols.utk.edu.
+
+
+### Install Needed Packages
+```
+sudo apt update
+sudo apt upgrade
+sudo apt install git build-essential cmake
+sudo apt install cmake qt6-base-dev libgl1-mesa-dev qtcreator
+sudo apt install libxkbcommon libvulkan1 mesa-vulkan-drivers vulkan-utils libvulkan-dev
+```
+
 ### Download
 - Clone this repo: ```git clone git@github.com:QT-Pies/inventory-project.git```
 - Checkout gui-main: ```git checkout gui-main```
@@ -28,18 +42,6 @@ If you're on Windows 11 build 22000 or higher, you can run GUI programs through 
 Otherwise, if you are on Windows 10, I believe there are ways to do it anyways, but not officially supported.
 
 I'd suggest probably just spinning up a Ubuntu VM through VMWare or something.
-
-#### Install
-This portion assumes you are on a Ubuntu install of some form.
-
-Firstly, some commands for us to start with:
-```
-sudo apt update
-sudo apt upgrade
-sudo apt install cmake qt6-base-dev libgl1-mesa-dev qtcreator
-```
-
-This should all the dependencies needed for us to actually install Qt, but we still have to run their installer to actually install it.
 
 ##### Grabbing a Qt Installer
 1. Head over to [this link](https://login.qt.io/register) and create a Qt account.
