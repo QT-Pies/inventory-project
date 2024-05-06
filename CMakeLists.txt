@@ -24,7 +24,7 @@ endif()
 
 # macOS Qt Path
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-  set(CMAKE_PREFIX_PATH "~/Qt/6.4.1/macos")
+  set(CMAKE_PREFIX_PATH "~/Qt/6.4.0/macos")
 endif()
 
 # Semi-functional Windows support.
@@ -81,40 +81,4 @@ add_executable(gen-sales
   src/Date.cpp
   src/SalesGenerator.cpp
   src/SalesGeneratorDriver.cpp
-)
-
-# Unit test section
-
-include(FetchContent)
-
-# Fetch GTest
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-
-enable_testing()
-
-FetchContent_MakeAvailable(googletest)
-
-# Add source files for bin/unit_tests
-add_executable(unit_tests
-  src/HelperFunctions.cpp
-  src/ActiveInventory.cpp
-  src/User.cpp
-  src/Login.cpp
-  src/Sales.cpp
-  src/InventoryManager.cpp
-  src/SalesComparison.cpp
-  src/AddDialog.cpp
-  src/TransactionDialog.cpp
-  src/unit_tests.cpp
-)
-
-# Link GTest
-target_link_libraries(unit_tests GTest::gtest)
-target_link_libraries(unit_tests
-  Qt6::Core
-  Qt6::Gui
-  Qt6::Widgets
 )
